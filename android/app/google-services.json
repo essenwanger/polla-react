@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "991338042977",
+    "firebase_url": "https://polla-react.firebaseio.com",
+    "project_id": "polla-react",
+    "storage_bucket": "polla-react.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:991338042977:android:596929df0c08f83d",
+        "android_client_info": {
+          "package_name": "com.pollareact"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "991338042977-oc4j8o5t8u46ups80kbbkrjome59o6rm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBspxr32KMQCY0ljwnabKsPWa6_RravSUk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
