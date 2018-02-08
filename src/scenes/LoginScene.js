@@ -6,7 +6,7 @@ import {StyleSheet} from 'react-native'
 export default class LoginScene extends Component {
 
   onPressLogin(){
-
+    Actions.terms();
   }
 
   render() {
