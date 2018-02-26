@@ -7,18 +7,6 @@ export default class LoginScene extends Component {
 
   constructor() {
     super();
-    this.state = {
-      name: ''
-    };
-    this.onPress = this.onPress.bind(this);
-  }
-
-  onPress(){
-    firebase.database().ref().once('value').then((snapshot)=>{
-      this.setState({
-        name: snapshot.val().name
-      });
-    });
   }
 
   onPressLogin(){
@@ -33,10 +21,6 @@ export default class LoginScene extends Component {
             <Icon name='logo-googleplus' />
             <Text>Login</Text>
           </Button>
-          <Button block onPress={this.onPress}>
-            <Text>Firebase</Text>
-          </Button>
-          <Text>{this.state.name}</Text>
         </View>
       </Container>
     );
