@@ -9,16 +9,43 @@ export default class FixtureScene extends Component {
   constructor() {
     super();
     this.state = {
-      groups : []
+      matches : [],
+      groups : [],
+      scores : []
     };
+    this.onScore = this.onScore.bind(this);
+    this.onPressRanking = this.onPressRanking.bind(this);
   }
 
   onPressRanking(){
+    var scores=this.state.scores;
+    firebase.database().ref('users/').set({
+      scores: scores
+    });
     Actions.ranking();
+  }
+
+  onScore(id, team, score){
+    var scores=this.state.scores;
+    var match=this.state.matches[id];
+    if(scores[id]==null){
+      scores[id]={group: match.group, id: match.id, 
+        team1: match.team1, team2: match.team2, 
+        scoreTeam1: '', scoreTeam2: ''}
+    }
+    if(team=='1'){
+        scores[id].scoreTeam1 = score;
+    }else{
+      scores[id].scoreTeam2 = score;
+    }
+    this.setState({
+      scores: scores
+    });
   }
 
   componentDidMount() {
     firebase.database().ref('match/').once('value').then((snapshot)=>{
+      var matches=[];
       var groups=[];
       var group={};
       snapshot.forEach(function(childSnapshot) {
@@ -29,9 +56,11 @@ export default class FixtureScene extends Component {
           groups.push(group);
         }
         group.matches.push(item);
+        matches[childSnapshot.key] = childSnapshot.val();
       });
       this.setState({
-        groups: groups
+        groups: groups,
+        matches: matches
       });
     });
   }
@@ -43,7 +72,7 @@ export default class FixtureScene extends Component {
           <Text>Grupo {item.id}</Text>
         </CardItem>
         {item.matches.map((item, key) => (
-            <Match key={item.key} team1={item.team1} team2={item.team2}/>
+            <Match id={item.key} key={item.key} team1={item.team1} team2={item.team2} onScore={this.onScore}/>
         ))}
       </Card>
     ));
