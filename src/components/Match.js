@@ -9,8 +9,8 @@ export default class Match extends Component {
 
   constructor(props) {
     super(props);
-    this.team1 = 'http://www.countryflags.io/'+this.props.team1+'/flat/64.png';
-    this.team2 = 'http://www.countryflags.io/'+this.props.team2+'/flat/64.png';
+    this.teamFlag1 = 'http://img.fifa.com/images/flags/4/'+this.props.teamFlag1;
+    this.teamFlag2 = 'http://img.fifa.com/images/flags/4/'+this.props.teamFlag2;
     this.score1 = this.score1.bind(this);
     this.score2 = this.score2.bind(this);
   }
@@ -28,7 +28,8 @@ export default class Match extends Component {
       <CardItem>
         <Grid>
           <Col>
-            <Thumbnail square small source={{uri: this.team1}} />   
+            <Thumbnail small source={{uri: this.teamFlag1}} 
+            style={{ borderColor: '#000000', borderWidth: 0.2}}/>   
           </Col>
           <Col>
             <Item regular style={{ width: 60, height: 40 }}>
@@ -37,13 +38,14 @@ export default class Match extends Component {
             </Item>
           </Col>
           <Col style={{alignItems: 'flex-end'}}>
-            <Item regular style={{ width: 60, height: 40  }}>
+            <Item regular style={{ width: 60, height: 40 }}>
               <Input keyboardType={'numeric'} maxLength={2} 
               onChangeText={(text) => this.score2(text)} />
             </Item>
           </Col>
           <Col style={{alignItems: 'flex-end'}}>
-            <Thumbnail square small source={{uri: this.team2}} />
+            <Thumbnail small source={{uri: this.teamFlag2}} 
+            style={{ borderColor: '#000000', borderWidth: 0.2}}/>
           </Col>
         </Grid>
       </CardItem>

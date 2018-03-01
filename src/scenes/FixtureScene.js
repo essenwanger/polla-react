@@ -30,7 +30,8 @@ export default class FixtureScene extends Component {
     var match=this.state.matches[id];
     if(scores[id]==null){
       scores[id]={group: match.group, id: match.id, 
-        team1: match.team1, team2: match.team2, 
+        team1: match.team1, teamFlag1: match.teamFlag1, 
+        team2: match.team2, teamFlag2: match.teamFlag2, 
         scoreTeam1: '', scoreTeam2: ''}
     }
     if(team=='1'){
@@ -72,7 +73,7 @@ export default class FixtureScene extends Component {
           <Text>Grupo {item.id}</Text>
         </CardItem>
         {item.matches.map((item, key) => (
-            <Match id={item.key} key={item.key} team1={item.team1} team2={item.team2} onScore={this.onScore}/>
+            <Match id={item.key} key={item.key} teamFlag1={item.teamFlag1} teamFlag2={item.teamFlag2} onScore={this.onScore}/>
         ))}
       </Card>
     ));
