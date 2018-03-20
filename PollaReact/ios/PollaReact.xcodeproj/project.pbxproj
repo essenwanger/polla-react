@@ -23,6 +23,15 @@
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		1C0E1A292061BD9A00F3A16B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1C0E1A282061BD9A00F3A16B /* GoogleService-Info.plist */; };
+		1CE7AAAC2061C6EB00F3D6F3 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CE7AAAB2061C6EB00F3D6F3 /* SystemConfiguration.framework */; };
+		1CE7AAAE2061C6F400F3D6F3 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CE7AAAD2061C6F400F3D6F3 /* SafariServices.framework */; };
+		1CE7AAB22061C70100F3D6F3 /* GoogleSignIn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CE7AAAF2061C70100F3D6F3 /* GoogleSignIn.framework */; };
+		1CE7AAB32061C70100F3D6F3 /* GoogleSignInDependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CE7AAB02061C70100F3D6F3 /* GoogleSignInDependencies.framework */; };
+		1CE7AAB42061C70100F3D6F3 /* GoogleSignIn.bundle in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CE7AAB12061C70100F3D6F3 /* GoogleSignIn.bundle */; };
+		1CE7AABB2061C7D300F3D6F3 /* RNGoogleSignInEventsBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CE7AAB62061C7D200F3D6F3 /* RNGoogleSignInEventsBridge.m */; };
+		1CE7AABC2061C7D300F3D6F3 /* RNGoogleSignInEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE7AAB72061C7D200F3D6F3 /* RNGoogleSignInEvents.swift */; };
+		1CE7AABD2061C7D300F3D6F3 /* RNGoogleSignIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE7AAB82061C7D200F3D6F3 /* RNGoogleSignIn.swift */; };
+		1CE7AABE2061C7D300F3D6F3 /* RNGoogleSignInBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CE7AABA2061C7D200F3D6F3 /* RNGoogleSignInBridge.m */; };
 		22D0AC6C24E24B1890860F34 /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0DDC44E76C6F46C48D73E9C6 /* rubicon-icon-font.ttf */; };
 		28E14D4D0F4D473E8590B254 /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DFD16BE99FD74C86B12E8B05 /* Roboto.ttf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
@@ -36,12 +45,12 @@
 		2D02E4C71E0B4AEC006451C7 /* libRCTText-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3E941DF850E9000B6D8A /* libRCTText-tvOS.a */; };
 		2D02E4C81E0B4AEC006451C7 /* libRCTWebSocket-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3E991DF850E9000B6D8A /* libRCTWebSocket-tvOS.a */; };
 		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
-		2D3F46CABBCE3042CF804E18 /* libPods-PollaReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 36360731FDBED230751686AC /* libPods-PollaReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* PollaReactTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* PollaReactTests.m */; };
 		3AC1C3956F584127BE48C016 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 99B7935B64F54003B918C3F6 /* Ionicons.ttf */; };
 		3BB6E70693CE4BC4B980323C /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C6EC74D5E77F4CA7BCDAA95E /* EvilIcons.ttf */; };
 		3E238B02AA8B4D0B8818C114 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 04C7080E1CF14A59B15A43D8 /* SimpleLineIcons.ttf */; };
 		42484F1928594D8081A1DBED /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BE8E36069124319ACEEBCC7 /* Zocial.ttf */; };
+		4716F85AED93ADEC13A54F75 /* Pods_PollaReact.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AB5FBB62C54A269345173C0 /* Pods_PollaReact.framework */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8CD3A54EF5A648E8A2ACB26B /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0967F34891A646ACA4997B6F /* FontAwesome.ttf */; };
@@ -363,11 +372,22 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = PollaReact/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		1C0E1A282061BD9A00F3A16B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		1CE7AA822061C66E00F3D6F3 /* PollaReact-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PollaReact-Bridging-Header.h"; sourceTree = "<group>"; };
+		1CE7AAAB2061C6EB00F3D6F3 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		1CE7AAAD2061C6F400F3D6F3 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
+		1CE7AAAF2061C70100F3D6F3 /* GoogleSignIn.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleSignIn.framework; path = PollaReact/GoogleSigninSdk/GoogleSignIn.framework; sourceTree = "<group>"; };
+		1CE7AAB02061C70100F3D6F3 /* GoogleSignInDependencies.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleSignInDependencies.framework; path = PollaReact/GoogleSigninSdk/GoogleSignInDependencies.framework; sourceTree = "<group>"; };
+		1CE7AAB12061C70100F3D6F3 /* GoogleSignIn.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleSignIn.bundle; path = PollaReact/GoogleSigninSdk/GoogleSignIn.bundle; sourceTree = "<group>"; };
+		1CE7AAB62061C7D200F3D6F3 /* RNGoogleSignInEventsBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNGoogleSignInEventsBridge.m; sourceTree = "<group>"; };
+		1CE7AAB72061C7D200F3D6F3 /* RNGoogleSignInEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RNGoogleSignInEvents.swift; sourceTree = "<group>"; };
+		1CE7AAB82061C7D200F3D6F3 /* RNGoogleSignIn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RNGoogleSignIn.swift; sourceTree = "<group>"; };
+		1CE7AAB92061C7D200F3D6F3 /* RNGoogleSignIn-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RNGoogleSignIn-Bridging-Header.h"; sourceTree = "<group>"; };
+		1CE7AABA2061C7D200F3D6F3 /* RNGoogleSignInBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNGoogleSignInBridge.m; sourceTree = "<group>"; };
 		2599B0809C2E4E0E84C9570C /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/native-base/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
+		2AB5FBB62C54A269345173C0 /* Pods_PollaReact.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PollaReact.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E47B1E0B4A5D006451C7 /* PollaReact-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PollaReact-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* PollaReact-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "PollaReact-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		36360731FDBED230751686AC /* libPods-PollaReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PollaReact.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		661D86E05364EE9C2F2D2F56 /* Pods-PollaReact.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PollaReact.release.xcconfig"; path = "Pods/Target Support Files/Pods-PollaReact/Pods-PollaReact.release.xcconfig"; sourceTree = "<group>"; };
 		6BE8E36069124319ACEEBCC7 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/native-base/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
@@ -397,6 +417,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1CE7AAB22061C70100F3D6F3 /* GoogleSignIn.framework in Frameworks */,
+				1CE7AAB32061C70100F3D6F3 /* GoogleSignInDependencies.framework in Frameworks */,
+				1CE7AAB42061C70100F3D6F3 /* GoogleSignIn.bundle in Frameworks */,
+				1CE7AAAE2061C6F400F3D6F3 /* SafariServices.framework in Frameworks */,
+				1CE7AAAC2061C6EB00F3D6F3 /* SystemConfiguration.framework in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
@@ -411,7 +436,7 @@
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				B6A8DE1D756B451EADDA1130 /* libRNFirebase.a in Frameworks */,
-				2D3F46CABBCE3042CF804E18 /* libPods-PollaReact.a in Frameworks */,
+				4716F85AED93ADEC13A54F75 /* Pods_PollaReact.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -539,6 +564,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				1CE7AA822061C66E00F3D6F3 /* PollaReact-Bridging-Header.h */,
 			);
 			name = PollaReact;
 			sourceTree = "<group>";
@@ -582,11 +608,29 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		1CE7AAB52061C7D200F3D6F3 /* RNGoogleSignIn */ = {
+			isa = PBXGroup;
+			children = (
+				1CE7AAB62061C7D200F3D6F3 /* RNGoogleSignInEventsBridge.m */,
+				1CE7AAB72061C7D200F3D6F3 /* RNGoogleSignInEvents.swift */,
+				1CE7AAB82061C7D200F3D6F3 /* RNGoogleSignIn.swift */,
+				1CE7AAB92061C7D200F3D6F3 /* RNGoogleSignIn-Bridging-Header.h */,
+				1CE7AABA2061C7D200F3D6F3 /* RNGoogleSignInBridge.m */,
+			);
+			name = RNGoogleSignIn;
+			path = "../node_modules/react-native-google-sign-in/ios/RNGoogleSignIn";
+			sourceTree = "<group>";
+		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1CE7AAB12061C70100F3D6F3 /* GoogleSignIn.bundle */,
+				1CE7AAAF2061C70100F3D6F3 /* GoogleSignIn.framework */,
+				1CE7AAB02061C70100F3D6F3 /* GoogleSignInDependencies.framework */,
+				1CE7AAAD2061C6F400F3D6F3 /* SafariServices.framework */,
+				1CE7AAAB2061C6EB00F3D6F3 /* SystemConfiguration.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
-				36360731FDBED230751686AC /* libPods-PollaReact.a */,
+				2AB5FBB62C54A269345173C0 /* Pods_PollaReact.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -660,6 +704,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				1CE7AAB52061C7D200F3D6F3 /* RNGoogleSignIn */,
 				13B07FAE1A68108700A75B9A /* PollaReact */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* PollaReactTests */,
@@ -784,6 +829,9 @@
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
+					};
+					13B07F861A680F5B00A75B9A = {
+						LastSwiftMigration = 0920;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1222,9 +1270,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-PollaReact/Pods-PollaReact-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1281,6 +1336,10 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				1CE7AABB2061C7D300F3D6F3 /* RNGoogleSignInEventsBridge.m in Sources */,
+				1CE7AABE2061C7D300F3D6F3 /* RNGoogleSignInBridge.m in Sources */,
+				1CE7AABD2061C7D300F3D6F3 /* RNGoogleSignIn.swift in Sources */,
+				1CE7AABC2061C7D300F3D6F3 /* RNGoogleSignInEvents.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1332,6 +1391,7 @@
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -1360,6 +1420,7 @@
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				HEADER_SEARCH_PATHS = (
@@ -1387,11 +1448,17 @@
 			baseConfigurationReference = D7C09341539ED6D0CF1186F4 /* Pods-PollaReact.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/PollaReact/GoogleSigninSdk",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
+					"$(SRCROOT)/../node_modules/react-native-google-sign-in/ios/RNGoogleSignIn",
 				);
 				INFOPLIST_FILE = PollaReact/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1401,6 +1468,9 @@
 					"-lc++",
 				);
 				PRODUCT_NAME = PollaReact;
+				SWIFT_OBJC_BRIDGING_HEADER = "PollaReact-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1410,10 +1480,16 @@
 			baseConfigurationReference = 661D86E05364EE9C2F2D2F56 /* Pods-PollaReact.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/PollaReact/GoogleSigninSdk",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
+					"$(SRCROOT)/../node_modules/react-native-google-sign-in/ios/RNGoogleSignIn",
 				);
 				INFOPLIST_FILE = PollaReact/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1423,6 +1499,8 @@
 					"-lc++",
 				);
 				PRODUCT_NAME = PollaReact;
+				SWIFT_OBJC_BRIDGING_HEADER = "PollaReact-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

@@ -137,6 +137,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-google-sign-in')
     compile(project(':react-native-firebase')) {
         transitive = false
     }
