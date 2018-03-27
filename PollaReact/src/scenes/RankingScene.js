@@ -1,19 +1,14 @@
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import { Container, Header, Content, Card, CardItem, Text, Body, H3, Button,
-List, ListItem, Left, Right } from 'native-base';
+import { Content, Text, Body, List, ListItem, Left, Right } from 'native-base';
+import ContainerMenu from './../components/ContainerMenu';
 
 export default class RankingScene extends Component {
 
-  onPressLogin(){
-    //Actions.pop();
-  }
-
   render() {
     return (
-      <Container>
-      	<Header />
+      <ContainerMenu name={'Polla'}>
         <Content>
           <List>
             <ListItem avatar>
@@ -51,7 +46,7 @@ export default class RankingScene extends Component {
             </ListItem>
           </List>
         </Content>
-      </Container>
+      </ContainerMenu>
     );
   }
 }
