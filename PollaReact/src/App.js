@@ -5,9 +5,8 @@ import getTheme from './theme/components';
 import platform from './theme/variables/platform';
 import LoginScene from './scenes/LoginScene';
 import TermsScene from './scenes/TermsScene';
-import FixtureScene from './scenes/FixtureScene';
+import DashboardScene from './scenes/DashboardScene';
 import PhaseScene from './scenes/PhaseScene';
-import RankingScene from './scenes/RankingScene';
 
 export default class App extends Component {
 
@@ -18,9 +17,8 @@ export default class App extends Component {
         <Scene key="root">
           <Scene key="login" component={LoginScene} hideNavBar={true} initial={true}/>
           <Scene key="terms" component={TermsScene} hideNavBar={true}/>
-          <Scene key="fixture" component={FixtureScene} hideNavBar={true}/>
+          <Scene key="dashboard" component={DashboardScene} hideNavBar={true}/>
           <Scene key="phase" component={PhaseScene} hideNavBar={true}/>
-          <Scene key="ranking" component={RankingScene} hideNavBar={true}/>
         </Scene>
       </Router>
       </StyleProvider>

@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { Content, Text, Body, List, ListItem, Left, Right } from 'native-base';
-import ContainerMenu from './../components/ContainerMenu';
 
-export default class RankingScene extends Component {
+export default class Ranking extends Component {
 
   render() {
     return (
-      <ContainerMenu name={'Polla'}>
         <Content>
           <List>
             <ListItem avatar>
@@ -46,7 +44,6 @@ export default class RankingScene extends Component {
             </ListItem>
           </List>
         </Content>
-      </ContainerMenu>
     );
   }
 }
