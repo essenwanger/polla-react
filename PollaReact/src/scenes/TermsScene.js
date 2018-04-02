@@ -6,7 +6,7 @@ import { Container, Header, Content, Card, CardItem, Text, Body, H3, Button, H2,
 export default class TermsScene extends Component {
 
   onPressLogin(){
-    Actions.fixture();
+    Actions.dashboard();
   }
 
   render() {

@@ -17,7 +17,7 @@ export default class LoginScene extends Component {
     }, (e) => {
       console.log('signInPromise rejected', e);
     });
-    //Actions.terms();
+    Actions.terms();
   }
 
   componentWillMount() {
