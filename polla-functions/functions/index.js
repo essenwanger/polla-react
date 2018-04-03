@@ -18,9 +18,9 @@ exports.addMessage = functions.https.onRequest((req, res) => {
   });
 });
 
-exports.calculateRanking = functions.database.ref('/scores')
+exports.calculateRanking = functions.database.ref('/matches')
     .onWrite(event => {
-    	var scores=[];
+    	var matches=[];
     	var ranking=[];
     	event.data.val().forEach((element)=>{
     		if(element.scoreTeam1>element.scoreTeam2){
@@ -30,29 +30,31 @@ exports.calculateRanking = functions.database.ref('/scores')
     		}else{
     			element.result=0;
     		}
-    		scores[element.id]=element;
+    		matches[element.id]=element;
     	});
     	return admin.database().ref('/users').once('value').then((snapshot)=>{
     		snapshot.forEach((childSnapshot)=>{
 		        var item = childSnapshot.val();
 		        var key = childSnapshot.key;
-		        var points = 0;
-		        item.scores.forEach((element)=>{
-		        	if(element.scoreTeam1>element.scoreTeam2){
-						element.result=1;
-		    		}else if(element.scoreTeam1<element.scoreTeam2){
-		    			element.result=2;
-		    		}else{
-		    			element.result=0;
-		    		}
-		    		if(!(scores[element.id] === undefined || scores[element.id] === null)){
-				      if(element.result === scores[element.id].result){
-				        points +=3;
-				      }
-				    }
+		        item.bets.forEach((bet, betKey)=>{
+		        	var points = 0;
+		        	bet.forEach((element)=>{
+		        		if(element.forecastTeam1>element.forecastTeam2){
+							element.result=1;
+			    		}else if(element.forecastTeam1<element.forecastTeam2){
+			    			element.result=2;
+			    		}else{
+			    			element.result=0;
+			    		}
+			    		if(!(matches[element.id] === undefined || matches[element.id] === null)){
+					      if(element.result === matches[element.id].result){
+					        points +=3;
+					      }
+					    }
+		        	});
+		        	var rank={bet: betKey, points: points, profile: item.profile};
+		        	ranking.push(rank);
 		        });
-		        var rank={icon: "home", points: points, name: key};
-		        ranking.push(rank);
 		    });
 		    return admin.database().ref('/').update({
 		      ranking: ranking
