@@ -7,8 +7,11 @@ import firebase from 'react-native-firebase';
 
 export default class FixtureScene extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: props.user
+    };
   }
 
   onPressPhase(){

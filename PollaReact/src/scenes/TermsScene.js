@@ -5,11 +5,22 @@ import { Container, Header, Content, Card, CardItem, Text, Body, H3, Button, H2,
 
 export default class TermsScene extends Component {
 
+  constructor(props) {
+    super(props);
+    console.log("props obtenidos", props);
+    this.state = {
+      user: props.user
+    };
+    this.onPressLogin = this.onPressLogin.bind(this);
+  }
+
   onPressLogin(){
-    Actions.fixture();
+    console.log("usuario obtenido", this.state.user);
+    Actions.fixture({user: this.state.user});
   }
 
   render() {
+    console.log("Usuario en Terms",this.state.user);
     return (
       <Container>
         <Header />
