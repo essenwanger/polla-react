@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Actions } from 'react-native-router-flux';
-import { Content, Card, CardItem, Text, Button, Footer, FooterTab } from 'native-base';
+import { Container, Tabs, Tab, TabHeading, Icon, Content, Card, Text, Button, Footer, FooterTab } from 'native-base';
+import HeaderPolla from './../components/HeaderPolla';
 import Match from './../components/Match';
 import PositionTableTeam from './../components/PositionTableTeam';
-import ContainerMenu from './../components/ContainerMenu';
 import firebase from 'react-native-firebase';
 
 export default class PhaseScene extends Component {
@@ -24,29 +24,32 @@ export default class PhaseScene extends Component {
 
   render() {
     return (
-      <ContainerMenu name={'Polla'}>
-        <Content padder>
-          <Card>
-            <CardItem bordered={true}>
-              <Text>Grupo A</Text>
-            </CardItem>
-            <Match id={1} teamFlag1={'rus.png'} teamFlag2={'ksa.png'} onScore={this.onScore}/>
-            <Match id={1} teamFlag1={'rus.png'} teamFlag2={'ksa.png'} onScore={this.onScore}/>
-            <Match id={1} teamFlag1={'rus.png'} teamFlag2={'ksa.png'} onScore={this.onScore}/>
-            <Match id={1} teamFlag1={'rus.png'} teamFlag2={'ksa.png'} onScore={this.onScore}/>
-            <Match id={1} teamFlag1={'rus.png'} teamFlag2={'ksa.png'} onScore={this.onScore}/>
-            <Match id={1} teamFlag1={'rus.png'} teamFlag2={'ksa.png'} onScore={this.onScore}/>
-          </Card>
-          <Card>
-            <CardItem bordered={true}>
-              <Text>Tabla de posiciones</Text>
-            </CardItem>
-            <PositionTableTeam flag={'rus.png'} name={'RUS'} mp={3} gf={10} ga={4} pt={4} />
-            <PositionTableTeam flag={'ksa.png'} name={'RUS'} mp={3} gf={10} ga={4} pt={4} />
-            <PositionTableTeam flag={'rus.png'} name={'RUS'} mp={3} gf={10} ga={4} pt={0} />
-            <PositionTableTeam flag={'rus.png'} name={'RUS'} mp={3} gf={10} ga={4} pt={6} />
-          </Card>
-        </Content>
+      <Container>
+        <HeaderPolla pop={true} name={'Grupo A'} />
+        <Tabs>
+          <Tab heading={ <TabHeading><Icon name="md-calendar" /></TabHeading>}>
+            <Content padder>
+              <Card>
+                <Match id={1} team1={'RU'} team2={'UY'} onScore={this.onScore}/>
+                <Match id={1} team1={'RU'} team2={'UY'} onScore={this.onScore}/>
+                <Match id={1} team1={'RU'} team2={'UY'} onScore={this.onScore}/>
+                <Match id={1} team1={'RU'} team2={'UY'} onScore={this.onScore}/>
+                <Match id={1} team1={'RU'} team2={'UY'} onScore={this.onScore}/>
+                <Match id={1} team1={'RU'} team2={'UY'} onScore={this.onScore}/>
+              </Card>
+            </Content>
+          </Tab>
+          <Tab heading={ <TabHeading><Icon name="md-grid" size={27} color="#fff" /></TabHeading>}>
+            <Content padder>
+              <Card>
+                <PositionTableTeam team={'PE'} name={'RUS'} mp={3} gf={10} ga={4} pt={4} />
+                <PositionTableTeam team={'PE'} name={'RUS'} mp={3} gf={10} ga={4} pt={4} />
+                <PositionTableTeam team={'PE'} name={'RUS'} mp={3} gf={10} ga={4} pt={0} />
+                <PositionTableTeam team={'PE'} name={'RUS'} mp={3} gf={10} ga={4} pt={6} />
+              </Card>
+            </Content>
+          </Tab>
+        </Tabs>
         <Footer>
           <FooterTab>
             <Button>
@@ -57,7 +60,7 @@ export default class PhaseScene extends Component {
             </Button>
           </FooterTab>
         </Footer>
-      </ContainerMenu>
+      </Container>
     );
   }
 }

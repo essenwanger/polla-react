@@ -48,7 +48,7 @@ export default class LoginScene extends Component {
     GoogleSignIn.signInSilentlyPromise().then((user) => {
       this.setState({user: user});
       this.setState({check: true});
-      Actions.fixture({user: this.state.user});
+      Actions.dashboard({user: this.state.user});
       this._saveUser(user);
     }, (e) => {
       console.log('signInSilentlyPromise rejected', e);

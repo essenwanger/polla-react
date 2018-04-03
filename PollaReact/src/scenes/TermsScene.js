@@ -7,16 +7,14 @@ export default class TermsScene extends Component {
 
   constructor(props) {
     super(props);
-    console.log("props obtenidos", props);
     this.state = {
       user: props.user
     };
-    this.onPressLogin = this.onPressLogin.bind(this);
+    this.onAcceptTerms = this.onAcceptTerms.bind(this);
   }
 
-  onPressLogin(){
-    console.log("usuario obtenido", this.state.user);
-    Actions.fixture({user: this.state.user});
+  onAcceptTerms(){
+    Actions.dashboard({user: this.state.user});
   }
 
   render() {
@@ -63,7 +61,7 @@ export default class TermsScene extends Component {
               <Text>Bizantinos</Text>
             </CardItem>
          </Card>
-         <Button block onPress={this.onPressLogin}>
+         <Button block onPress={this.onAcceptTerms}>
             <Text>Acepto</Text>
           </Button>
         </Content>

@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { Actions } from 'react-native-router-flux';
 import { Content } from 'native-base';
-import Phase from './../components/Phase';
-import ContainerMenu from './../components/ContainerMenu';
+import Phase from './Phase';
 import firebase from 'react-native-firebase';
 
-export default class FixtureScene extends Component {
+export default class Fixture extends Component {
 
   constructor(props) {
     super(props);
@@ -22,16 +21,8 @@ export default class FixtureScene extends Component {
 
   }
 
-  closeDrawer(){
-    this._drawer._root.close()
-  }
-  openDrawer(){
-    this._drawer._root.open()
-  }
-
   render() {
     return (
-      <ContainerMenu name={'Polla'}>
         <Content padder>
           <Phase name={'Grupo A'} percentage={'10%'} onPressPhase={this.onPressPhase} />
           <Phase name={'Grupo B'} percentage={'10%'} onPressPhase={this.onPressPhase} />
@@ -42,7 +33,6 @@ export default class FixtureScene extends Component {
           <Phase name={'Grupo G'} percentage={'10%'} onPressPhase={this.onPressPhase} />
           <Phase name={'Grupo H'} percentage={'10%'} onPressPhase={this.onPressPhase} />
         </Content>
-      </ContainerMenu>
     );
   }
 }
