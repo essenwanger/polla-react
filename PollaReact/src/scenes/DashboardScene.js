@@ -9,8 +9,11 @@ import firebase from 'react-native-firebase';
 
 export default class DashboardScene extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: props.user
+    };
   }
 
   componentDidMount() {
@@ -23,13 +26,13 @@ export default class DashboardScene extends Component {
         <HeaderPolla pop={false} name={'Polla'} />
         <Tabs>
           <Tab heading={ <TabHeading><Icon name="md-football" /></TabHeading>}>
-            <Fixture />
+            <Fixture user={this.state.user} />
           </Tab>
           <Tab heading={ <TabHeading><Icon name="md-podium" /></TabHeading>}>
-            <Ranking />
+            <Ranking user={this.state.user} />
           </Tab>
           <Tab heading={ <TabHeading><Icon name="md-person" /></TabHeading>}>
-            <Profile />
+            <Profile user={this.state.user} />
           </Tab>
         </Tabs>
       </Container>

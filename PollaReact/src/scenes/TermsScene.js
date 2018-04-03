@@ -5,11 +5,20 @@ import { Container, Header, Content, Card, CardItem, Text, Body, H3, Button, H2,
 
 export default class TermsScene extends Component {
 
-  onPressLogin(){
-    Actions.dashboard();
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: props.user
+    };
+    this.onAcceptTerms = this.onAcceptTerms.bind(this);
+  }
+
+  onAcceptTerms(){
+    Actions.dashboard({user: this.state.user});
   }
 
   render() {
+    console.log("Usuario en Terms",this.state.user);
     return (
       <Container>
         <Header />
@@ -52,7 +61,7 @@ export default class TermsScene extends Component {
               <Text>Bizantinos</Text>
             </CardItem>
          </Card>
-         <Button block onPress={this.onPressLogin}>
+         <Button block onPress={this.onAcceptTerms}>
             <Text>Acepto</Text>
           </Button>
         </Content>

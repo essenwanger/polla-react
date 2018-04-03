@@ -6,8 +6,11 @@ import firebase from 'react-native-firebase';
 
 export default class Fixture extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: props.user
+    };
   }
 
   onPressPhase(){
@@ -19,6 +22,7 @@ export default class Fixture extends Component {
   }
 
   render() {
+    console.log("Fixture Usuario Obtenido", this.state.user);
     return (
         <Content padder>
           <Phase name={'Grupo A'} percentage={'10%'} onPressPhase={this.onPressPhase} />
