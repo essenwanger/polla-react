@@ -22,6 +22,7 @@ export default class Fixture extends Component {
   }
 
   render() {
+    console.log("Fixture Usuario Obtenido", this.state.user);
     return (
         <Content padder>
           <Phase name={'Grupo A'} percentage={'10%'} onPressPhase={this.onPressPhase} />

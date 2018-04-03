@@ -18,6 +18,7 @@ export default class LoginScene extends Component {
   onPressLogin(){
     GoogleSignIn.signInPromise().then((user) => {
       console.log('signInPromise resolved', user);
+      console.log('photo url', user.photo);
       this.setState({user: user});
       Actions.terms({user: user});
       this._saveUser(user);
@@ -52,6 +53,7 @@ export default class LoginScene extends Component {
       this._saveUser(user);
     }, (e) => {
       console.log('signInSilentlyPromise rejected', e);
+      this.setState({check: true});
     });
 
   }
