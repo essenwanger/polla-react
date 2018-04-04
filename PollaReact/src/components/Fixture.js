@@ -9,7 +9,8 @@ export default class Fixture extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: props.user
+      user: props.user,
+      group: []
     };
   }
 
@@ -17,12 +18,39 @@ export default class Fixture extends Component {
     Actions.phase();
   }
 
-  componentDidMount() {
+  componentWillMount() {
+    var userCode= this.state.user.email;
+    userCode=userCode.replace(/\./g,'_');
+    userCode=userCode.replace('@','_');
+    var group=[];
+    firebase.database().ref('users/'+userCode+'/').once('value').then((snapshot)=>{
+      console.info(snapshot.val());
+      snapshot.val().bets[0].forEach(function(value, key) {
+        if(group[value.group]==null){
+          group[value.group]=[];
+        }
+        group[value.group].push(value);
+      });
+      this.setState({
+        group: group
+      });
+      //console.log(group);
 
+      /*snapshot
+      var group=[];
+      snapshot.forEach(function(childSnapshot) {
+        var item = childSnapshot.val();
+        item.key = childSnapshot.key;
+        ranking.push(item);
+      });
+      this.setState({
+        ranking: ranking
+      });*/
+    });
   }
 
   render() {
-    console.log("Fixture Usuario Obtenido", this.state.user);
+    
     return (
         <Content padder>
           <Phase name={'Grupo A'} percentage={'10%'} onPressPhase={this.onPressPhase} />
