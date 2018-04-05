@@ -22,11 +22,17 @@ export default class Fixture extends Component {
     var userID= this.state.user.userID;
     var groups=[];
     firebase.database().ref('users/'+userID+'/').once('value').then((snapshot)=>{
-      snapshot.val().bets[0].forEach(function(value, key) {
+      snapshot.val().bets[0].matches.forEach(function(value, key) {
         if(groups[value.group]==null){
-          groups[value.group]=[];
+          groups[value.group]={matches:[], positionTable: []};
         }
-        groups[value.group][value.id]=value;
+        groups[value.group].matches[value.id]=value;
+      });
+      Object.keys(snapshot.val().bets[0].positionTable).forEach(function(value, key) {
+        if(groups[value]==null){
+          groups[value]={matches:[], positionTable: []};
+        }
+        groups[value].positionTable=snapshot.val().bets[0].positionTable[value];
       });
       this.setState({
         groups: groups

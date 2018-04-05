@@ -10,7 +10,6 @@ export default class LoginScene extends Component {
   constructor() {
     super();
     this.state = {
-      user: null,
       check: false
     };
     this.onPressLogin = this.onPressLogin.bind(this);
@@ -19,11 +18,8 @@ export default class LoginScene extends Component {
   onPressLogin(){
     GoogleSignIn.signInPromise().then((user) => {
       var userLogin = this.parseUser(user);
-      this.setState({user: userLogin});
-
       firebase.database().ref('users/'+user.userID).once('value').then((snapshot)=>{
-        var usuario = (snapshot.val() && snapshot.val().usuario) || 'No Existe';
-        if(usuario!='No Existe'){
+        if(snapshot.val()===null){
           Actions.terms({user: userLogin});
           //TODO cuando retrocede
         } else {
@@ -35,11 +31,11 @@ export default class LoginScene extends Component {
     });
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.setupGoogleSignIn();
   }
 
-  componentDidMount() {
+  //componentDidMount() {
     /*Toast.show({
               text: 'Error conexion',
               position: 'bottom',
@@ -50,7 +46,7 @@ export default class LoginScene extends Component {
       'Error conexion',
       'Preguntar a Miguel'
     );*/
-  }
+  //}
 
   parseUser(user){
     return {
@@ -75,9 +71,7 @@ export default class LoginScene extends Component {
 
     GoogleSignIn.signInSilentlyPromise().then((user) => {
       var userLogin = this.parseUser(user);
-      this.setState({user: userLogin});
-      this.setState({check: true});
-      Actions.dashboard({user: this.state.user});
+      Actions.reset('dashboard', {user: userLogin});
     }, (e) => {
       console.log('signInSilentlyPromise rejected', e);
       this.setState({check: true});
@@ -86,7 +80,7 @@ export default class LoginScene extends Component {
   }
 
   render() {
-    if(this.state.check && this.state.user  == null) {
+    if(this.state.check) {
       return (
         <Root>
         <Container>
