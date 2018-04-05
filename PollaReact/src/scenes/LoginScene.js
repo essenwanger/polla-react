@@ -3,7 +3,7 @@ import { Actions } from 'react-native-router-flux';
 import { Container, Content, Header, Text, Button, View, Icon, H1, Spinner, Toast, Root } from 'native-base';
 import firebase from 'react-native-firebase';
 import GoogleSignIn from 'react-native-google-sign-in';
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
 
 export default class LoginScene extends Component {
 
@@ -18,11 +18,9 @@ export default class LoginScene extends Component {
 
   onPressLogin(){
     GoogleSignIn.signInPromise().then((user) => {
-      console.log('signInPromise resolved', user);
-      console.log('photo url', user.photo);
-      this.setState({user: user});
-      Actions.terms({user: user});
-      this._saveUser(user);
+      var userLogin = this.parseUser(user);
+      this.setState({user: userLogin});
+      Actions.terms({user: userLogin});
     }, (e) => {
       console.log('signInPromise rejected', e);
     });
@@ -45,8 +43,15 @@ export default class LoginScene extends Component {
     );*/
   }
 
-  _saveUser(user){
-    console.log("guardando usuario en firebase", user);
+  parseUser(user){
+    return {
+      userID: user.userID,
+      name: user.name,
+      givenName: user.givenName,
+      familyName: user.familyName,
+      email: user.email,
+      picture: Platform.OS === 'ios' ? user.photoUrl320 : user.photoUrlTiny
+    };
   }
 
   _setupGoogleSignIn() {
@@ -61,11 +66,10 @@ export default class LoginScene extends Component {
     }
 
     GoogleSignIn.signInSilentlyPromise().then((user) => {
-      this.setState({user: user});
+      var userLogin = this.parseUser(user);
+      this.setState({user: userLogin});
       this.setState({check: true});
       Actions.dashboard({user: this.state.user});
-      this._saveUser(user);
-
     }, (e) => {
       console.log('signInSilentlyPromise rejected', e);
       this.setState({check: true});
