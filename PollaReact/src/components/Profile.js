@@ -45,16 +45,6 @@ export default class Profile extends Component {
               <Text>{this.state.user.givenName}</Text>
             </Col>
           </Grid>
-          {/* 
-            <Grid>
-              <Col>
-                <Button info block transparent><Icon name='md-information-circle'/><Text>Acerca de #</Text></Button>
-              </Col>
-              <Col>
-                <Button danger block transparent><Icon name='md-close-circle'/><Text>Cerrar Sesion</Text></Button>
-              </Col>
-            </Grid>
-          */}
           <Card>
             <CardItem bordered>
               <Button info block transparent small><Icon name='md-information-circle'/><Text>Acerca de #</Text></Button>

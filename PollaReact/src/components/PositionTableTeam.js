@@ -8,100 +8,100 @@ export default class PositionTableTeam extends Component {
   constructor(props) {
     super(props);
     switch (this.props.team) {
-      case 'RU':
+      case 'RUS':
           this.flag = require('../img/flags/rus.png');
           break;
-      case 'SA':
+      case 'KSA':
           this.flag = require('../img/flags/ksa.png');
           break;
-      case 'EG':
+      case 'EGY':
           this.flag = require('../img/flags/egy.png');
           break;
-      case 'UY':
+      case 'URU':
           this.flag = require('../img/flags/uru.png');
           break;
-      case 'PT':
+      case 'POR':
           this.flag = require('../img/flags/por.png');
           break;
-      case 'ES':
+      case 'ESP':
           this.flag = require('../img/flags/esp.png');
           break;
-      case 'MA':
+      case 'MAR':
           this.flag = require('../img/flags/mar.png');
           break;
-      case 'IR':
+      case 'IRN':
           this.flag = require('../img/flags/irn.png');
           break;
-      case 'FR':
+      case 'FRA':
           this.flag = require('../img/flags/fra.png');
           break;
-      case 'AU':
+      case 'AUS':
           this.flag = require('../img/flags/aus.png');
           break;
-      case 'PE':
+      case 'PER':
           this.flag = require('../img/flags/per.png');
           break;
-      case 'DK':
+      case 'DEN':
           this.flag = require('../img/flags/den.png');
           break;
-      case 'AR':
+      case 'ARG':
           this.flag = require('../img/flags/arg.png');
           break;
-      case 'IS':
+      case 'ISL':
           this.flag = require('../img/flags/isl.png');
           break;
-      case 'HR':
+      case 'CRO':
           this.flag = require('../img/flags/cro.png');
           break;
-      case 'NG':
+      case 'NGA':
           this.flag = require('../img/flags/nga.png');
           break;
-      case 'CR':
+      case 'CRC':
           this.flag = require('../img/flags/crc.png');
           break;
-      case 'RS':
+      case 'SRB':
           this.flag = require('../img/flags/srb.png');
           break;
-      case 'BR':
+      case 'BRA':
           this.flag = require('../img/flags/bra.png');
           break;
-      case 'CH':
+      case 'SUI':
           this.flag = require('../img/flags/sui.png');
           break;
-      case 'DE':
+      case 'GER':
           this.flag = require('../img/flags/ger.png');
           break;
-      case 'MX':
+      case 'MEX':
           this.flag = require('../img/flags/mex.png');
           break;
-      case 'SE':
+      case 'SWE':
           this.flag = require('../img/flags/swe.png');
           break;
-      case 'KR':
+      case 'KOR':
           this.flag = require('../img/flags/kor.png');
           break;
-      case 'BE':
+      case 'BEL':
           this.flag = require('../img/flags/bel.png');
           break;
-      case 'PA':
+      case 'PAN':
           this.flag = require('../img/flags/pan.png');
           break;
-      case 'TN':
+      case 'TUN':
           this.flag = require('../img/flags/tun.png');
           break;
-      case 'EN':
+      case 'ENG':
           this.flag = require('../img/flags/eng.png');
           break;
-      case 'PL':
+      case 'POL':
           this.flag = require('../img/flags/pol.png');
           break;
-      case 'SN':
+      case 'SEN':
           this.flag = require('../img/flags/sen.png');
           break;
-      case 'CO':
+      case 'COL':
           this.flag = require('../img/flags/col.png');
           break;
-      case 'JP':
+      case 'JPN':
           this.flag = require('../img/flags/jpn.png');
           break;
     }
