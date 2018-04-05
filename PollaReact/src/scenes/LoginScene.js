@@ -20,14 +20,23 @@ export default class LoginScene extends Component {
     GoogleSignIn.signInPromise().then((user) => {
       var userLogin = this.parseUser(user);
       this.setState({user: userLogin});
-      Actions.terms({user: userLogin});
+
+      firebase.database().ref('users/'+user.userID).once('value').then((snapshot)=>{
+        var usuario = (snapshot.val() && snapshot.val().usuario) || 'No Existe';
+        if(usuario!='No Existe'){
+          Actions.terms({user: userLogin});
+          //TODO cuando retrocede
+        } else {
+          Actions.reset('dashboard', {user: userLogin});
+        }
+      });
     }, (e) => {
       console.log('signInPromise rejected', e);
     });
   }
 
   componentWillMount() {
-    this._setupGoogleSignIn();
+    this.setupGoogleSignIn();
   }
 
   componentDidMount() {
@@ -54,13 +63,12 @@ export default class LoginScene extends Component {
     };
   }
 
-  _setupGoogleSignIn() {
+  setupGoogleSignIn() {
     try {
       GoogleSignIn.configure({
         clientID: '991338042977-7nqq3btnte4rolituui9uivhhoub6aqc.apps.googleusercontent.com',
         serverClientID: '991338042977-oc4j8o5t8u46ups80kbbkrjome59o6rm.apps.googleusercontent.com'
       });
-  
     } catch(err) {
       console.log("Play services error", err.code, err.message);
     }

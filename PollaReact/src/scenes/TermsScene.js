@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { Container, Header, Content, Card, CardItem, Text, Body, H3, Button, H2, H1 } from 'native-base';
+import firebase from 'react-native-firebase';
 
 export default class TermsScene extends Component {
 
@@ -14,11 +15,33 @@ export default class TermsScene extends Component {
   }
 
   onAcceptTerms(){
-    Actions.dashboard({user: this.state.user});
+
+    var userFirebase = {
+      profile: this.state.user
+    };
+
+    firebase.database().ref('matches/').once('value').then((snapshot)=>{
+      var matches=[];
+      snapshot.forEach(function(childSnapshot) {
+        var item = childSnapshot.val();
+        item.key = childSnapshot.key;
+        matches.push(item);
+      });
+      userFirebase.bets = [
+        {
+          status: "Creado",
+          pay: "Pendiente",
+          matches: matches
+        }
+      ];
+
+      firebase.database().ref('users/' + this.state.user.userID + '/').set(userFirebase);
+    });
+
+    Actions.reset('dashboard', {user: this.state.user});
   }
 
   render() {
-    console.log("Usuario en Terms",this.state.user);
     return (
       <Container>
         <Header />
