@@ -8,8 +8,8 @@ import firebase from 'react-native-firebase';
 
 export default class PhaseScene extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.onPressRanking = this.onPressRanking.bind(this);
   }
 
@@ -23,19 +23,18 @@ export default class PhaseScene extends Component {
   }
 
   render() {
+    var matches=Object.keys(this.props.groups[this.props.group]).map((item, key) => (
+      <Match key={item} id={item} team1={this.props.groups[this.props.group][item].team1} 
+      team2={this.props.groups[this.props.group][item].team2} onScore={this.onScore}/>
+    ));
     return (
       <Container>
-        <HeaderPolla pop={true} name={'Grupo A'} />
+        <HeaderPolla pop={true} name={'Grupo '+ this.props.group} />
         <Tabs>
           <Tab heading={ <TabHeading><Icon name="md-calendar" /></TabHeading>}>
             <Content padder>
               <Card>
-                <Match id={1} team1={'RU'} team2={'UY'} onScore={this.onScore}/>
-                <Match id={1} team1={'RU'} team2={'UY'} onScore={this.onScore}/>
-                <Match id={1} team1={'RU'} team2={'UY'} onScore={this.onScore}/>
-                <Match id={1} team1={'RU'} team2={'UY'} onScore={this.onScore}/>
-                <Match id={1} team1={'RU'} team2={'UY'} onScore={this.onScore}/>
-                <Match id={1} team1={'RU'} team2={'UY'} onScore={this.onScore}/>
+                {matches}
               </Card>
             </Content>
           </Tab>
