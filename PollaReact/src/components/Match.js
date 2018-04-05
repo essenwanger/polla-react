@@ -10,199 +10,199 @@ export default class Match extends Component {
   constructor(props) {
     super(props);
     switch (this.props.team1) {
-      case 'RU':
+      case 'RUS':
           this.teamFlag1 = require('../img/flags/rus.png');
           break;
-      case 'SA':
+      case 'KSA':
           this.teamFlag1 = require('../img/flags/ksa.png');
           break;
-      case 'EG':
+      case 'EGY':
           this.teamFlag1 = require('../img/flags/egy.png');
           break;
-      case 'UY':
+      case 'URU':
           this.teamFlag1 = require('../img/flags/uru.png');
           break;
-      case 'PT':
+      case 'POR':
           this.teamFlag1 = require('../img/flags/por.png');
           break;
-      case 'ES':
+      case 'ESP':
           this.teamFlag1 = require('../img/flags/esp.png');
           break;
-      case 'MA':
+      case 'MAR':
           this.teamFlag1 = require('../img/flags/mar.png');
           break;
-      case 'IR':
+      case 'IRN':
           this.teamFlag1 = require('../img/flags/irn.png');
           break;
-      case 'FR':
+      case 'FRA':
           this.teamFlag1 = require('../img/flags/fra.png');
           break;
-      case 'AU':
+      case 'AUS':
           this.teamFlag1 = require('../img/flags/aus.png');
           break;
-      case 'PE':
+      case 'PER':
           this.teamFlag1 = require('../img/flags/per.png');
           break;
-      case 'DK':
+      case 'DEN':
           this.teamFlag1 = require('../img/flags/den.png');
           break;
-      case 'AR':
+      case 'ARG':
           this.teamFlag1 = require('../img/flags/arg.png');
           break;
-      case 'IS':
+      case 'ISL':
           this.teamFlag1 = require('../img/flags/isl.png');
           break;
-      case 'HR':
+      case 'CRO':
           this.teamFlag1 = require('../img/flags/cro.png');
           break;
-      case 'NG':
+      case 'NGA':
           this.teamFlag1 = require('../img/flags/nga.png');
           break;
-      case 'CR':
+      case 'CRC':
           this.teamFlag1 = require('../img/flags/crc.png');
           break;
-      case 'RS':
+      case 'SRB':
           this.teamFlag1 = require('../img/flags/srb.png');
           break;
-      case 'BR':
+      case 'BRA':
           this.teamFlag1 = require('../img/flags/bra.png');
           break;
-      case 'CH':
+      case 'SUI':
           this.teamFlag1 = require('../img/flags/sui.png');
           break;
-      case 'DE':
+      case 'GER':
           this.teamFlag1 = require('../img/flags/ger.png');
           break;
-      case 'MX':
+      case 'MEX':
           this.teamFlag1 = require('../img/flags/mex.png');
           break;
-      case 'SE':
+      case 'SWE':
           this.teamFlag1 = require('../img/flags/swe.png');
           break;
-      case 'KR':
+      case 'KOR':
           this.teamFlag1 = require('../img/flags/kor.png');
           break;
-      case 'BE':
+      case 'BEL':
           this.teamFlag1 = require('../img/flags/bel.png');
           break;
-      case 'PA':
+      case 'PAN':
           this.teamFlag1 = require('../img/flags/pan.png');
           break;
-      case 'TN':
+      case 'TUN':
           this.teamFlag1 = require('../img/flags/tun.png');
           break;
-      case 'EN':
+      case 'ENG':
           this.teamFlag1 = require('../img/flags/eng.png');
           break;
-      case 'PL':
+      case 'POL':
           this.teamFlag1 = require('../img/flags/pol.png');
           break;
-      case 'SN':
+      case 'SEN':
           this.teamFlag1 = require('../img/flags/sen.png');
           break;
-      case 'CO':
+      case 'COL':
           this.teamFlag1 = require('../img/flags/col.png');
           break;
-      case 'JP':
+      case 'JPN':
           this.teamFlag1 = require('../img/flags/jpn.png');
           break;
     }
 
     switch (this.props.team2) {
-      case 'RU':
+      case 'RUS':
           this.teamFlag2 = require('../img/flags/rus.png');
           break;
-      case 'SA':
+      case 'KSA':
           this.teamFlag2 = require('../img/flags/ksa.png');
           break;
-      case 'EG':
+      case 'EGY':
           this.teamFlag2 = require('../img/flags/egy.png');
           break;
-      case 'UY':
+      case 'URU':
           this.teamFlag2 = require('../img/flags/uru.png');
           break;
-      case 'PT':
+      case 'POR':
           this.teamFlag2 = require('../img/flags/por.png');
           break;
-      case 'ES':
+      case 'ESP':
           this.teamFlag2 = require('../img/flags/esp.png');
           break;
-      case 'MA':
+      case 'MAR':
           this.teamFlag2 = require('../img/flags/mar.png');
           break;
-      case 'IR':
+      case 'IRN':
           this.teamFlag2 = require('../img/flags/irn.png');
           break;
-      case 'FR':
+      case 'FRA':
           this.teamFlag2 = require('../img/flags/fra.png');
           break;
-      case 'AU':
+      case 'AUS':
           this.teamFlag2 = require('../img/flags/aus.png');
           break;
-      case 'PE':
+      case 'PER':
           this.teamFlag2 = require('../img/flags/per.png');
           break;
-      case 'DK':
+      case 'DEN':
           this.teamFlag2 = require('../img/flags/den.png');
           break;
-      case 'AR':
+      case 'ARG':
           this.teamFlag2 = require('../img/flags/arg.png');
           break;
-      case 'IS':
+      case 'ISL':
           this.teamFlag2 = require('../img/flags/isl.png');
           break;
-      case 'HR':
+      case 'CRO':
           this.teamFlag2 = require('../img/flags/cro.png');
           break;
-      case 'NG':
+      case 'NGA':
           this.teamFlag2 = require('../img/flags/nga.png');
           break;
-      case 'CR':
+      case 'CRC':
           this.teamFlag2 = require('../img/flags/crc.png');
           break;
-      case 'RS':
+      case 'SRB':
           this.teamFlag2 = require('../img/flags/srb.png');
           break;
-      case 'BR':
+      case 'BRA':
           this.teamFlag2 = require('../img/flags/bra.png');
           break;
-      case 'CH':
+      case 'SUI':
           this.teamFlag2 = require('../img/flags/sui.png');
           break;
-      case 'DE':
+      case 'GER':
           this.teamFlag2 = require('../img/flags/ger.png');
           break;
-      case 'MX':
+      case 'MEX':
           this.teamFlag2 = require('../img/flags/mex.png');
           break;
-      case 'SE':
+      case 'SWE':
           this.teamFlag2 = require('../img/flags/swe.png');
           break;
-      case 'KR':
+      case 'KOR':
           this.teamFlag2 = require('../img/flags/kor.png');
           break;
-      case 'BE':
+      case 'BEL':
           this.teamFlag2 = require('../img/flags/bel.png');
           break;
-      case 'PA':
+      case 'PAN':
           this.teamFlag2 = require('../img/flags/pan.png');
           break;
-      case 'TN':
+      case 'TUN':
           this.teamFlag2 = require('../img/flags/tun.png');
           break;
-      case 'EN':
+      case 'ENG':
           this.teamFlag2 = require('../img/flags/eng.png');
           break;
-      case 'PL':
+      case 'POL':
           this.teamFlag2 = require('../img/flags/pol.png');
           break;
-      case 'SN':
+      case 'SEN':
           this.teamFlag2 = require('../img/flags/sen.png');
           break;
-      case 'CO':
+      case 'COL':
           this.teamFlag2 = require('../img/flags/col.png');
           break;
-      case 'JP':
+      case 'JPN':
           this.teamFlag2 = require('../img/flags/jpn.png');
           break;
     }

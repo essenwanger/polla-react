@@ -10,57 +10,37 @@ export default class Fixture extends Component {
     super(props);
     this.state = {
       user: props.user,
-      group: []
+      groups: []
     };
   }
 
-  onPressPhase(){
-    Actions.phase();
+  onPressPhase(group){
+    Actions.phase({user: this.state.user, groups: this.state.groups, group: group});
   }
 
   componentWillMount() {
-    var userCode= this.state.user.email;
-    userCode=userCode.replace(/\./g,'_');
-    userCode=userCode.replace('@','_');
-    var group=[];
-    firebase.database().ref('users/'+userCode+'/').once('value').then((snapshot)=>{
-      console.info(snapshot.val());
+    var userID= this.state.user.userID;
+    var groups=[];
+    firebase.database().ref('users/'+userID+'/').once('value').then((snapshot)=>{
       snapshot.val().bets[0].forEach(function(value, key) {
-        if(group[value.group]==null){
-          group[value.group]=[];
+        if(groups[value.group]==null){
+          groups[value.group]=[];
         }
-        group[value.group].push(value);
+        groups[value.group][value.id]=value;
       });
       this.setState({
-        group: group
+        groups: groups
       });
-      //console.log(group);
-
-      /*snapshot
-      var group=[];
-      snapshot.forEach(function(childSnapshot) {
-        var item = childSnapshot.val();
-        item.key = childSnapshot.key;
-        ranking.push(item);
-      });
-      this.setState({
-        ranking: ranking
-      });*/
     });
   }
 
   render() {
-    
+    var items=Object.keys(this.state.groups).map((item, key) => (
+      <Phase key={item} name={'Grupo '+item} percentage={'0%'} onPressPhase={()=> this.onPressPhase(item)} />
+    ));
     return (
         <Content padder>
-          <Phase name={'Grupo A'} percentage={'10%'} onPressPhase={this.onPressPhase} />
-          <Phase name={'Grupo B'} percentage={'10%'} onPressPhase={this.onPressPhase} />
-          <Phase name={'Grupo C'} percentage={'10%'} onPressPhase={this.onPressPhase} />
-          <Phase name={'Grupo D'} percentage={'10%'} onPressPhase={this.onPressPhase} />
-          <Phase name={'Grupo E'} percentage={'10%'} onPressPhase={this.onPressPhase} />
-          <Phase name={'Grupo F'} percentage={'10%'} onPressPhase={this.onPressPhase} />
-          <Phase name={'Grupo G'} percentage={'10%'} onPressPhase={this.onPressPhase} />
-          <Phase name={'Grupo H'} percentage={'10%'} onPressPhase={this.onPressPhase} />
+          {items}
         </Content>
     );
   }
