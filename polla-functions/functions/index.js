@@ -61,3 +61,11 @@ exports.calculateRanking = functions.database.ref('/matches')
 		    });
     	});
 });
+
+exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{betId}/matches')
+    .onWrite((event) => {
+    	var url = '/users/'+event.params.userId+'/bets/'+event.params.betId+'/positionTableAux'
+    	return admin.database(url).ref().update({
+		    positionTable: 'abc'
+		});
+});
