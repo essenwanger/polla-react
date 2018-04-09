@@ -11,29 +11,67 @@ export default class PhaseScene extends Component {
   constructor(props) {
     super(props);
     this.onPressRanking = this.onPressRanking.bind(this);
+    this.onScore = this.onScore.bind(this);
+    this.state = {
+      status: this.props.status,
+      matches: [],
+      positionTable: []
+    };
   }
 
   onPressRanking(){
   }
 
   onScore(id, team, score){
+    if(team==='1'){
+      firebase.database().ref('/users/'+this.props.user.userID+'/bets/0/matches/'+id).update({
+        scoreTeam1: score
+      });
+    }else{
+      firebase.database().ref('/users/'+this.props.user.userID+'/bets/0/matches/'+id).update({
+        scoreTeam2: score
+      });
+    }
   }
 
-  componentDidMount() {
+  componentWillMount() {
+    var userID = this.props.user.userID;
+    var group = this.props.group;
+    firebase.database().ref('users/'+userID+'/bets/0/matches/')
+    .orderByChild('group').equalTo(group).once('value').then((snapshot)=>{
+      var matches = [];
+      snapshot.forEach((childSnapshot)=>{
+        var childKey = childSnapshot.key;
+        var childData = childSnapshot.val();
+        matches.push(childData);
+      });
+      this.setState({
+        matches: matches
+      });
+    });
+    firebase.database().ref('users/'+userID+'/bets/0/positionTable/'+group)
+    .orderByChild('order').once('value').then((snapshot)=>{
+      var positionTable = [];
+      snapshot.forEach((childSnapshot)=>{
+        var childKey = childSnapshot.key;
+        var childData = childSnapshot.val();
+        childData.key=childKey;
+        positionTable.push(childData);
+      });
+      this.setState({
+        positionTable: positionTable
+      });
+    });
   }
 
   render() {
-    var matches=this.props.groups[this.props.group].matches;
-    var matchesComponent=Object.keys(matches).map((item, key) => (
-      <Match key={item} id={item} team1={matches[item].team1} 
-      team2={matches[item].team2} onScore={this.onScore}/>
+    var matchesComponent=this.state.matches.map((item, key) => (
+      <Match key={key} data={item} status={this.state.status} onScore={this.onScore}/>
     ));
-    //TODO ordenar en caso no cambie la logica de la tabla
-    var positionT=this.props.groups[this.props.group].positionTable;
-    var positionTableComponent=Object.keys(positionT).map((item, key) => (
-      <PositionTableTeam key={item} team={item} name={item} 
-      mp={positionT[item].played} gf={positionT[item].goalsFor} 
-      ga={positionT[item].goalsAgainst} pt={positionT[item].points} />
+    var positionTableComponent=this.state.positionTable.map((item, key) => (
+      <PositionTableTeam key={key} team={item.key} name={item.key} 
+      mp={item.played} gf={item.goalsFor} 
+      ga={item.goalsAgainst} pt={item.points} />
     ));
     return (
       <Container>

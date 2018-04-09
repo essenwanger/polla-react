@@ -12,21 +12,30 @@ export default class DashboardScene extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: props.user
+      user: props.user,
+      status: ''
     };
   }
 
-  componentDidMount() {
-
+  componentWillMount() {
+    firebase.database().ref('status/').once('value').then((snapshot)=>{
+      this.setState({
+        status: snapshot.val()
+      });
+    });
   }
 
   render() {
+    var fixture=null;
+    if(this.state.status!=''){
+      fixture=(<Fixture user={this.state.user} status={this.state.status} />);
+    }
     return (
       <Container>
         <HeaderPolla pop={false} name={'Polla'} />
         <Tabs>
           <Tab heading={ <TabHeading><Icon name="md-football" /></TabHeading>}>
-            <Fixture user={this.state.user} />
+            {fixture}
           </Tab>
           <Tab heading={ <TabHeading><Icon name="md-podium" /></TabHeading>}>
             <Ranking user={this.state.user} />

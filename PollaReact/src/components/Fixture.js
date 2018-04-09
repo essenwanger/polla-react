@@ -10,29 +10,34 @@ export default class Fixture extends Component {
     super(props);
     this.state = {
       user: props.user,
+      status: props.status,
       groups: []
     };
   }
 
   onPressPhase(group){
-    Actions.phase({user: this.state.user, groups: this.state.groups, group: group});
+    Actions.phase({user: this.state.user, group: group, status: this.state.status});
   }
 
   componentWillMount() {
     var userID= this.state.user.userID;
     var groups=[];
     firebase.database().ref('users/'+userID+'/').once('value').then((snapshot)=>{
+    //firebase.database().ref('users/'+userID+'/').on('value', function(snapshot) {
       snapshot.val().bets[0].matches.forEach(function(value, key) {
         if(groups[value.group]==null){
-          groups[value.group]={matches:[], positionTable: []};
+          groups[value.group]={name: 'Grupo '+value.group, total:0, complete:0, percentage: '0%'};
         }
-        groups[value.group].matches[value.id]=value;
-      });
-      Object.keys(snapshot.val().bets[0].positionTable).forEach(function(value, key) {
-        if(groups[value]==null){
-          groups[value]={matches:[], positionTable: []};
+        groups[value.group].total=groups[value.group].total+2;
+        if(value.scoreTeam1!==''){
+          groups[value.group].complete=groups[value.group].complete+1;
         }
-        groups[value].positionTable=snapshot.val().bets[0].positionTable[value];
+        if(value.scoreTeam2!==''){
+          groups[value.group].complete=groups[value.group].complete+1;
+        }
+        var percentage=groups[value.group].complete/groups[value.group].total;
+        percentage=Math.round(percentage * 10000) / 100
+        groups[value.group].percentage=percentage+'%';
       });
       this.setState({
         groups: groups
@@ -41,8 +46,10 @@ export default class Fixture extends Component {
   }
 
   render() {
-    var items=Object.keys(this.state.groups).map((item, key) => (
-      <Phase key={item} name={'Grupo '+item} percentage={'0%'} onPressPhase={()=> this.onPressPhase(item)} />
+    var groups=this.state.groups;
+    var items=Object.keys(groups).map((key, position) => (
+      <Phase key={key} name={groups[key].name} percentage={groups[key].percentage} 
+      onPressPhase={()=> this.onPressPhase(key)} />
     ));
     return (
         <Content padder>
