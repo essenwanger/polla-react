@@ -61,3 +61,105 @@ exports.calculateRanking = functions.database.ref('/matches')
 		    });
     	});
 });
+
+exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{betId}/matches')
+    .onWrite((event) => {
+    	console.log('userId-'+event.params.userId);
+		console.log('betId-'+event.params.betId);
+		var positionTable={};
+		var flag = 0;
+		return admin.database().ref('/users/'+event.params.userId+'/bets/'+event.params.betId+'/matches').once('value').then((snapshot)=>{
+    		snapshot.forEach((childSnapshot)=>{
+    			var item=childSnapshot.val();
+    			if(item.group){
+    				if(!positionTable[item.group]){
+    					positionTable[item.group] = {};
+    				}
+    				var draw = 0;
+    				var won1 = 0;
+    				var won2 = 0;
+    				var lost1 = 0;
+    				var lost2 = 0;
+    				var points1 = 0;
+    				var points2 = 0;
+    				var played = 1;
+
+    				if(item.scoreTeam1 && item.scoreTeam2){
+    					if(item.scoreTeam1 === item.scoreTeam2){
+	    					draw = 1;
+	    				}else if(item.scoreTeam1<item.scoreTeam2){
+	    					won2 = 1;
+	    					points2 = 3;
+	    					lost1 = 1;
+	    				}else{
+	    					won1 = 1;
+	    					points1 = 3;
+	    					lost2 = 1;
+	    				}
+    				}
+	    				
+    				if(positionTable[item.group][item.team1]){
+    					positionTable[item.group][item.team1]= {
+							draw : positionTable[item.group][item.team1].draw + draw,
+							goalsAgainst : 0,
+							goalsFor : 0,
+							lost : positionTable[item.group][item.team1].lost + lost1,
+							order : 0,
+							played : positionTable[item.group][item.team1].played + played,
+							points : positionTable[item.group][item.team1].points + points1,
+							won : positionTable[item.group][item.team1].won + won1
+						}
+    				}else{
+						positionTable[item.group][item.team1]= {
+							draw : draw,
+							goalsAgainst : 0,
+							goalsFor : 0,
+							lost : lost1,
+							order : 0,
+							played : played,
+							points : points1,
+							won : won1
+						}
+    				}
+    				if(positionTable[item.group][item.team2]){
+    					positionTable[item.group][item.team2]= {
+							draw : positionTable[item.group][item.team2].draw + draw,
+							goalsAgainst : 0,
+							goalsFor : 0,
+							lost : positionTable[item.group][item.team2].lost + lost2,
+							order : 0,
+							played : positionTable[item.group][item.team2].played + played,
+							points : positionTable[item.group][item.team2].points + points2,
+							won : positionTable[item.group][item.team2].won + won2
+						}
+    				}else{
+    					positionTable[item.group][item.team2]= {
+							draw : draw,
+							goalsAgainst : 0,
+							goalsFor : 0,
+							lost : lost2,
+							order : 0,
+							played : played,
+							points : points2,
+							won : won2
+						}
+    				}
+    				var orderedGroup = []
+					Object.keys(positionTable[item.group]).forEach(function(key) {
+						orderedGroup.push({id:key,points:positionTable[item.group][key].points});
+					});
+					orderedGroup.sort(function(a,b){
+						//TODO implementar diferencia de goles
+						return a.points - b.points;
+					});
+					for (i = 0; i < orderedGroup.length; i++) {
+						//console.log(orderedGroup[i].id);
+						positionTable[item.group][orderedGroup[i].id].order = i+1;
+					}
+    			}
+    		});
+    		return admin.database().ref('/users/'+event.params.userId+'/bets/'+event.params.betId).update({
+		    	positionTable: positionTable
+			});
+    	});
+});
