@@ -9,34 +9,49 @@ export default class TermsScene extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: props.user
+      user: props.user,
+      matches: [],
+      positionTable: []
     };
     this.onAcceptTerms = this.onAcceptTerms.bind(this);
+  }
+
+  componentDidMount() {
+    //obteniendo matches
+    firebase.database().ref('matches/').once('value').then((snapshot)=>{
+      var matches=[];
+      snapshot.forEach(function(childSnapshot) {
+        var item = childSnapshot.val();
+        matches.push(item);
+      });
+      this.state.matches = matches;
+    });
+
+    //obteniendi positionTable
+    firebase.database().ref('positionTable/').once('value').then((snapshot)=>{
+      var positionTable=[];
+      snapshot.forEach(function(childSnapshot) {
+        positionTable.push(childSnapshot);
+      });
+      this.state.positionTable = snapshot;
+    });
   }
 
   onAcceptTerms(){
 
     var userFirebase = {
-      profile: this.state.user
-    };
-
-    firebase.database().ref('matches/').once('value').then((snapshot)=>{
-      var matches=[];
-      snapshot.forEach(function(childSnapshot) {
-        var item = childSnapshot.val();
-        item.key = childSnapshot.key;
-        matches.push(item);
-      });
-      userFirebase.bets = [
+      profile: this.state.user,
+      bets: [
         {
           status: "Creado",
           pay: "Pendiente",
-          matches: matches
+          matches: this.state.matches,
+          positionTable: this.state.positionTable
         }
-      ];
+      ]
+    };
 
-      firebase.database().ref('users/' + this.state.user.userID + '/').set(userFirebase);
-    });
+    firebase.database().ref('users/' + this.state.user.userID + '/').set(userFirebase);
 
     Actions.reset('dashboard', {user: this.state.user});
   }
