@@ -29,7 +29,6 @@ export default class Ranking extends Component {
   }
   
   render() {
-    console.log("Ranking Usuario Obtenido", this.state.user);
     var items=this.state.ranking.map((item, key) => (
       <ListItem avatar key={key}>
         <Left>

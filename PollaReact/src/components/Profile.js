@@ -35,7 +35,6 @@ export default class Profile extends Component {
   }
 
   render() {
-    console.log("Profile Usuario Obtenido", this.state.user);
     return (
         <Content padder>
           <Grid>
