@@ -168,18 +168,20 @@ exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{b
 			return admin.database().ref('/users/'+event.params.userId+'/bets/'+event.params.betId).update({
 				positionTable: positionTable
 			}).then(() => {
+
+				var results = {};
+
 				return admin.database().ref('/users/'+event.params.userId+'/bets/'+event.params.betId+'/matches').once('value').then((snapshot)=>{
 					snapshot.forEach((childSnapshot)=>{
+						
 						var item=childSnapshot.val();
+
 						if(item.round && item.round === 'Octavos'){
 
 							if(!item['teamSource1'] || !item['teamSource2']){
 								item['teamSource1']=item.teamName1;
 								item['teamSource2']=item.teamName2;
 							}
-							
-							console.log(item.teamSource1);
-							console.log(item.teamSource2);
 
 							var position1 = item.teamSource1.substr(1,1)-1;
 							var group1    = item.teamSource1.substr(2,1);
@@ -201,7 +203,49 @@ exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{b
 									'/bets/'+event.params.betId+
 									'/matches/'+childSnapshot.key).update(item);
 							}
+
+						}else if(item.round && 
+								(item.round === 'Cuartos' || 
+								 item.round === 'Semifinales' || 
+								 item.round === 'Final')){
+
+							if(!item['teamSource1'] || !item['teamSource2']){
+								item['teamSource1']=item.teamName1;
+								item['teamSource2']=item.teamName2;
+							}
+
+							var idx1 = item.teamSource1.replace('[','').replace(']','');
+							var idx2  = item.teamSource2.replace('[','').replace(']','');
+
+							if(results[idx1]){
+								item.team1     = results[idx1].team;
+								item.teamName1 = results[idx1].teamName;
+							}
+							if(results[idx2]){
+								item.team2     = results[idx2].team;
+								item.teamName2 = results[idx2].teamName;
+							}
 						}
+
+						if(item.scoreTeam1 && item.scoreTeam2){
+	    					if(item.scoreTeam1 === item.scoreTeam2){
+	    						if(item.scorePenaltyTeam1 && item.scorePenaltyTeam2){
+	    							if(item.scoreTeam1<item.scoreTeam2){
+	    								results['W'+item.id] = {team:item.team2,name:item.teamName2};
+		    							results['L'+item.id] = {team:item.team1,name:item.teamName1};
+	    							}else{
+	    								results['W'+item.id] = {team:item.team1,name:item.teamName1};
+		    							results['L'+item.id] = {team:item.team2,name:item.teamName2};
+	    							}
+	    						}
+		    				}else if(item.scoreTeam1<item.scoreTeam2){
+		    					results['W'+item.id] = {team:item.team2,name:item.teamName2};
+		    					results['L'+item.id] = {team:item.team1,name:item.teamName1};
+		    				}else{
+		    					results['W'+item.id] = {team:item.team1,name:item.teamName1};
+		    					results['L'+item.id] = {team:item.team2,name:item.teamName2};
+		    				}
+	    				}
 					});
 				});
 			});
