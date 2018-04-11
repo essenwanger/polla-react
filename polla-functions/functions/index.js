@@ -64,8 +64,6 @@ exports.calculateRanking = functions.database.ref('/matches')
 
 exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{betId}/matches')
     .onWrite((event) => {
-    	console.log('userId-'+event.params.userId);
-		console.log('betId-'+event.params.betId);
 		var positionTable={};
 		return admin.database().ref('/users/'+event.params.userId+'/bets/'+event.params.betId+'/matches').once('value').then((snapshot)=>{
     		snapshot.forEach((childSnapshot)=>{
@@ -100,6 +98,8 @@ exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{b
 	    				
     				if(positionTable[item.group][item.team1]){
     					positionTable[item.group][item.team1]= {
+							team : item.team1,
+							teamName : item.teamName1,
 							draw : positionTable[item.group][item.team1].draw + draw,
 							goalsAgainst : 0,
 							goalsFor : 0,
@@ -111,6 +111,8 @@ exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{b
 						}
     				}else{
 						positionTable[item.group][item.team1]= {
+							team : item.team1,
+							teamName : item.teamName1,
 							draw : draw,
 							goalsAgainst : 0,
 							goalsFor : 0,
@@ -123,6 +125,8 @@ exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{b
     				}
     				if(positionTable[item.group][item.team2]){
     					positionTable[item.group][item.team2]= {
+							team : item.team2,
+							teamName : item.teamName2,
 							draw : positionTable[item.group][item.team2].draw + draw,
 							goalsAgainst : 0,
 							goalsFor : 0,
@@ -134,6 +138,8 @@ exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{b
 						}
     				}else{
     					positionTable[item.group][item.team2]= {
+							team : item.team2,
+							teamName : item.teamName2,
 							draw : draw,
 							goalsAgainst : 0,
 							goalsFor : 0,
@@ -150,7 +156,6 @@ exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{b
     		Object.keys(positionTable).forEach(function(keyGroup) {
     			var orderedGroup = [];
     			Object.keys(positionTable[keyGroup]).forEach(function(keyTeam) {
-    				positionTable[keyGroup][keyTeam].team = keyTeam;
 					orderedGroup.push(positionTable[keyGroup][keyTeam]);
 				});
 				orderedGroup.sort(function(a,b){
@@ -158,33 +163,47 @@ exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{b
 					return b.points - a.points;
 				});
 				positionTable[keyGroup] = orderedGroup;
-				/*
-				for (i = 0; i < orderedGroup.length; i++) {
-					//console.log(orderedGroup[i].id);
-					positionTable[keyGroup][orderedGroup[i].id].order = i+1;
-				}*/
     		});
 
-    		return admin.database().ref('/users/'+event.params.userId+'/bets/'+event.params.betId+'/matches').once('value').then((snapshot)=>{
-	    		snapshot.forEach((childSnapshot)=>{
-	    			var item=childSnapshot.val();
-	    			if(item.round && item.round === 'Octavos'){
-	    				var position1 = item.teamName1.substr(1,1);
-	    				var group1    = item.teamName1.substr(2,1);
-	    				var position2 = item.teamName2.substr(1,1);
-	    				var group2    = item.teamName2.substr(2,1);
-	    				if(positionTable[group1][position1]){
-	    					console.log(positionTable[group1][position1].team);
-	    				}
-	    				if(positionTable[group2][position2]){
-	    					console.log(positionTable[group2][position2].team);
-	    				}
-	    			}
-	    		});
-	    		
-	    		return admin.database().ref('/users/'+event.params.userId+'/bets/'+event.params.betId).update({
-			    	positionTable: positionTable
+			return admin.database().ref('/users/'+event.params.userId+'/bets/'+event.params.betId).update({
+				positionTable: positionTable
+			}).then(() => {
+				return admin.database().ref('/users/'+event.params.userId+'/bets/'+event.params.betId+'/matches').once('value').then((snapshot)=>{
+					snapshot.forEach((childSnapshot)=>{
+						var item=childSnapshot.val();
+						if(item.round && item.round === 'Octavos'){
+
+							if(!item['teamSource1'] || !item['teamSource2']){
+								item['teamSource1']=item.teamName1;
+								item['teamSource2']=item.teamName2;
+							}
+							
+							console.log(item.teamSource1);
+							console.log(item.teamSource2);
+
+							var position1 = item.teamSource1.substr(1,1)-1;
+							var group1    = item.teamSource1.substr(2,1);
+							var position2 = item.teamSource2.substr(1,1)-1;
+							var group2    = item.teamSource2.substr(2,1);
+							
+							if(positionTable[group1][position1]){
+								item.team1 = positionTable[group1][position1].team;
+								item.teamName1 = positionTable[group1][position1].teamName;
+							}
+							if(positionTable[group2][position2]){
+								item.team2 = positionTable[group2][position2].team;
+								item.teamName2 = positionTable[group2][position2].teamName;
+							}
+							if(positionTable[group1][position1] || 
+							   positionTable[group2][position2]){
+								admin.database().ref(
+									'/users/'+event.params.userId+
+									'/bets/'+event.params.betId+
+									'/matches/'+childSnapshot.key).update(item);
+							}
+						}
+					});
 				});
-	    	});
+			});
     	});
 });
