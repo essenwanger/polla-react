@@ -70,7 +70,7 @@ exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{b
 		return admin.database().ref('/users/'+event.params.userId+'/bets/'+event.params.betId+'/matches').once('value').then((snapshot)=>{
     		snapshot.forEach((childSnapshot)=>{
     			var item=childSnapshot.val();
-    			if(item.group && item.round && item.round == 'GR'){
+    			if(item.group && item.round && item.round === 'GR'){
     				if(!positionTable[item.group]){
     					positionTable[item.group] = {};
     				}
@@ -150,20 +150,41 @@ exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{b
     		Object.keys(positionTable).forEach(function(keyGroup) {
     			var orderedGroup = [];
     			Object.keys(positionTable[keyGroup]).forEach(function(keyTeam) {
-					orderedGroup.push({id:keyTeam,points:positionTable[keyGroup][keyTeam].points});
+    				positionTable[keyGroup][keyTeam].team = keyTeam;
+					orderedGroup.push(positionTable[keyGroup][keyTeam]);
 				});
 				orderedGroup.sort(function(a,b){
 					//TODO implementar diferencia de goles
 					return b.points - a.points;
 				});
+				positionTable[keyGroup] = orderedGroup;
+				/*
 				for (i = 0; i < orderedGroup.length; i++) {
 					//console.log(orderedGroup[i].id);
 					positionTable[keyGroup][orderedGroup[i].id].order = i+1;
-				}
-    		}
+				}*/
+    		});
 
-    		return admin.database().ref('/users/'+event.params.userId+'/bets/'+event.params.betId).update({
-		    	positionTable: positionTable
-			});
+    		return admin.database().ref('/users/'+event.params.userId+'/bets/'+event.params.betId+'/matches').once('value').then((snapshot)=>{
+	    		snapshot.forEach((childSnapshot)=>{
+	    			var item=childSnapshot.val();
+	    			if(item.round && item.round === 'Octavos'){
+	    				var position1 = item.teamName1.substr(1,1);
+	    				var group1    = item.teamName1.substr(2,1);
+	    				var position2 = item.teamName2.substr(1,1);
+	    				var group2    = item.teamName2.substr(2,1);
+	    				if(positionTable[group1][position1]){
+	    					console.log(positionTable[group1][position1].team);
+	    				}
+	    				if(positionTable[group2][position2]){
+	    					console.log(positionTable[group2][position2].team);
+	    				}
+	    			}
+	    		});
+	    		
+	    		return admin.database().ref('/users/'+event.params.userId+'/bets/'+event.params.betId).update({
+			    	positionTable: positionTable
+				});
+	    	});
     	});
 });
