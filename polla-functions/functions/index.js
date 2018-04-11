@@ -67,7 +67,6 @@ exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{b
     	console.log('userId-'+event.params.userId);
 		console.log('betId-'+event.params.betId);
 		var positionTable={};
-		var flag = 0;
 		return admin.database().ref('/users/'+event.params.userId+'/bets/'+event.params.betId+'/matches').once('value').then((snapshot)=>{
     		snapshot.forEach((childSnapshot)=>{
     			var item=childSnapshot.val();
@@ -145,22 +144,23 @@ exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{b
 							won : won2
 						}
     				}
-    				var orderedGroup = []
-					Object.keys(positionTable[item.group]).forEach(function(key) {
-						orderedGroup.push({id:key,points:positionTable[item.group][key].points});
-					});
-					orderedGroup.sort(function(a,b){
-						//TODO implementar diferencia de goles
-						return b.points - a.points;
-					});
-					for (i = 0; i < orderedGroup.length; i++) {
-						//console.log(orderedGroup[i].id);
-						positionTable[item.group][orderedGroup[i].id].order = i+1;
-					}
     			}
     		});
 
-    		
+    		Object.keys(positionTable).forEach(function(keyGroup) {
+    			var orderedGroup = [];
+    			Object.keys(positionTable[keyGroup]).forEach(function(keyTeam) {
+					orderedGroup.push({id:keyTeam,points:positionTable[keyGroup][keyTeam].points});
+				});
+				orderedGroup.sort(function(a,b){
+					//TODO implementar diferencia de goles
+					return b.points - a.points;
+				});
+				for (i = 0; i < orderedGroup.length; i++) {
+					//console.log(orderedGroup[i].id);
+					positionTable[keyGroup][orderedGroup[i].id].order = i+1;
+				}
+    		}
 
     		return admin.database().ref('/users/'+event.params.userId+'/bets/'+event.params.betId).update({
 		    	positionTable: positionTable
