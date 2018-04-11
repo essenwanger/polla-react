@@ -71,7 +71,7 @@ exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{b
 		return admin.database().ref('/users/'+event.params.userId+'/bets/'+event.params.betId+'/matches').once('value').then((snapshot)=>{
     		snapshot.forEach((childSnapshot)=>{
     			var item=childSnapshot.val();
-    			if(item.group){
+    			if(item.group && item.round && item.round == 'GR'){
     				if(!positionTable[item.group]){
     					positionTable[item.group] = {};
     				}
@@ -82,7 +82,7 @@ exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{b
     				var lost2 = 0;
     				var points1 = 0;
     				var points2 = 0;
-    				var played = 1;
+    				var played = 0;
 
     				if(item.scoreTeam1 && item.scoreTeam2){
     					if(item.scoreTeam1 === item.scoreTeam2){
@@ -96,6 +96,7 @@ exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{b
 	    					points1 = 3;
 	    					lost2 = 1;
 	    				}
+	    				played = 1;
     				}
 	    				
     				if(positionTable[item.group][item.team1]){
@@ -150,7 +151,7 @@ exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{b
 					});
 					orderedGroup.sort(function(a,b){
 						//TODO implementar diferencia de goles
-						return a.points - b.points;
+						return b.points - a.points;
 					});
 					for (i = 0; i < orderedGroup.length; i++) {
 						//console.log(orderedGroup[i].id);
@@ -158,6 +159,9 @@ exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{b
 					}
     			}
     		});
+
+    		
+
     		return admin.database().ref('/users/'+event.params.userId+'/bets/'+event.params.betId).update({
 		    	positionTable: positionTable
 			});
