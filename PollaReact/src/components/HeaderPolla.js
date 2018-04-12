@@ -10,7 +10,7 @@ export default class HeaderPolla extends Component {
   }
 
   onPressBack() {
-    Actions.pop();
+    Actions.pop({ refresh: { updateData: Math.random() } })
   }
 
   render() {

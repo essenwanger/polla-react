@@ -23,6 +23,14 @@ export default class Fixture extends Component {
   }
 
   componentWillMount() {
+    this.dataFirebase();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.dataFirebase();
+  }
+
+  dataFirebase(){
     var userID= this.state.user.userID;
     var groups=[];
     var navigateGroups=[];

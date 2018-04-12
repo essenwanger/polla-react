@@ -39,41 +39,17 @@ export default class PhaseScene extends Component {
   }
 
   componentWillMount() {
-    var userID = this.props.user.userID;
-    var group = this.props.group;
-    var order = this.props.order;
-    firebase.database().ref('users/'+userID+'/bets/0/matches/')
-    .orderByChild(order).equalTo(group).once('value').then((snapshot)=>{
-      var matches = [];
-      snapshot.forEach((childSnapshot)=>{
-        var childKey = childSnapshot.key;
-        var childData = childSnapshot.val();
-        childData.key=childKey;
-        matches.push(childData);
-      });
-      this.setState({
-        matches: matches
-      });
-    });
-    firebase.database().ref('users/'+userID+'/bets/0/positionTable/'+group)
-    .orderByChild('order').once('value').then((snapshot)=>{
-      var positionTable = [];
-      snapshot.forEach((childSnapshot)=>{
-        var childKey = childSnapshot.key;
-        var childData = childSnapshot.val();
-        childData.key=childKey;
-        positionTable.push(childData);
-      });
-      this.setState({
-        positionTable: positionTable
-      });
-    });
+    this.dataFirebase(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
-    var userID = nextProps.user.userID;
-    var group = nextProps.group;
-    var order = nextProps.order;
+    this.dataFirebase(nextProps);
+  }
+
+  dataFirebase(props){
+    var userID = props.user.userID;
+    var group = props.group;
+    var order = props.order;
     firebase.database().ref('users/'+userID+'/bets/0/matches/')
     .orderByChild(order).equalTo(group).once('value').then((snapshot)=>{
       var matches = [];
@@ -88,12 +64,11 @@ export default class PhaseScene extends Component {
       });
     });
     firebase.database().ref('users/'+userID+'/bets/0/positionTable/'+group)
-    .orderByChild('order').once('value').then((snapshot)=>{
+    .once('value').then((snapshot)=>{
       var positionTable = [];
       snapshot.forEach((childSnapshot)=>{
         var childKey = childSnapshot.key;
         var childData = childSnapshot.val();
-        childData.key=childKey;
         positionTable.push(childData);
       });
       this.setState({
@@ -106,11 +81,14 @@ export default class PhaseScene extends Component {
     var matchesComponent=this.state.matches.map((item, key) => (
       <Match key={item.id} data={item} status={this.state.status} onScore={this.onScore}/>
     ));
-    var positionTableComponent=this.state.positionTable.map((item, key) => (
-      <PositionTableTeam key={key} team={item.key} name={item.key} 
-      mp={item.played} gf={item.goalsFor} 
-      ga={item.goalsAgainst} pt={item.points} />
-    ));
+    var positionTableComponent=null;
+    if(this.props.order==='group'){
+      positionTableComponent=this.state.positionTable.map((item, key) => (
+        <PositionTableTeam key={item.team} team={item.team} name={item.teamName} 
+        mp={item.played} gf={item.goalsFor} 
+        ga={item.goalsAgainst} pt={item.points} />
+      ));
+    }
     var navigateGroups=this.props.navigateGroups;
     var positionLeft=this.props.position-1;
     var positionRight=this.props.position+1;
@@ -128,7 +106,7 @@ export default class PhaseScene extends Component {
     </Button>);
     return (
       <Container>
-        <HeaderPolla pop={true} name={this.props.groupName} />
+        <HeaderPolla pop={true} name={this.props.groupName} user={this.props.user} />
         <Tabs>
           <Tab heading={ <TabHeading><Icon name="md-calendar" /></TabHeading>}>
             <Content padder>
