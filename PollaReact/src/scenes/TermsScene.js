@@ -11,13 +11,21 @@ export default class TermsScene extends Component {
     this.state = {
       user: props.user,
       matches: [],
-      positionTable: []
-    };
+      positionTable: [],      
+      presentationMode : props.presentationMode === undefined ? 'Login' : props.presentationMode,
+      textButton: props.presentationMode === undefined ? 'Aceptar' : ' Salir'
+    };    
     this.onAcceptTerms = this.onAcceptTerms.bind(this);
   }
 
   componentDidMount() {
-    //obteniendo matches
+    if(this.state.presentationMode === 'Login') {
+      this.prepareLogin();
+    }
+  }
+
+  prepareLogin() {
+    //preparando matches
     firebase.database().ref('matches/').once('value').then((snapshot)=>{
       var matches=[];
       snapshot.forEach(function(childSnapshot) {
@@ -27,7 +35,7 @@ export default class TermsScene extends Component {
       this.state.matches = matches;
     });
 
-    //obteniendi positionTable
+    //preparando positionTable
     firebase.database().ref('positionTable/').once('value').then((snapshot)=>{
       var positionTable=[];
       snapshot.forEach(function(childSnapshot) {
@@ -38,7 +46,15 @@ export default class TermsScene extends Component {
   }
 
   onAcceptTerms(){
+    if(this.state.presentationMode === 'Login') {
+      this.saveUser();
+    } else {
+      Actions.pop();
+    }
+  }
 
+  saveUser() {
+    //alta de usuario en /users/{id-google}/
     var userFirebase = {
       profile: this.state.user,
       bets: [
@@ -50,9 +66,21 @@ export default class TermsScene extends Component {
         }
       ]
     };
-
     firebase.database().ref('users/' + this.state.user.userID + '/').set(userFirebase);
 
+    //alta del usuario en el ranking /ranking/
+    firebase.database().ref('ranking/').once('value').then((snapshot)=>{
+      var ref = snapshot.ref;
+      var rank = {
+        bet: 0,
+        points: 0,
+        profile: this.state.user
+      };
+      //Agregando siguiente nodo
+      ref.child(snapshot.numChildren()).set(rank);
+    });
+
+    //Navegando al dashboard 
     Actions.reset('dashboard', {user: this.state.user});
   }
 
@@ -100,7 +128,7 @@ export default class TermsScene extends Component {
             </CardItem>
          </Card>
          <Button block onPress={this.onAcceptTerms}>
-            <Text>Acepto</Text>
+            <Text>{this.state.textButton}</Text>
           </Button>
         </Content>
       </Container>

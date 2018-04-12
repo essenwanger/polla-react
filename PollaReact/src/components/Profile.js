@@ -13,6 +13,11 @@ export default class Profile extends Component {
       user: props.user
     };
     this.onPressLogout = this.onPressLogout.bind(this);
+    this.onPressTerms = this.onPressTerms.bind(this);
+  }
+
+  onPressTerms(){
+    Actions.terms({presentationMode: 'Terms'});
   }
 
   onPressLogout(){
@@ -47,6 +52,9 @@ export default class Profile extends Component {
           <Card>
             <CardItem bordered>
               <Button info block transparent small><Icon name='md-information-circle'/><Text>Acerca de #</Text></Button>
+            </CardItem>
+            <CardItem bordered>
+              <Button primary block transparent small onPress={this.onPressTerms}><Icon name='md-checkmark-circle'/><Text>Terminos</Text></Button>
             </CardItem>
             <CardItem>
               <Button danger block transparent small onPress={this.onPressLogout} ><Icon name='md-close-circle'/><Text>Cerrar Sesion</Text></Button>
