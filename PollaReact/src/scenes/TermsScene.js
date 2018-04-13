@@ -69,16 +69,12 @@ export default class TermsScene extends Component {
     firebase.database().ref('users/' + this.state.user.userID + '/').set(userFirebase);
 
     //alta del usuario en el ranking /ranking/
-    firebase.database().ref('ranking/').once('value').then((snapshot)=>{
-      var ref = snapshot.ref;
-      var rank = {
-        bet: 0,
-        points: 0,
-        profile: this.state.user
-      };
-      //Agregando siguiente nodo
-      ref.child(snapshot.numChildren()).set(rank);
-    });
+    var rank = {
+      bet: 0,
+      points: 0,
+      profile: this.state.user
+    };
+    firebase.database().ref('ranking/' + this.state.user.userID + '/').set(rank);
 
     //Navegando al dashboard 
     Actions.reset('dashboard', {user: this.state.user});
