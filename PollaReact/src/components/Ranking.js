@@ -35,7 +35,7 @@ export default class Ranking extends Component {
           <Thumbnail small source={{uri: item.profile.picture}} />
         </Left>
         <Body>
-          <Text>{item.profile.given_name}</Text>
+          <Text>{item.profile.givenName}</Text>
         </Body>
         <Right>
           <Text>{item.points}</Text>

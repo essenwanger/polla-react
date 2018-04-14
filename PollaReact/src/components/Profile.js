@@ -22,7 +22,7 @@ export default class Profile extends Component {
 
   onPressLogout(){
     GoogleSignIn.signOut();
-    Actions.login();
+    Actions.reset('login');
   }
 
   onPressPhase(){
@@ -51,10 +51,10 @@ export default class Profile extends Component {
           </Grid>
           <Card>
             <CardItem bordered>
-              <Button info block transparent small><Icon name='md-information-circle'/><Text>Acerca de #</Text></Button>
+              <Button info block transparent small><Icon name='md-ionitron'/><Text>Acerca de #</Text></Button>
             </CardItem>
             <CardItem bordered>
-              <Button primary block transparent small onPress={this.onPressTerms}><Icon name='md-checkmark-circle'/><Text>Terminos</Text></Button>
+              <Button primary block transparent small onPress={this.onPressTerms}><Icon name='md-glasses'/><Text>Terminos</Text></Button>
             </CardItem>
             <CardItem>
               <Button danger block transparent small onPress={this.onPressLogout} ><Icon name='md-close-circle'/><Text>Cerrar Sesion</Text></Button>

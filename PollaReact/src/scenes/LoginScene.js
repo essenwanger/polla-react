@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Actions } from 'react-native-router-flux';
-import { Container, Content, Header, Text, Button, View, Icon, H1, Spinner, Toast, Root } from 'native-base';
+import { Container, Content, Footer, FooterTab, Header, Body, Left, Right, Text, Title, Button, View, Icon, H1, Spinner, Toast, Root, Thumbnail, Card, CardItem } from 'native-base';
+import { Image } from 'react-native';
 import firebase from 'react-native-firebase';
 import GoogleSignIn from 'react-native-google-sign-in';
 import { Alert, Platform } from 'react-native';
@@ -16,9 +17,11 @@ export default class LoginScene extends Component {
   }
 
   onPressLogin(){
+    this.setState({check: false});
     GoogleSignIn.signInPromise().then((user) => {
       var userLogin = this.parseUser(user);
       firebase.database().ref('users/'+user.userID).once('value').then((snapshot)=>{
+        this.setState({check: true});
         if(snapshot.val()===null){
           Actions.terms({user: userLogin});
           //TODO cuando retrocede
@@ -28,6 +31,7 @@ export default class LoginScene extends Component {
       });
     }, (e) => {
       console.log('signInPromise rejected', e);
+      this.setState({check: true});
     });
   }
 
@@ -69,6 +73,8 @@ export default class LoginScene extends Component {
       console.log("Play services error", err.code, err.message);
     }
 
+    //Verificar que exista usuario en Firebase
+
     GoogleSignIn.signInSilentlyPromise().then((user) => {
       var userLogin = this.parseUser(user);
       Actions.reset('dashboard', {user: userLogin});
@@ -80,30 +86,29 @@ export default class LoginScene extends Component {
   }
 
   render() {
-    if(this.state.check) {
-      return (
-        <Root>
-        <Container>
-          <Content>
-            <Text>Logo del App</Text>
-            <Button iconLeft block danger onPress={this.onPressLogin}>
-              <Icon name='logo-googleplus' />
-              <Text>Empezar a jugar</Text>
-            </Button>
-            <Text>Desarrollado por:</Text>
-            <Text>Logo Bizantinos</Text>
-          </Content>
-        </Container>
-        </Root>
-      );
-    }
     return (
       <Root>
-      <Container>
-        <Content>
-          <Spinner text="Cargando..." color='blue' />
-        </Content>
-      </Container>
+        <Container>
+          <Image source={require('../img/background.png')} style={{ flex: 1, resizeMode: 'cover', height: undefined, width: undefined }} />
+          <Footer>
+            <FooterTab style={{backgroundColor:"#00AE33"}}>
+              { this.state.check ? 
+              ( 
+                <Button onPress={this.onPressLogin}>
+                  <Icon style={{color:"#FFF"}}name='logo-googleplus' />
+                  <Text style={{color:"#FFF"}}>Comenzar a jugar</Text>
+                </Button> 
+              )
+              :
+              ( 
+                <Button >
+                  <Spinner color='#FFF' ></Spinner>
+                </Button> 
+              )
+              }
+            </FooterTab>
+          </Footer>
+        </Container>
       </Root>
     );
   }
