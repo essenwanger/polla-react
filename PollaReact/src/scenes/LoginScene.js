@@ -24,7 +24,6 @@ export default class LoginScene extends Component {
         this.setState({check: true});
         if(snapshot.val()===null){
           Actions.terms({user: userLogin});
-          //TODO cuando retrocede
         } else {
           Actions.reset('dashboard', {user: userLogin});
         }
@@ -74,10 +73,16 @@ export default class LoginScene extends Component {
     }
 
     //Verificar que exista usuario en Firebase
-
     GoogleSignIn.signInSilentlyPromise().then((user) => {
       var userLogin = this.parseUser(user);
-      Actions.reset('dashboard', {user: userLogin});
+      firebase.database().ref('users/'+user.userID).once('value').then((snapshot)=>{
+        if(snapshot.val()===null){
+          Actions.terms({user: userLogin});
+          this.setState({check: true});
+        } else {
+          Actions.reset('dashboard', {user: userLogin});
+        }
+      });
     }, (e) => {
       console.log('signInSilentlyPromise rejected', e);
       this.setState({check: true});
