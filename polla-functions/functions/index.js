@@ -80,11 +80,11 @@ exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{b
     				var points1 = 0;
     				var points2 = 0;
     				var played  = 0;
-    				var goalsAgainst1 = item.scoreTeam2;
-    				var goalsFor1     = item.scoreTeam1;
-    				var goalsAgainst2 = item.scoreTeam1;
-    				var goalsFor2     = item.scoreTeam2;
-
+    				var goalsAgainst1 = 0;
+    				var goalsFor1     = 0;
+    				var goalsAgainst2 = 0;
+    				var goalsFor2     = 0;
+    				
     				if(item.scoreTeam1 && item.scoreTeam2){
     					if(item.scoreTeam1 === item.scoreTeam2){
 	    					draw = 1;
@@ -98,6 +98,10 @@ exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{b
 	    					lost2 = 1;
 	    				}
 	    				played = 1;
+	    				goalsAgainst1 += parseInt(item.scoreTeam2);
+        				goalsFor1     += parseInt(item.scoreTeam1);
+        				goalsAgainst2 += parseInt(item.scoreTeam1);
+    	    			goalsFor2     += parseInt(item.scoreTeam2);
     				}
 	    				
     				if(positionTable[item.group][item.team1]){
@@ -132,8 +136,8 @@ exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{b
 							team : item.team2,
 							teamName : item.teamName2,
 							draw : positionTable[item.group][item.team2].draw + draw,
-							goalsAgainst : positionTable[item.group][item.team1].goalsAgainst + goalsAgainst2,
-							goalsFor : positionTable[item.group][item.team1].goalsFor + goalsFor2,
+							goalsAgainst : positionTable[item.group][item.team2].goalsAgainst + goalsAgainst2,
+							goalsFor : positionTable[item.group][item.team2].goalsFor + goalsFor2,
 							lost : positionTable[item.group][item.team2].lost + lost2,
 							order : 0,
 							played : positionTable[item.group][item.team2].played + played,
