@@ -73,13 +73,17 @@ exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{b
     					positionTable[item.group] = {};
     				}
     				var draw = 0;
-    				var won1 = 0;
-    				var won2 = 0;
-    				var lost1 = 0;
-    				var lost2 = 0;
+    				var won1    = 0;
+    				var won2    = 0;
+    				var lost1   = 0;
+    				var lost2   = 0;
     				var points1 = 0;
     				var points2 = 0;
-    				var played = 0;
+    				var played  = 0;
+    				var goalsAgainst1 = item.scoreTeam2;
+    				var goalsFor1     = item.scoreTeam1;
+    				var goalsAgainst2 = item.scoreTeam1;
+    				var goalsFor2     = item.scoreTeam2;
 
     				if(item.scoreTeam1 && item.scoreTeam2){
     					if(item.scoreTeam1 === item.scoreTeam2){
@@ -101,8 +105,8 @@ exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{b
 							team : item.team1,
 							teamName : item.teamName1,
 							draw : positionTable[item.group][item.team1].draw + draw,
-							goalsAgainst : 0,
-							goalsFor : 0,
+							goalsAgainst : positionTable[item.group][item.team1].goalsAgainst + goalsAgainst1,
+							goalsFor : positionTable[item.group][item.team1].goalsFor + goalsFor1,
 							lost : positionTable[item.group][item.team1].lost + lost1,
 							order : 0,
 							played : positionTable[item.group][item.team1].played + played,
@@ -114,8 +118,8 @@ exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{b
 							team : item.team1,
 							teamName : item.teamName1,
 							draw : draw,
-							goalsAgainst : 0,
-							goalsFor : 0,
+							goalsAgainst : goalsAgainst1,
+							goalsFor : goalsFor1,
 							lost : lost1,
 							order : 0,
 							played : played,
@@ -128,8 +132,8 @@ exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{b
 							team : item.team2,
 							teamName : item.teamName2,
 							draw : positionTable[item.group][item.team2].draw + draw,
-							goalsAgainst : 0,
-							goalsFor : 0,
+							goalsAgainst : positionTable[item.group][item.team1].goalsAgainst + goalsAgainst2,
+							goalsFor : positionTable[item.group][item.team1].goalsFor + goalsFor2,
 							lost : positionTable[item.group][item.team2].lost + lost2,
 							order : 0,
 							played : positionTable[item.group][item.team2].played + played,
@@ -141,8 +145,8 @@ exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{b
 							team : item.team2,
 							teamName : item.teamName2,
 							draw : draw,
-							goalsAgainst : 0,
-							goalsFor : 0,
+							goalsAgainst : goalsAgainst2,
+							goalsFor : goalsFor2,
 							lost : lost2,
 							order : 0,
 							played : played,
@@ -159,8 +163,13 @@ exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{b
 					orderedGroup.push(positionTable[keyGroup][keyTeam]);
 				});
 				orderedGroup.sort(function(a,b){
-					//TODO implementar diferencia de goles
-					return b.points - a.points;
+					if(b.points === a.points){
+						var difGolesA = a.goalsFor - a.goalsAgainst;
+						var difGolesB = b.goalsFor - b.goalsAgainst;
+						if(difGolesA>difGolesB) return -1;//descendente
+						return 1;
+					}
+					return b.points - a.points;//descendente
 				});
 				positionTable[keyGroup] = orderedGroup;
     		});
@@ -171,8 +180,10 @@ exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{b
 
 				var results = {};
 
-				return admin.database().ref('/users/'+event.params.userId+'/bets/'+event.params.betId+'/matches').once('value').then((snapshot)=>{
-					snapshot.forEach((childSnapshot)=>{
+				return admin.database().ref('/users/'+event.params.userId+'/bets/'+event.params.betId+'/matches').once('value').
+				then(snapshot => {
+					
+					snapshot.forEach( childSnapshot => {
 						
 						var item=childSnapshot.val();
 
@@ -189,12 +200,22 @@ exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{b
 							var group2    = item.teamSource2.substr(2,1);
 							
 							if(positionTable[group1][position1]){
-								item.team1 = positionTable[group1][position1].team;
-								item.teamName1 = positionTable[group1][position1].teamName;
+								if(positionTable[group1][position1].played === 3){
+									item.team1 = positionTable[group1][position1].team;
+									item.teamName1 = positionTable[group1][position1].teamName;
+								}else{
+									item.team1 = item.teamSource1;
+									item.teamName1 = item.teamSource1;
+								}
 							}
 							if(positionTable[group2][position2]){
-								item.team2 = positionTable[group2][position2].team;
-								item.teamName2 = positionTable[group2][position2].teamName;
+								if(positionTable[group2][position2].played === 3){
+									item.team2 = positionTable[group2][position2].team;
+									item.teamName2 = positionTable[group2][position2].teamName;
+								}else{
+									item.team2 = item.teamSource2;
+									item.teamName2 = item.teamSource2;
+								}
 							}
 							if(positionTable[group1][position1] || 
 							   positionTable[group2][position2]){
@@ -225,28 +246,36 @@ exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{b
 								item.team2     = results[idx2].team;
 								item.teamName2 = results[idx2].teamName;
 							}
+							if(results[idx1] || results[idx2]){
+								admin.database().ref(
+									'/users/'+event.params.userId+
+									'/bets/'+event.params.betId+
+									'/matches/'+childSnapshot.key).update(item);
+							}
 						}
-
 						if(item.scoreTeam1 && item.scoreTeam2){
 	    					if(item.scoreTeam1 === item.scoreTeam2){
 	    						if(item.scorePenaltyTeam1 && item.scorePenaltyTeam2){
 	    							if(item.scoreTeam1<item.scoreTeam2){
-	    								results['W'+item.id] = {team:item.team2,name:item.teamName2};
-		    							results['L'+item.id] = {team:item.team1,name:item.teamName1};
+	    								results['W'+item.id] = {team:item.team2,teamName:item.teamName2};
+		    							results['L'+item.id] = {team:item.team1,teamName:item.teamName1};
 	    							}else{
-	    								results['W'+item.id] = {team:item.team1,name:item.teamName1};
-		    							results['L'+item.id] = {team:item.team2,name:item.teamName2};
+	    								results['W'+item.id] = {team:item.team1,teamName:item.teamName1};
+		    							results['L'+item.id] = {team:item.team2,teamName:item.teamName2};
 	    							}
 	    						}
 		    				}else if(item.scoreTeam1<item.scoreTeam2){
-		    					results['W'+item.id] = {team:item.team2,name:item.teamName2};
-		    					results['L'+item.id] = {team:item.team1,name:item.teamName1};
+		    					results['W'+item.id] = {team:item.team2,teamName:item.teamName2};
+		    					results['L'+item.id] = {team:item.team1,teamName:item.teamName1};
 		    				}else{
-		    					results['W'+item.id] = {team:item.team1,name:item.teamName1};
-		    					results['L'+item.id] = {team:item.team2,name:item.teamName2};
+		    					results['W'+item.id] = {team:item.team1,teamName:item.teamName1};
+		    					results['L'+item.id] = {team:item.team2,teamName:item.teamName2};
 		    				}
 	    				}
 					});
+					return 1;
+				}).catch(err => {
+        			console.log('Error updating final phase', err);
 				});
 			});
     	});
