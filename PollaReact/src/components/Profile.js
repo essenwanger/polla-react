@@ -14,6 +14,12 @@ export default class Profile extends Component {
     };
     this.onPressLogout = this.onPressLogout.bind(this);
     this.onPressTerms = this.onPressTerms.bind(this);
+    this.onPressAbout = this.onPressAbout.bind(this);
+    
+  }
+
+  onPressAbout(){
+    Actions.about();
   }
 
   onPressTerms(){
@@ -51,7 +57,7 @@ export default class Profile extends Component {
           </Grid>
           <Card>
             <CardItem bordered>
-              <Button info block transparent small><Icon name='md-ionitron'/><Text>Acerca de #</Text></Button>
+              <Button info block transparent small onPress={this.onPressAbout}><Icon name='md-ionitron'/><Text>Acerca de Bizantinos</Text></Button>
             </CardItem>
             <CardItem bordered>
               <Button primary block transparent small onPress={this.onPressTerms}><Icon name='md-glasses'/><Text>Terminos</Text></Button>

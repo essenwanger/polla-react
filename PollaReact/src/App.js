@@ -7,6 +7,7 @@ import LoginScene from './scenes/LoginScene';
 import TermsScene from './scenes/TermsScene';
 import DashboardScene from './scenes/DashboardScene';
 import PhaseScene from './scenes/PhaseScene';
+import AboutScene from './scenes/AboutScene';
 
 export default class App extends Component {
 
@@ -19,6 +20,7 @@ export default class App extends Component {
           <Scene key="terms" component={TermsScene} hideNavBar={true}/>
           <Scene key="dashboard" component={DashboardScene} hideNavBar={true}/>
           <Scene key="phase" component={PhaseScene} hideNavBar={true}/>
+          <Scene key="about" component={AboutScene} hideNavBar={true}/>
         </Scene>
       </Router>
       </StyleProvider>
