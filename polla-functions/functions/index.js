@@ -21,16 +21,19 @@ exports.addMessage = functions.https.onRequest((req, res) => {
 exports.calculateRanking = functions.database.ref('/matches')
     .onWrite(event => {
     	var matches=[];
-    	var ranking=[];
+    	var rankingOrder=[];
+    	//var ranking={};
     	event.data.val().forEach((element)=>{
-    		if(element.scoreTeam1>element.scoreTeam2){
-				element.result=1;
-    		}else if(element.scoreTeam1<element.scoreTeam2){
-    			element.result=2;
-    		}else{
-    			element.result=0;
+    		if(element.scoreTeam1 && element.scoreTeam2){
+    			if(element.scoreTeam1>element.scoreTeam2){
+					element.result=1;
+	    		}else if(element.scoreTeam1<element.scoreTeam2){
+	    			element.result=2;
+	    		}else{
+	    			element.result=0;
+	    		}
+	    		matches[element.id]=element;
     		}
-    		matches[element.id]=element;
     	});
     	return admin.database().ref('/users').once('value').then((snapshot)=>{
     		snapshot.forEach((childSnapshot)=>{
@@ -38,10 +41,10 @@ exports.calculateRanking = functions.database.ref('/matches')
 		        var key = childSnapshot.key;
 		        item.bets.forEach((bet, betKey)=>{
 		        	var points = 0;
-		        	bet.forEach((element)=>{
-		        		if(element.forecastTeam1>element.forecastTeam2){
+		        	bet.matches.forEach((element)=>{
+		        		if(element.scoreTeam1>element.scoreTeam2){
 							element.result=1;
-			    		}else if(element.forecastTeam1<element.forecastTeam2){
+			    		}else if(element.scoreTeam1<element.scoreTeam2){
 			    			element.result=2;
 			    		}else{
 			    			element.result=0;
@@ -53,11 +56,18 @@ exports.calculateRanking = functions.database.ref('/matches')
 					    }
 		        	});
 		        	var rank={bet: betKey, points: points, profile: item.profile};
-		        	ranking.push(rank);
+		        	rankingOrder.push(rank);
 		        });
 		    });
+		    rankingOrder.sort(function(a,b){
+				return b.points - a.points;//descendente
+			});
+			/*
+			rankingOrder.forEach((item, id)=>{
+	        	ranking[item.profile.userID] = item;
+	        });*/
 		    return admin.database().ref('/').update({
-		      ranking: ranking
+		      ranking: rankingOrder
 		    });
     	});
 });

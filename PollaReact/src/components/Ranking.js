@@ -27,10 +27,14 @@ export default class Ranking extends Component {
       });
     });
   }
+
+  onPressUser(user){
+    Actions.dashRank({userRank: user});
+  }
   
   render() {
     var items=this.state.ranking.map((item, key) => (
-      <ListItem avatar key={key}>
+      <ListItem avatar key={key} onPress={()=>this.onPressUser(item.profile)}>
         <Left>
           <Thumbnail small source={{uri: item.profile.picture}} />
         </Left>

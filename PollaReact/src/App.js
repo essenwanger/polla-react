@@ -8,6 +8,7 @@ import TermsScene from './scenes/TermsScene';
 import DashboardScene from './scenes/DashboardScene';
 import PhaseScene from './scenes/PhaseScene';
 import AboutScene from './scenes/AboutScene';
+import DashboardRankScene from './scenes/DashboardRankScene';
 
 export default class App extends Component {
 
@@ -21,6 +22,7 @@ export default class App extends Component {
           <Scene key="dashboard" component={DashboardScene} hideNavBar={true}/>
           <Scene key="phase" component={PhaseScene} hideNavBar={true}/>
           <Scene key="about" component={AboutScene} hideNavBar={true}/>
+          <Scene key="dashRank" component={DashboardRankScene} hideNavBar={true}/>
         </Scene>
       </Router>
       </StyleProvider>
