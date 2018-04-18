@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { Actions } from 'react-native-router-flux';
-import { Container, Content, Footer, FooterTab, Header, Body, Left, Right, Text, Title, Button, View, Icon, H1, Spinner, Toast, Root, Thumbnail, Card, CardItem } from 'native-base';
-import { Image } from 'react-native';
+import { View, ActivityIndicator, Image, Platform, Button, Text } from 'react-native';
 import firebase from 'react-native-firebase';
 import GoogleSignIn from 'react-native-google-sign-in';
-import { Alert, Platform } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class LoginScene extends Component {
 
@@ -37,19 +36,6 @@ export default class LoginScene extends Component {
   componentDidMount() {
     this.setupGoogleSignIn();
   }
-
-  //componentDidMount() {
-    /*Toast.show({
-              text: 'Error conexion',
-              position: 'bottom',
-              buttonText: 'Ok',
-              type: 'danger'
-            });*/
-    /*Alert.alert(
-      'Error conexion',
-      'Preguntar a Miguel'
-    );*/
-  //}
 
   parseUser(user){
     return {
@@ -92,29 +78,22 @@ export default class LoginScene extends Component {
 
   render() {
     return (
-      <Root>
-        <Container>
-          <Image source={require('../img/background.png')} style={{ flex: 1, resizeMode: 'cover', height: undefined, width: undefined }} />
-          <Footer>
-            <FooterTab style={{backgroundColor:"#00AE33"}}>
-              { this.state.check ? 
-              ( 
-                <Button onPress={this.onPressLogin}>
-                  <Icon style={{color:"#FFF"}}name='logo-googleplus' />
-                  <Text style={{color:"#FFF"}}>Comenzar a jugar</Text>
-                </Button> 
-              )
-              :
-              ( 
-                <Button >
-                  <Spinner color='#FFF' ></Spinner>
-                </Button> 
-              )
-              }
-            </FooterTab>
-          </Footer>
-        </Container>
-      </Root>
+      <View>
+        <Image source={require('../img/background.png')} style={{ flex: 1, resizeMode: 'stretch'}} >
+        
+        </Image>
+        { this.state.check ? 
+          ( 
+            <Button onPress={this.onPressLogin} title="Comenzar a jugar" color="#00AE33">
+              <Icon style={{color:"#FFF"}} name='facebook' />
+            </Button> 
+          )
+          :
+          ( 
+            <ActivityIndicator size="small" color="#FFF" />
+          )
+        }
+      </View>
     );
   }
 }
