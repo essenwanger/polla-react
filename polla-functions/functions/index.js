@@ -18,6 +18,17 @@ exports.addMessage = functions.https.onRequest((req, res) => {
   });
 });
 
+exports.addUser = functions.https.onRequest((req, res) => {
+	if (req.method === "POST") {
+		res.status(200).json({
+			message: 'I am Happy =)'
+
+		});
+		return;
+   }
+   return;
+  });
+
 exports.calculateRanking = functions.database.ref('/matches')
     .onWrite(event => {
     	var matches=[];
