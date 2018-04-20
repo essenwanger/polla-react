@@ -31,7 +31,7 @@ export default class AboutScene extends Component {
                 <Thumbnail source={require('../img/about/victor_lopez.png')} />
                 <Body>
                   <Text>Victor Lopez</Text>
-                  <Text note>@victor</Text>
+                  <Text note>@essenwanger</Text>
                 </Body>
               </Left>
             </CardItem>
@@ -40,7 +40,7 @@ export default class AboutScene extends Component {
                 <Thumbnail source={require('../img/about/no_photo.jpeg')} />
                 <Body>
                   <Text>Carlos Montes de Oca</Text>
-                  <Text note>@carlos</Text>
+                  <Text note>@carlos_gnu</Text>
                 </Body>
               </Left>
             </CardItem>
@@ -49,13 +49,13 @@ export default class AboutScene extends Component {
                 <Thumbnail source={require('../img/about/edison_perez.png')} />
                 <Body>
                   <Text>Edison Perez</Text>
-                  <Text note>@edison</Text>
+                  <Text note>@edisonaqp</Text>
                 </Body>
               </Left>
             </CardItem>
             <CardItem>
               <Left>
-                <Thumbnail source={require('../img/about/no_photo.jpeg')} />
+                <Thumbnail source={require('../img/about/miguel_melgar.jpg')} />
                 <Body>
                   <Text>Miguel Melgar</Text>
                   <Text note>@miguelhpm</Text>
