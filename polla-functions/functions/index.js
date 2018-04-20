@@ -294,3 +294,32 @@ exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{b
 			});
     	});
 });
+
+exports.letthegamesbegin = functions.database.ref('/status')
+    .onWrite((event) => {
+    var bets = {};
+    var ranking = {};
+    if (event.data.val() !== 'opened'){
+    	return admin.database().ref('/preBets').once('value').then((snapshot)=>{
+    		snapshot.forEach((childSnapshot)=>{
+    			var item=childSnapshot.val();
+    			var key = childSnapshot.key;
+    			if(item.completed){
+    				bets[key] = item;
+    				ranking[key] = {
+    					profile : item.profile,
+    					totalPoints : 0
+    				};
+    			}
+    		});
+    		return admin.database().ref('/').update({bets:bets}).then(() => {
+    			return admin.database().ref('/').update({ranking:ranking})
+    		});
+    	});
+    }else{
+    	admin.database().ref('/').update({bets:'not yet implemented'});
+    	admin.database().ref('/').update({ranking:'not yet implemented'});
+    	return 1;
+    }
+
+});
