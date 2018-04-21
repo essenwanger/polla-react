@@ -18,17 +18,6 @@ exports.addMessage = functions.https.onRequest((req, res) => {
   });
 });
 
-exports.addUser = functions.https.onRequest((req, res) => {
-	if (req.method === "POST") {
-		res.status(200).json({
-			message: 'I am Happy =)'
-
-		});
-		return;
-   }
-   return;
-  });
-
 exports.calculateRanking = functions.database.ref('/matches')
     .onWrite(event => {
     	var matches=[];
@@ -306,31 +295,95 @@ exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{b
     	});
 });
 
-exports.letthegamesbegin = functions.database.ref('/status')
-    .onWrite((event) => {
-    var bets = {};
-    var ranking = {};
-    if (event.data.val() !== 'opened'){
-    	return admin.database().ref('/preBets').once('value').then((snapshot)=>{
-    		snapshot.forEach((childSnapshot)=>{
-    			var item=childSnapshot.val();
-    			var key = childSnapshot.key;
-    			if(item.completed){
-    				bets[key] = item;
-    				ranking[key] = {
-    					profile : item.profile,
-    					totalPoints : 0
-    				};
-    			}
-    		});
-    		return admin.database().ref('/').update({bets:bets}).then(() => {
-    			return admin.database().ref('/').update({ranking:ranking})
-    		});
-    	});
-    }else{
-    	admin.database().ref('/').update({bets:'not yet implemented'});
-    	admin.database().ref('/').update({ranking:'not yet implemented'});
-    	return 1;
-    }
+exports.calculateR = functions.https.onRequest((req, res) => {
+	const matchId = req.query.matchId;
+	console.log("se actualizara partido " + matchId);
+  
+	const matchRef = admin.database().ref('/matches/' + matchId);
 
+	var result = -2;
+
+	console.log(matchRef.key);
+
+	matchRef.on("value", function(snapshot) { 
+		var matchData = snapshot.val();
+
+		if(matchData.scoreTeam1 && matchData.scoreTeam2) {
+			result = matchData.scoreTeam2 - matchData.scoreTeam1;
+			matchData.result = !(result === 0) ? (result/Math.abs(result)) : result; 
+		}
+
+		console.log(matchData); 
+
+	}, function (errorObject) { 
+		console.log("Error al leer: " + errorObject.code); 
+	});
+
+	const userRef = admin.database().ref('/users'); 
+
+	userRef.on("value", function(snapshot) {
+		snapshot.forEach(childSnapshot => {
+			var item = childSnapshot.val();
+			var key = childSnapshot.key; 
+			item.bets.forEach((bet, betKey) => {
+				var points = 0; 
+				const userMatchRef = admin.database().ref('/users/' + childSnapshot.key + '/bets/' + betKey + '/matches/' + matchRef.key); 
+				userMatchRef.on("value", function(snapshot) { 
+					var matchData = snapshot.val();
+			
+					if(matchData.scoreTeam1 && matchData.scoreTeam2) {
+						var userResult = matchData.scoreTeam2 - matchData.scoreTeam1;
+						userResult = !(userResult === 0) ? (userResult/Math.abs(userResult)) : userResult; 
+					}
+
+					if(userResult === result) {
+						console.log(item.profile); 
+						console.log(matchData);
+						userMatchRef.child("points").on("value", function(snapshot) {
+							console.log("points: " + snapshot.key);
+							console.log("points: " + snapshot.val());							
+						});
+						userMatchRef.child("points").update("3");
+					}
+			
+				}, function (errorObject) { 
+					console.log("Error al leer: " + errorObject.code); 
+				});
+			});
+		});
+	}, function (errorObject) {
+		console.log("Error al leer " + errorObject.code);
+	});
+
+
+
+  
+	/* var ref = admin.database().ref('/ranking');
+  
+	ref.orderByChild("points").on("child_added", function(snapshot) {
+		items.push(snapshot);
+	  console.log("Key " + snapshot.key + ", puntaje es " + snapshot.val().points);
+	}); */
+  
+  /*
+	return rankingList.once('value').then(snapshot => {
+		snapshot.forEach((childSnapshot)=>{ 
+			return admin.database().ref('/ranking/' + childSnapshot.key).once('value').then(userPoints => {
+				console.log("userPoints " + userPoints.key);   			
+				console.log("userPoints " + userPoints.val().points);
+			});
+			//var key = childSnapshot.key;
+			//var data = childSnapshot.val(); 
+			// console.log("/ranking/" + key +"/" + data.profile.email + "/" + data.points);
+		});
+		
+	  return res.redirect(303, snapshot.ref);
+	});
+	*/
+	// Push the new message into the Realtime Database using the Firebase Admin SDK.
+	// return admin.database().ref('/matches').push({original: original}).then(snapshot => {
+	  // Redirect with 303 SEE OTHER to the URL of the pushed object in the Firebase console.
+	return res.redirect(303, '/matches');
+	//});
 });
+  
