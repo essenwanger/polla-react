@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { Container, Header, Content, Card, CardItem, Text, Body, H3, Button, H2, H1 } from 'native-base';
 import firebase from 'react-native-firebase';
+import HeaderPolla from '../components/HeaderPolla';
 
 export default class TermsScene extends Component {
 
@@ -46,11 +47,13 @@ export default class TermsScene extends Component {
   }
 
   onAcceptTerms(){
+    /*
     if(this.state.presentationMode === 'Login') {
       this.saveUser();
     } else {
       Actions.pop();
-    }
+    }*/
+    this.saveUser();
   }
 
   saveUser() {
@@ -80,15 +83,27 @@ export default class TermsScene extends Component {
     Actions.reset('dashboard', {user: this.state.user});
   }
 
+  _renderHeader(){
+    if(this.state.presentationMode === 'Login') {
+      return (<HeaderPolla pop={false} name='Terminos y condiciones' />);
+    }else{
+      return (<HeaderPolla pop={true}  name='Terminos y condiciones' />);
+    }
+  }
+  _renderButton(){
+    if(this.state.presentationMode === 'Login') {
+      return (<Button block onPress={this.onAcceptTerms}>
+                <Text>{this.state.textButton}</Text>
+              </Button>);
+    }
+  }
+
   render() {
     return (
       <Container>
-        <Header />
+        {this._renderHeader()}
         <Content>
           <Card>
-            <CardItem header>
-              <H3>Terminos y condiciones</H3>
-            </CardItem>
             <CardItem>
               <Body>
                 <Text>Ingrese sus resultados de la fase de grupos.</Text>
@@ -123,9 +138,7 @@ export default class TermsScene extends Component {
               <Text>Bizantinos</Text>
             </CardItem>
          </Card>
-         <Button block onPress={this.onAcceptTerms}>
-            <Text>{this.state.textButton}</Text>
-          </Button>
+         {this._renderButton()}
         </Content>
       </Container>
     );

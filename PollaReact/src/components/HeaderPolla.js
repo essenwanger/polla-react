@@ -24,7 +24,7 @@ export default class HeaderPolla extends Component {
     return (
       <Header hasTabs>
         <Left>{button}</Left>
-        <Body>
+        <Body style={{flex: 3}}>
           <Title>{this.props.name}</Title>
         </Body>
         <Right/>
