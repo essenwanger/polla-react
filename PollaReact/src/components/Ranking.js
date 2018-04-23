@@ -10,21 +10,47 @@ export default class Ranking extends Component {
     super(props);
     this.state = {
       user: props.user,
-      ranking : []
+      listItems : []
     };
   }
 
   componentDidMount() {
-    firebase.database().ref('ranking/').once('value').then((snapshot)=>{
-      var ranking=[];
-      snapshot.forEach(function(childSnapshot) {
-        var item = childSnapshot.val();
-        item.key = childSnapshot.key;
-        ranking.push(item);
-      });
+
+    firebase.database().ref('status/').once('value').then((snapshot)=>{
       this.setState({
-        ranking: ranking
+        status: snapshot.val()
       });
+      if(this.state.status === 'opened'){
+        firebase.database().ref('subscribed/').once('value').then((snapshot)=>{
+          var suscribeds=[];
+          snapshot.forEach(function(childSnapshot) {
+            var item = childSnapshot.val();
+            item.key = childSnapshot.key;
+            suscribeds.push({
+              profile : item.profile,
+              amount  : item.count
+            });
+          });
+          this.setState({
+            listItems: suscribeds
+          });
+        });
+      }else{
+        firebase.database().ref('ranking/').once('value').then((snapshot)=>{
+          var ranking=[];
+          snapshot.forEach(function(childSnapshot) {
+            var item = childSnapshot.val();
+            item.key = childSnapshot.key;
+            ranking.push({
+              profile : item.profile,
+              amount  : item.totalPoints
+            });
+          });
+          this.setState({
+            listItems: ranking
+          });
+        });
+      }
     });
   }
 
@@ -33,7 +59,7 @@ export default class Ranking extends Component {
   }
   
   render() {
-    var items=this.state.ranking.map((item, key) => (
+    var items=this.state.listItems.map((item, key) => (
       <ListItem avatar key={key} onPress={()=>this.onPressUser(item.profile)}>
         <Left>
           <Thumbnail small source={{uri: item.profile.picture}} />
@@ -42,7 +68,7 @@ export default class Ranking extends Component {
           <Text>{item.profile.givenName}</Text>
         </Body>
         <Right>
-          <Text>{item.points}</Text>
+          <Text>{item.amount}</Text>
         </Right>
       </ListItem>
     ));

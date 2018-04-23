@@ -60,7 +60,7 @@ export default class Profile extends Component {
               <Button info block transparent small onPress={this.onPressAbout}><Icon name='md-ionitron'/><Text>Acerca de Bizantinos</Text></Button>
             </CardItem>
             <CardItem bordered>
-              <Button primary block transparent small onPress={this.onPressTerms}><Icon name='md-glasses'/><Text>Terminos</Text></Button>
+              <Button info block transparent small onPress={this.onPressTerms}><Icon name='md-glasses'/><Text>Terminos</Text></Button>
             </CardItem>
             <CardItem>
               <Button danger block transparent small onPress={this.onPressLogout} ><Icon name='md-close-circle'/><Text>Cerrar Sesion</Text></Button>
