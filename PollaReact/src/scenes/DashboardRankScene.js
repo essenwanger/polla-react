@@ -19,17 +19,13 @@ export default class DashboardRankScene extends DashboardScene {
   }
 
   componentWillMount() {
-    firebase.database().ref('status/').once('value').then((snapshot)=>{
-      this.setState({
-        status: snapshot.val()
-      });
-    });
+    
   }
 
   render() {
     var fixture=null;
     if(this.state.status!=''){
-      fixture=(<Fixture user={this.state.user} status={this.state.status} />);
+      fixture=(<Fixture user={this.state.user} status={'closed'} />);
     }
     return (
       <Container>
