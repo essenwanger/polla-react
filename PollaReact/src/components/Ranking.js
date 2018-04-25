@@ -38,7 +38,8 @@ componentDidMount() {
           item.key = childSnapshot.key;
           ranking.push({
             profile : item.profile,
-            amount  : item.totalPoints
+            amount  : item.totalPoints,
+            bet : item.key
           });
         });
         this.setState({
@@ -48,24 +49,41 @@ componentDidMount() {
     }
   }
 
-  onPressUser(user){
-    Actions.dashRank({userRank: user});
+  onPressUser(user, betKey){
+    Actions.dashRank({userRank: user, bet: betKey});
   }
   
   render() {
-    var items=this.state.listItems.map((item, key) => (
-      <ListItem avatar key={key} onPress={()=>this.onPressUser(item.profile)}>
-        <Left>
-          <Thumbnail small source={{uri: item.profile.picture}} />
-        </Left>
-        <Body>
-          <Text>{item.profile.givenName}</Text>
-        </Body>
-        <Right>
-          <Text>{item.amount}</Text>
-        </Right>
-      </ListItem>
-    ));
+    var items=null;
+    if(this.props.status === 'opened'){
+      items=this.state.listItems.map((item, key) => (
+        <ListItem avatar key={key}>
+          <Left>
+            <Thumbnail small source={{uri: item.profile.picture}} />
+          </Left>
+          <Body>
+            <Text>{item.profile.givenName}</Text>
+          </Body>
+          <Right>
+            <Text>{item.amount}</Text>
+          </Right>
+        </ListItem>
+      ));
+    }else{
+      items=this.state.listItems.map((item, key) => (
+        <ListItem avatar key={key} onPress={()=>this.onPressUser(item.profile, item.bet)}>
+          <Left>
+            <Thumbnail small source={{uri: item.profile.picture}} />
+          </Left>
+          <Body>
+            <Text>{item.profile.givenName}</Text>
+          </Body>
+          <Right>
+            <Text>{item.amount}</Text>
+          </Right>
+        </ListItem>
+      ));
+    }
     return (
         <Content>
           <List>

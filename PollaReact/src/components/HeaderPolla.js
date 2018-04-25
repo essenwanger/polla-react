@@ -25,11 +25,11 @@ export default class HeaderPolla extends Component {
 
   onBackPress () {
     var user=this.props.user;
-    if (Actions.state.index === 0) {
-      return false;
+    if (Actions.state.index === 1 && Actions.state.routes[1].routeName === 'phase') {
+      Actions.reset('dashboard', {user: user});
+      return true;
     }
-    Actions.reset('dashboard', {user: user});
-    return true;
+    return false;
   }
 
   render() {

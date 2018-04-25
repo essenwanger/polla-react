@@ -94,7 +94,8 @@ export default class PhaseScene extends Component {
       matches: [],
       positionTable: []
     });
-    firebase.database().ref('preBetsAll/'+betKey+'/matches/'+groupKey+'/')
+    var betNode= this.state.status==='opened'? 'preBetsAll/' : 'betsAll/'
+    firebase.database().ref(betNode+betKey+'/matches/'+groupKey+'/')
     .once('value').then((snapshot)=>{
       var matches = [];
       snapshot.forEach((childSnapshot)=>{
@@ -108,7 +109,7 @@ export default class PhaseScene extends Component {
       });
     });
     if(groupKey.length===1){
-      firebase.database().ref('preBetsAll/'+betKey+'/positionTable/'+groupKey+'/')
+      firebase.database().ref(betNode+betKey+'/positionTable/'+groupKey+'/')
       .once('value').then((snapshot)=>{
         var positionTable = [];
         snapshot.forEach((childSnapshot)=>{

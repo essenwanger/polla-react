@@ -31,7 +31,8 @@ export default class Fixture extends Component {
 
   dataFirebase(){
     var betKey= this.state.bet;
-    firebase.database().ref('preBetsAll/'+betKey+'/groups/').once('value').then((snapshot)=>{
+    var betNode= this.state.status==='opened'? 'preBetsAll/' : 'betsAll/'
+    firebase.database().ref(betNode+betKey+'/groups/').once('value').then((snapshot)=>{
       var groups=[];
       snapshot.forEach((childSnapshot)=>{
         var childKey = childSnapshot.key;
