@@ -20,12 +20,12 @@ export default class LoginScene extends Component {
     this.setState({check: false});
     GoogleSignIn.signInPromise().then((user) => {
       var userLogin = this.parseUser(user);
-      firebase.database().ref('usersTest/'+user.userID).once('value').then((snapshot)=>{
+      firebase.database().ref('users/'+user.userID).once('value').then((snapshot)=>{
         this.setState({check: true});
         if(snapshot.val()===null){
           Actions.terms({user: userLogin});
         } else {
-          Actions.reset('dashboard', {user: userLogin});
+          Actions.reset('dashboard', {user: snapshot.val()});
         }
       });
     }, (e) => {
