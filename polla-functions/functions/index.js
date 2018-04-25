@@ -295,6 +295,78 @@ exports.calculatePositionTable = functions.database.ref('/users/{userId}/bets/{b
     	});
 });
 
+exports.calculateP = functions.database.ref('/bets/{userId}/matches/{groupId}/{matchId}')
+    .onWrite((event) => {
+		
+		console.log(">" + event.params);
+		return event.data.on('value').then((snapshot) => {
+			console.log(">" + snapshot);
+			console.log(">" + snapshot.data);
+			return 1;
+		})
+});
+
+exports.calculatePoints = functions.database.ref('/matches/{matchId}')
+	.onWrite((event) => {
+	//console.log("event.data: " + event.data);
+	//console.log("event.data.val: " + event.data.val());
+	const matchRef = event.data;
+
+	var userMatchRef;
+
+	var result = -2;
+	var matchGroup;
+
+	console.log(matchRef.key);
+
+	matchRef.on("value", function(snapshot) { 
+		var matchData = snapshot.val();
+
+		
+		matchGroup = matchData.group;
+
+		if(matchData.scoreTeam1 && matchData.scoreTeam2) {
+			result = matchData.scoreTeam2 - matchData.scoreTeam1;
+			matchData.result = !(result === 0) ? (result/Math.abs(result)) : result; 
+		}
+
+		userMatchRef = admin.database().ref('/bets/{userId}/matches/' + matchGroup + '/' + matchId)
+		userMatchRef.on("value", function(snapshot) { 
+			var matchData = snapshot.val();
+			var points = 0;
+			
+			if(matchData.scoreTeam1 && matchData.scoreTeam2) {
+				var userResult = matchData.scoreTeam2 - matchData.scoreTeam1;
+				userResult = !(userResult === 0) ? (userResult/Math.abs(userResult)) : userResult; 
+			}
+
+			if(userResult === result) {
+				points = "13";
+			} else {
+				points = "0";
+			}
+			
+			userMatchRef.update({
+				"points" : points
+			});
+			
+		}, function (errorObject) { 
+			console.log("Error al leer: " + errorObject.code); 
+		});
+		
+	return res.redirect(303, userMatchRef);
+
+	}, function (errorObject) { 
+		console.log("Error al leer: " + errorObject.code); 
+	});
+});
+
+
+
+
+
+
+
 exports.calculateR = functions.https.onRequest((req, res) => {
 	const matchId = req.query.matchId;
   
