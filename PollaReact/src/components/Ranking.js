@@ -14,44 +14,38 @@ export default class Ranking extends Component {
     };
   }
 
-  componentDidMount() {
-
-    firebase.database().ref('status/').once('value').then((snapshot)=>{
-      this.setState({
-        status: snapshot.val()
+componentDidMount() {
+    if(this.props.status === 'opened'){
+      firebase.database().ref('subscribedAll/').once('value').then((snapshot)=>{
+        var suscribeds=[];
+        snapshot.forEach(function(childSnapshot) {
+          var item = childSnapshot.val();
+          item.key = childSnapshot.key;
+          suscribeds.push({
+            profile : item.profile,
+            amount  : item.count
+          });
+        });
+        this.setState({
+          listItems: suscribeds
+        });
       });
-      if(this.state.status === 'opened'){
-        firebase.database().ref('subscribed/').once('value').then((snapshot)=>{
-          var suscribeds=[];
-          snapshot.forEach(function(childSnapshot) {
-            var item = childSnapshot.val();
-            item.key = childSnapshot.key;
-            suscribeds.push({
-              profile : item.profile,
-              amount  : item.count
-            });
-          });
-          this.setState({
-            listItems: suscribeds
+    }else{
+      firebase.database().ref('rankingAll/').once('value').then((snapshot)=>{
+        var ranking=[];
+        snapshot.forEach(function(childSnapshot) {
+          var item = childSnapshot.val();
+          item.key = childSnapshot.key;
+          ranking.push({
+            profile : item.profile,
+            amount  : item.totalPoints
           });
         });
-      }else{
-        firebase.database().ref('ranking/').once('value').then((snapshot)=>{
-          var ranking=[];
-          snapshot.forEach(function(childSnapshot) {
-            var item = childSnapshot.val();
-            item.key = childSnapshot.key;
-            ranking.push({
-              profile : item.profile,
-              amount  : item.totalPoints
-            });
-          });
-          this.setState({
-            listItems: ranking
-          });
+        this.setState({
+          listItems: ranking
         });
-      }
-    });
+      });
+    }
   }
 
   onPressUser(user){
