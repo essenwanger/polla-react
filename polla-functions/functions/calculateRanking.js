@@ -5,56 +5,65 @@ exports.initialize = (laPollaConfig) => {
   global.init = Object.freeze(laPollaConfig);
 };
 
-exports.calculateRanking = () => functions.database.ref('/matches')
+exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
     .onWrite(event => {
-    	var matches=[];
-    	var rankingOrder=[];
-    	//var ranking={};
-    	event.data.val().forEach((element)=>{
-    		if(element.scoreTeam1 && element.scoreTeam2){
-    			if(element.scoreTeam1>element.scoreTeam2){
-					element.result=1;
-	    		}else if(element.scoreTeam1<element.scoreTeam2){
-	    			element.result=2;
-	    		}else{
-	    			element.result=0;
-	    		}
-	    		matches[element.id]=element;
+    	
+    	var match = event.data.val();
+
+    	if(match.scoreTeam1 && match.scoreTeam2){
+			if(match.scoreTeam1>match.scoreTeam2){
+				match.result=1;
+    		}else if(match.scoreTeam1<match.scoreTeam2){
+    			match.result=2;
+    		}else{
+    			match.result=0;
     		}
-    	});
-    	return admin.database().ref('/users').once('value').then((snapshot)=>{
-    		snapshot.forEach((childSnapshot)=>{
-		        var item = childSnapshot.val();
-		        var key = childSnapshot.key;
-		        item.bets.forEach((bet, betKey)=>{
-		        	var points = 0;
-		        	bet.matches.forEach((element)=>{
-		        		if(element.scoreTeam1>element.scoreTeam2){
-							element.result=1;
-			    		}else if(element.scoreTeam1<element.scoreTeam2){
-			    			element.result=2;
+
+    		//para todos los usuarios registrados y aptos para jugar
+			return global.init.db.ref('/rankingAll/').once('value').then((snapshot)=>{
+				
+				snapshot.forEach((childSnapshot)=>{
+					var rankUser = childSnapshot.val();
+			        var rankKey  = childSnapshot.key;
+
+					return global.init.db.ref('/betsAll/'+rankKey+'/matches/'+match.group+'/'+event.params.idMatch)
+					.once('value').then((snapshot)=>{
+						var matchUser = snapshot.val();
+						if(matchUser.scoreTeam1>matchUser.scoreTeam2){
+							matchUser.result = 1;
+			    		}else if(matchUser.scoreTeam1<matchUser.scoreTeam2){
+			    			matchUser.result = 2;
 			    		}else{
-			    			element.result=0;
+			    			matchUser.result = 0;
 			    		}
-			    		if(!(matches[element.id] === undefined || matches[element.id] === null)){
-					      if(element.result === matches[element.id].result){
-					        points +=3;
-					      }
+			    		//implementar logica de puntos
+					    if(matchUser.result === match.result){
+					    	matchUser.points = 3;
+					    }else{
+					    	matchUser.points = 0;
 					    }
-		        	});
-		        	var rank={bet: betKey, points: points, profile: item.profile};
-		        	rankingOrder.push(rank);
-		        });
-		    });
-		    rankingOrder.sort(function(a,b){
-				return b.points - a.points;//descendente
+					    return global.init.db.ref('/betsAll/'+rankKey+'/matches/'+match.group+'/'+event.params.idMatch)
+						.update(matchUser);
+					});
+				});
 			});
-			/*
-			rankingOrder.forEach((item, id)=>{
-	        	ranking[item.profile.userID] = item;
-	        });*/
-		    return admin.database().ref('/').update({
-		      ranking: rankingOrder
-		    });
-    	});
+		}
+		return 0;
 });
+
+exports.calculateRanking = () => functions.database.ref('/betsAll/{betId}/matches/{faseGrupoId}/{matchId}')
+    .onWrite(event => {
+    	return global.init.db.ref('/betsAll/'+event.params.betId+'/matches/'+event.params.faseGrupoId)
+		.once('value').then((snapshot)=>{
+			var totalPoints = 0;
+			snapshot.forEach((childSnapshot)=>{
+				var match = childSnapshot.val();
+				var matchId = childSnapshot.key;
+				if(match.points){
+					totalPoints += match.points;
+				}
+			});
+			return global.init.db.ref('/rankingAll/'+event.params.betId).update({
+				totalPoints:totalPoints});
+		});
+    });
