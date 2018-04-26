@@ -26,7 +26,7 @@ exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
 					var rankUser = childSnapshot.val();
 			        var rankKey  = childSnapshot.key;
 
-					return global.init.db.ref('/betsAll/'+rankKey+'/matches/'+match.group+'/'+event.params.idMatch)
+					global.init.db.ref('/betsAll/'+rankKey+'/matches/'+match.group+'/'+event.params.idMatch)
 					.once('value').then((snapshot)=>{
 						var matchUser = snapshot.val();
 						if(matchUser.scoreTeam1>matchUser.scoreTeam2){
@@ -42,10 +42,11 @@ exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
 					    }else{
 					    	matchUser.points = 0;
 					    }
-					    return global.init.db.ref('/betsAll/'+rankKey+'/matches/'+match.group+'/'+event.params.idMatch)
+					    global.init.db.ref('/betsAll/'+rankKey+'/matches/'+match.group+'/'+event.params.idMatch)
 						.update(matchUser);
 					});
 				});
+				return 1;
 			});
 		}
 		return 0;
