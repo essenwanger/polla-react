@@ -17,6 +17,15 @@ exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
     			match.result=2;
     		}else{
     			match.result=0;
+    			if(match.scorePenaltyTeam1 && match.scorePenaltyTeam2){
+    				if(match.scorePenaltyTeam1>match.scorePenaltyTeam2){
+						match.resultPenalty=1;
+		    		}else if(match.scorePenaltyTeam1>match.scorePenaltyTeam2){
+		    			match.resultPenalty=2;
+		    		}else{
+		    			match.resultPenalty=0; //resultado parcial
+		    		}
+    			}
     		}
 
     		//para todos los usuarios registrados y aptos para jugar
@@ -38,8 +47,34 @@ exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
 			    		}
 			    		//implementar logica de puntos
 					    if(matchUser.result === match.result){
-					    	matchUser.points = 3;
+					    	matchUser.points = 3;//puntos por acertar al resultado (ganador / empate)
+					    	if(matchUser.scoreTeam1 === match.scoreTeam1 &&
+					    		matchUser.scoreTeam2 === match.scoreTeam2){
+					    		matchUser.points = 6;//puntos por acertar al score exacto
+					    	}
+					    	if(matchUser.result === 0){
+					    		if(matchUser.scorePenaltyTeam1 && matchUser.scorePenaltyTeam2){
+				    				if(matchUser.scorePenaltyTeam1>matchUser.scorePenaltyTeam2){
+										matchUser.resultPenalty=1;
+						    		}else if(matchUser.scorePenaltyTeam1<matchUser.scorePenaltyTeam2){
+						    			matchUser.resultPenalty=2;
+						    		}else{
+						    			matchUser.resultPenalty=0; //NO DEBERIA PASAR
+						    		}
+						    		if(matchUser.resultPenalty === match.resultPenalty){
+						    			if(matchUser.scorePenaltyTeam1 === match.scorePenaltyTeam1 &&
+					    					matchUser.scorePenaltyTeam2 === match.scorePenaltyTeam2){
+					    					matchUser.points += 6;//puntos extras por acertar al score exacto en penales
+					    				}else{
+					    					matchUser.points += 3;//puntos extras por acetar al ganador en penales
+					    				}
+						    		}
+				    			}
+					    	}
 					    }else{
+					    	if(matchUser.result === match.resultPenalty){
+					    		matchUser.points = 2; //puntos por acertar al resultado en penales
+					    	}
 					    	matchUser.points = 0;
 					    }
 					    global.init.db.ref('/betsAll/'+rankKey+'/matches/'+match.group+'/'+event.params.idMatch)
