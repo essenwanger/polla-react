@@ -7,8 +7,16 @@ exports.initialize = (laPollaConfig) => {
 
 exports.calculateNewPositionTable = () => functions.database.ref('/preBetsAll/{betId}/matches/{faseGrupoId}/{matchId}')
 	.onWrite((event) => {
-		if(event.params.faseGrupoId.length === 1 ){
+
+		var match = event.data.val();
+
+		if(event.params.faseGrupoId.length === 1 ){//Fase de grupos
 			var positionTable={};
+			
+			//TODO validar que se haya realizado un cambio significativo para positionTable
+			//scoreTeam1,scoreTeam2 diferente de nulo
+			//scoreTeam1,scoreTeam2 changed?
+
 			return global.init.db.ref('/preBetsAll/'+event.params.betId+'/matches/'+event.params.faseGrupoId).once('value').then((snapshot)=>{
     			snapshot.forEach((childSnapshot)=>{
     				var item=childSnapshot.val();
@@ -127,5 +135,68 @@ exports.calculateNewPositionTable = () => functions.database.ref('/preBetsAll/{b
 				return global.init.db.ref('/preBetsAll/'+event.params.betId+'/positionTable/')
 				.update(positionTableAux);
     		});
+		}else{
+
+			if(event.params.faseGrupoId==='Octavos' ||
+			   event.params.faseGrupoId==='Cuartos' ||
+			   event.params.faseGrupoId==='Semifinales'){
+
+				if(match.scoreTeam1 && match.scoreTeam2){
+
+					var results = {};
+					
+					if(match.scoreTeam1 > match.scoreTeam2){
+						results['[W'+match.id+']'] = {teamName:match.teamName1,team:match.team1};
+						results['[L'+match.id+']'] = {teamName:match.teamName2,team:match.team2};
+					}else if(match.scoreTeam1 < match.scoreTeam2){
+						results['[W'+match.id+']'] = {teamName:match.teamName2,team:match.team2};
+						results['[L'+match.id+']'] = {teamName:match.teamName1,team:match.team1};
+					}else{
+						if(match.scorePenaltyTeam1 && match.scorePenaltyTeam1){
+							if(match.scorePenaltyTeam1 > match.scorePenaltyTeam2){
+								results['[W'+match.id+']'] = {teamName:match.teamName1,team:match.team1};
+								results['[L'+match.id+']'] = {teamName:match.teamName2,team:match.team2};
+							}else if(match.scorePenaltyTeam1 < match.scorePenaltyTeam2){
+								results['[W'+match.id+']'] = {teamName:match.teamName2,team:match.team2};
+								results['[L'+match.id+']'] = {teamName:match.teamName1,team:match.team1};
+							}
+						}
+					}
+					var siguienteFase = 'Cuartos';
+					if(event.params.faseGrupoId==='Cuartos'){
+						siguienteFase = 'Semifinales';
+					}else if(event.params.faseGrupoId==='Semifinales'){
+						siguienteFase = 'Finales';
+					}
+
+					return global.init.db.ref('/preBetsAll/'+event.params.betId+'/matches/'+siguienteFase).once('value').then((snapshot)=>{
+						snapshot.forEach((childSnapshot)=>{
+							var nextMatch = childSnapshot.val();
+							var idMatch = childSnapshot.key;
+
+							if(!nextMatch['teamSource1'] || !nextMatch['teamSource2']){
+								nextMatch['teamSource1']=nextMatch.teamName1;
+								nextMatch['teamSource2']=nextMatch.teamName2;
+							}
+
+							if(results[nextMatch.teamSource1]){
+								nextMatch.team1     = results[nextMatch.teamSource1].team;
+								nextMatch.teamName1 = results[nextMatch.teamSource1].teamName;
+							}
+							if(results[nextMatch.teamSource2]){
+								nextMatch.team2     = results[nextMatch.teamSource2].team;
+								nextMatch.teamName2 = results[nextMatch.teamSource2].teamName;
+							}
+							if(results[nextMatch.teamSource1] || results[nextMatch.teamSource2]){
+								global.init.db.ref(
+									'/preBetsAll/'+event.params.betId+
+									'/matches/'+siguienteFase+
+									'/'+idMatch).update(nextMatch);
+							}
+						});
+					});
+				}
+			}
 		}
+		return 1;
 	});
