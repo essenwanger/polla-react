@@ -194,6 +194,7 @@ exports.calculateNewPositionTable = () => functions.database.ref('/preBetsAll/{b
 									'/'+idMatch).update(nextMatch);
 							}
 						});
+						return 1;
 					});
 				}
 			}
