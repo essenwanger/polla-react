@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { Actions } from 'react-native-router-flux';
-import { Container, Content, Footer, FooterTab, Header, Body, Left, Right, Text, Title, Button, View, Icon, H1, Spinner, Toast, Root, Thumbnail, Card, CardItem } from 'native-base';
-import { Image } from 'react-native';
+import { View, Image, Platform, StyleSheet} from 'react-native';
+import { Text, Title, Button, Icon, H1, Spinner, Toast} from 'native-base';
 import firebase from 'react-native-firebase';
 import GoogleSignIn from 'react-native-google-sign-in';
-import { Alert, Platform } from 'react-native';
 
 export default class LoginScene extends Component {
 
@@ -29,7 +28,12 @@ export default class LoginScene extends Component {
         }
       });
     }, (e) => {
-      console.log('signInPromise rejected', e);
+      Toast.show({
+         text: 'No puede iniciar sesión con Google',
+         position: 'bottom',
+         buttonText: 'Ok',
+         type: 'danger'
+       });
       this.setState({check: true});
     });
   }
@@ -37,19 +41,6 @@ export default class LoginScene extends Component {
   componentDidMount() {
     this.setupGoogleSignIn();
   }
-
-  //componentDidMount() {
-    /*Toast.show({
-              text: 'Error conexion',
-              position: 'bottom',
-              buttonText: 'Ok',
-              type: 'danger'
-            });*/
-    /*Alert.alert(
-      'Error conexion',
-      'Preguntar a Miguel'
-    );*/
-  //}
 
   parseUser(user){
     return {
@@ -69,7 +60,12 @@ export default class LoginScene extends Component {
         serverClientID: '991338042977-oc4j8o5t8u46ups80kbbkrjome59o6rm.apps.googleusercontent.com'
       });
     } catch(err) {
-      console.log("Play services error", err.code, err.message);
+      Toast.show({
+        text: 'No se puede activar Google Services',
+        position: 'bottom',
+        buttonText: 'Ok',
+        type: 'danger'
+      });
     }
 
     //Verificar que exista usuario en Firebase
@@ -84,7 +80,12 @@ export default class LoginScene extends Component {
         }
       });
     }, (e) => {
-      console.log('signInSilentlyPromise rejected', e);
+      Toast.show({
+        text: 'No puede iniciar sesión con Google',
+        position: 'bottom',
+        buttonText: 'Ok',
+        type: 'danger'
+      });
       this.setState({check: true});
     });
 
@@ -92,29 +93,71 @@ export default class LoginScene extends Component {
 
   render() {
     return (
-      <Root>
-        <Container>
-          <Image source={require('../img/background.png')} style={{ flex: 1, resizeMode: 'cover', height: undefined, width: undefined }} />
-          <Footer>
-            <FooterTab style={{backgroundColor:"#00AE33"}}>
-              { this.state.check ? 
-              ( 
-                <Button onPress={this.onPressLogin}>
-                  <Icon style={{color:"#FFF"}}name='logo-googleplus' />
-                  <Text style={{color:"#FFF"}}>Comenzar a jugar</Text>
-                </Button> 
-              )
-              :
-              ( 
-                <Button >
-                  <Spinner color='#FFF' ></Spinner>
-                </Button> 
-              )
-              }
-            </FooterTab>
-          </Footer>
-        </Container>
-      </Root>
+      <View style={styles.content} >
+        <View style={styles.imageContent} >
+          <Image
+            style={styles.imageBackground}
+            source={require('../img/background.png')}
+          />
+        </View>
+        <View style={styles.bodyContent} >
+          <Image source={require('../img/logo.png')} style={styles.logoSize} />
+          <Text style={styles.whiteText}>by Bizantinos</Text>
+        </View>
+        <View style={styles.footerContent} >
+          { this.state.check ? 
+            ( 
+              <Button full transparent onPress={this.onPressLogin}>
+                <Icon style={styles.whiteText} name='logo-googleplus' />
+                <Text style={styles.whiteText}>Comenzar a jugar</Text>
+              </Button>
+            )
+            :
+            ( 
+              <Button full transparent>
+                <Spinner color='#FFF' ></Spinner>
+                <Text style={styles.whiteText}>Cargando...</Text>
+              </Button>
+            )
+          }
+        </View>        
+      </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  content: {
+    flex: 1,
+    backgroundColor: '#00AE33'
+  },
+  imageContent: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%'
+  },
+  bodyContent: {
+    flex: 1,
+    backgroundColor: 'transparent',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  footerContent: {
+    backgroundColor: '#00AE33'
+  },
+  imageBackground: {
+    flex: 1, 
+    resizeMode: 'cover', 
+    height: undefined, 
+    width: undefined
+  },
+  whiteText: {
+    color:"#FFF"
+  },
+  logoSize: {
+    height: 60, 
+    width: 60
+  }
+});
