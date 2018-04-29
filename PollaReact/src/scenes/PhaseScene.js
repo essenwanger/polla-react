@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Actions } from 'react-native-router-flux';
-import { Container, Tabs, Tab, TabHeading, Icon, Content, Card, CardItem, Left, Body, Right, Grid, Col,
-  Text, Button, Footer, FooterTab } from 'native-base';
+import { Container, Tabs, Tab, TabHeading, Icon } from 'native-base';
 import HeaderPolla from './../components/HeaderPolla';
-import Match from './../components/Match';
-import PositionTableTeam from './../components/PositionTableTeam';
+import Matches from './../components/Matches';
+import PositionTable from './../components/PositionTable';
+import FooterPhase from './../components/FooterPhase';
 import firebase from 'react-native-firebase';
 
 export default class PhaseScene extends Component {
@@ -15,27 +15,68 @@ export default class PhaseScene extends Component {
     this.onScore = this.onScore.bind(this);
     this.state = {
       status: this.props.status,
+      bet: props.bet,
       matches: [],
       positionTable: []
     };
   }
 
-  onPressButton(position, group, name, order){
-    Actions.refresh({user: this.props.user, group: group, status: this.state.status, 
-      groupName: name, order: order, navigateGroups: this.props.navigateGroups,
-      position: position});
+  onPressButton(position){
+    var groups=this.props.groups;
+    var group=groups[position].group;
+    if(group.length!==1 && this.tabView.state.currentPage===1){
+      this.tabView.goToPage(0);
+      setTimeout(() => {
+        Actions.refresh({user: this.props.user, status: this.state.status, 
+        groups: this.props.groups, bet: this.state.bet, position: position});
+      }, 500);
+    }else{
+      Actions.refresh({user: this.props.user, status: this.state.status, 
+        groups: this.props.groups, bet: this.state.bet, position: position});
+    }
   }
 
   onScore(id, team, score){
-    if(team==='1'){
-      firebase.database().ref('/users/'+this.props.user.userID+'/bets/0/matches/'+id).update({
-        scoreTeam1: score
-      });
-    }else{
-      firebase.database().ref('/users/'+this.props.user.userID+'/bets/0/matches/'+id).update({
-        scoreTeam2: score
-      });
-    }
+    firebase.database().ref('typeBets/all/status/').once('value').then((snapshot)=>{
+      if(snapshot.val()==='opened'){
+        var betKey= this.state.bet;
+        var position= this.props.position;
+        var groupKey= this.props.groups[position].group;
+        if(team==='1'){
+          firebase.database().ref('preBetsAll/'+betKey+'/matches/'+groupKey+'/'+id+'/').update({
+            scoreTeam1: score
+          });
+        }else{
+          firebase.database().ref('preBetsAll/'+betKey+'/matches/'+groupKey+'/'+id+'/').update({
+            scoreTeam2: score
+          });
+        }
+        firebase.database().ref('preBetsAll/'+betKey+'/matches/'+groupKey+'/')
+        .once('value').then((snapshot)=>{
+          var total = 0;
+          var complete = 0;
+          snapshot.forEach((childSnapshot)=>{
+            var childKey = childSnapshot.key;
+            var childData = childSnapshot.val();
+            total=total+2;
+            if(childData.scoreTeam1!==''){
+              complete=complete+1;
+            }
+            if(childData.scoreTeam2!==''){
+              complete=complete+1;
+            }
+          });
+          var percentage=complete/total;
+          percentage=Math.round(percentage * 10000) / 100;
+          firebase.database().ref('preBetsAll/'+betKey+'/groups/'+position+'/').update({
+            percentage: percentage
+          });
+        });
+      }else{
+        var user=this.props.user;
+        Actions.reset('dashboard', {user: user});
+      }
+    });
   }
 
   componentWillMount() {
@@ -47,11 +88,15 @@ export default class PhaseScene extends Component {
   }
 
   dataFirebase(props){
-    var userID = props.user.userID;
-    var group = props.group;
-    var order = props.order;
-    firebase.database().ref('users/'+userID+'/bets/0/matches/')
-    .orderByChild(order).equalTo(group).once('value').then((snapshot)=>{
+    var betKey= props.bet;
+    var groupKey= props.groups[props.position].group;
+    this.setState({
+      matches: [],
+      positionTable: []
+    });
+    var betNode= this.state.status==='opened'? 'preBetsAll/' : 'betsAll/'
+    firebase.database().ref(betNode+betKey+'/matches/'+groupKey+'/')
+    .once('value').then((snapshot)=>{
       var matches = [];
       snapshot.forEach((childSnapshot)=>{
         var childKey = childSnapshot.key;
@@ -63,97 +108,41 @@ export default class PhaseScene extends Component {
         matches: matches
       });
     });
-    firebase.database().ref('users/'+userID+'/bets/0/positionTable/'+group)
-    .once('value').then((snapshot)=>{
-      var positionTable = [];
-      snapshot.forEach((childSnapshot)=>{
-        var childKey = childSnapshot.key;
-        var childData = childSnapshot.val();
-        positionTable.push(childData);
+    if(groupKey.length===1){
+      firebase.database().ref(betNode+betKey+'/positionTable/'+groupKey+'/')
+      .once('value').then((snapshot)=>{
+        var positionTable = [];
+        snapshot.forEach((childSnapshot)=>{
+          var childKey = childSnapshot.key;
+          var childData = childSnapshot.val();
+          positionTable.push(childData);
+        });
+        this.setState({
+          positionTable: positionTable
+        });
       });
-      this.setState({
-        positionTable: positionTable
-      });
-    });
+    }
   }
 
   render() {
-    var matchesComponent=this.state.matches.map((item, key) => (
-      <Match key={item.id} data={item} status={this.state.status} onScore={this.onScore}/>
-    ));
-    var positionTableComponent=null;
-    if(this.props.order==='group'){
-      positionTableComponent=this.state.positionTable.map((item, key) => (
-        <PositionTableTeam key={item.team} team={item.team} name={item.teamName} 
-        mp={item.played} gf={item.goalsFor} 
-        ga={item.goalsAgainst} pt={item.points} />
-      ));
-    }
-    var navigateGroups=this.props.navigateGroups;
-    var positionLeft=this.props.position-1;
-    var positionRight=this.props.position+1;
-    var buttonLeft=navigateGroups[positionLeft]===undefined?
-    (<Button><Text></Text></Button>):
-    (<Button onPress={()=> this.onPressButton(positionLeft, navigateGroups[positionLeft].group, 
-      navigateGroups[positionLeft].groupName, navigateGroups[positionLeft].order)}>
-      <Text>{navigateGroups[positionLeft].groupName}</Text>
-    </Button>);
-    var buttonRight=navigateGroups[positionRight]===undefined?
-    (<Button><Text></Text></Button>):
-    (<Button onPress={()=> this.onPressButton(positionRight, navigateGroups[positionRight].group, 
-      navigateGroups[positionRight].groupName, navigateGroups[positionRight].order)}>
-      <Text>{navigateGroups[positionRight].groupName}</Text>
-    </Button>);
+    var groups=this.props.groups;
+    var group=groups[this.props.position].group;
+    var groupName=group.length===1 ? ('Grupo '+group) : (group);
     return (
       <Container>
-        <HeaderPolla pop={true} name={this.props.groupName} user={this.props.user} />
-        <Tabs>
+        <HeaderPolla pop name={groupName} user={this.props.user} />
+        <Tabs ref={(tabView) => { this.tabView = tabView }}>
           <Tab heading={ <TabHeading><Icon name="md-calendar" /></TabHeading>}>
-            <Content padder>
-              <Card>
-                {matchesComponent}
-              </Card>
-            </Content>
+            <Matches matches={this.state.matches} status={this.state.status} onScore={this.onScore}/>
           </Tab>
-          {this.props.order==='group' &&
-            <Tab heading={ <TabHeading><Icon name="md-grid" size={27} color="#fff" /></TabHeading>}>
-              <Content padder>
-                <Card>
-                  <CardItem bordered>
-                    <Left>
-                      <Body>
-                        <Text>Equipos</Text>
-                      </Body>
-                    </Left>
-                    <Right>
-                      <Grid>
-                        <Col style={{ alignItems: 'flex-end', justifyContent: 'center'}}>
-                          <Text>MP</Text>
-                        </Col>
-                        <Col style={{ alignItems: 'flex-end', justifyContent: 'center'}}>
-                          <Text>GF</Text>
-                        </Col>
-                        <Col style={{ alignItems: 'flex-end', justifyContent: 'center'}}>
-                          <Text>GA</Text>
-                        </Col>
-                        <Col style={{ alignItems: 'flex-end', justifyContent: 'center'}}>
-                          <Text>PT</Text>
-                        </Col>
-                      </Grid>
-                    </Right>
-                  </CardItem>
-                  {positionTableComponent}
-                </Card>
-              </Content>
+          {group.length===1 &&
+            <Tab heading={ <TabHeading><Icon name="md-grid" /></TabHeading>}>
+              <PositionTable positionTable={this.state.positionTable} />
             </Tab>
           }
         </Tabs>
-        <Footer>
-          <FooterTab>
-            {buttonLeft}
-            {buttonRight}
-          </FooterTab>
-        </Footer>
+        <FooterPhase position={this.props.position} groups={this.props.groups} 
+        onPressButton={this.onPressButton}/>
       </Container>
     );
   }

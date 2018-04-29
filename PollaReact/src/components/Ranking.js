@@ -10,42 +10,80 @@ export default class Ranking extends Component {
     super(props);
     this.state = {
       user: props.user,
-      ranking : []
+      listItems : []
     };
   }
 
-  componentDidMount() {
-    firebase.database().ref('ranking/').once('value').then((snapshot)=>{
-      var ranking=[];
-      snapshot.forEach(function(childSnapshot) {
-        var item = childSnapshot.val();
-        item.key = childSnapshot.key;
-        ranking.push(item);
+componentDidMount() {
+    if(this.props.status === 'opened'){
+      firebase.database().ref('subscribedAll/').once('value').then((snapshot)=>{
+        var suscribeds=[];
+        snapshot.forEach(function(childSnapshot) {
+          var item = childSnapshot.val();
+          item.key = childSnapshot.key;
+          suscribeds.push({
+            profile : item.profile,
+            amount  : item.count
+          });
+        });
+        this.setState({
+          listItems: suscribeds
+        });
       });
-      this.setState({
-        ranking: ranking
+    }else{
+      firebase.database().ref('rankingAll/').once('value').then((snapshot)=>{
+        var ranking=[];
+        snapshot.forEach(function(childSnapshot) {
+          var item = childSnapshot.val();
+          item.key = childSnapshot.key;
+          ranking.push({
+            profile : item.profile,
+            amount  : item.totalPoints,
+            bet : item.key
+          });
+        });
+        this.setState({
+          listItems: ranking
+        });
       });
-    });
+    }
   }
 
-  onPressUser(user){
-    Actions.dashRank({userRank: user});
+  onPressUser(user, betKey){
+    Actions.dashRank({userRank: user, bet: betKey});
   }
   
   render() {
-    var items=this.state.ranking.map((item, key) => (
-      <ListItem avatar key={key} onPress={()=>this.onPressUser(item.profile)}>
-        <Left>
-          <Thumbnail small source={{uri: item.profile.picture}} />
-        </Left>
-        <Body>
-          <Text>{item.profile.givenName}</Text>
-        </Body>
-        <Right>
-          <Text>{item.points}</Text>
-        </Right>
-      </ListItem>
-    ));
+    var items=null;
+    if(this.props.status === 'opened'){
+      items=this.state.listItems.map((item, key) => (
+        <ListItem avatar key={key}>
+          <Left>
+            <Thumbnail small source={{uri: item.profile.picture}} />
+          </Left>
+          <Body>
+            <Text>{item.profile.givenName}</Text>
+          </Body>
+          <Right>
+            <Text>{item.amount}</Text>
+          </Right>
+        </ListItem>
+      ));
+    }else{
+      items=this.state.listItems.map((item, key) => (
+        <ListItem avatar key={key} onPress={()=>this.onPressUser(item.profile, item.bet)}>
+          <Left>
+            <Thumbnail small source={{uri: item.profile.picture}} />
+          </Left>
+          <Body>
+            <Text>{item.profile.givenName}</Text>
+          </Body>
+          <Right>
+            <Text>{item.amount}</Text>
+          </Right>
+        </ListItem>
+      ));
+    }
     return (
         <Content>
           <List>

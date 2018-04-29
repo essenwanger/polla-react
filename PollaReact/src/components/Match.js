@@ -38,6 +38,7 @@ export default class Match extends Component {
   render() {
     var score1=null;
     var score2=null;
+    var points=null;
     if(this.state.status==='opened'){
       score1=(
         <Col size={20}>
@@ -57,18 +58,25 @@ export default class Match extends Component {
         );
     }else{
       score1=(
-        <Col size={20}>
+        <Col size={10}>
           <Body style={{justifyContent: 'center'}}>
             <Text>{this.state.scoreTeam1}</Text>
-            <Text>{this.state.scoreTeam1}</Text>
+            <Text>{this.props.data.scoreTeamReal1}</Text>
           </Body>
         </Col>
         );
       score2=(
-        <Col style={{alignItems: 'flex-end'}} size={20}>
+        <Col style={{alignItems: 'flex-end'}} size={10}>
           <Body style={{justifyContent: 'center', alignItems: 'flex-end'}}>
             <Text>{this.state.scoreTeam2}</Text>
-            <Text>{this.state.scoreTeam2}</Text>
+            <Text>{this.props.data.scoreTeamReal2}</Text>
+          </Body>
+        </Col>
+        );
+      points=(
+        <Col style={{flexDirection: 'row'}} size={20}>
+          <Body style={{justifyContent: 'center', alignItems: 'flex-end'}}>
+            <Text>{this.props.data.points}</Text>
           </Body>
         </Col>
         );
@@ -92,6 +100,7 @@ export default class Match extends Component {
             <Thumbnail small source={this.teamFlag2} 
             style={{ borderColor: '#000000', borderWidth: 0.2}}/>
           </Col>
+          {points}
         </Grid>
       </CardItem>
     );

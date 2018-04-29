@@ -24,7 +24,7 @@ export default class LoginScene extends Component {
         if(snapshot.val()===null){
           Actions.terms({user: userLogin});
         } else {
-          Actions.reset('dashboard', {user: userLogin});
+          Actions.reset('dashboard', {user: snapshot.val()});
         }
       });
     }, (e) => {
@@ -61,12 +61,12 @@ export default class LoginScene extends Component {
     //Verificar que exista usuario en Firebase
     GoogleSignIn.signInSilentlyPromise().then((user) => {
       var userLogin = this.parseUser(user);
-      firebase.database().ref('users/'+user.userID).once('value').then((snapshot)=>{
+      firebase.database().ref('users/'+user.userID+'/').once('value').then((snapshot)=>{
         if(snapshot.val()===null){
           Actions.terms({user: userLogin});
           this.setState({check: true});
         } else {
-          Actions.reset('dashboard', {user: userLogin});
+          Actions.reset('dashboard', {user: snapshot.val()});
         }
       });
     }, (e) => {
