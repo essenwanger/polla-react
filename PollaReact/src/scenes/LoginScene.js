@@ -80,12 +80,6 @@ export default class LoginScene extends Component {
         }
       });
     }, (e) => {
-      Toast.show({
-        text: 'No puede iniciar sesión con Google',
-        position: 'bottom',
-        buttonText: 'Ok',
-        type: 'danger'
-      });
       this.setState({check: true});
     });
 
