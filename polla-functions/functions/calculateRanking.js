@@ -31,13 +31,14 @@ exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
     		//para todos los usuarios registrados y aptos para jugar
 			return global.init.db.ref('/rankingAll/').once('value').then((snapshot)=>{
 				
-				snapshot.forEach((childSnapshot)=>{
+				return snapshot.forEach( childSnapshot =>{
+					
 					var rankUser = childSnapshot.val();
 			        var rankKey  = childSnapshot.key;
 
-					global.init.db.ref('/betsAll/'+rankKey+'/matches/'+match.group+'/'+event.params.idMatch)
-					.once('value').then((snapshot)=>{
-						var matchUser = snapshot.val();
+			        global.init.db.ref('/betsAll/'+rankKey+'/matches/'+match.group+'/'+event.params.idMatch)
+			        .once('value').then(snapshotUserMatch => {
+			        	var matchUser = snapshotUserMatch.val();	
 						if(matchUser.scoreTeam1>matchUser.scoreTeam2){
 							matchUser.result = 1;
 			    		}else if(matchUser.scoreTeam1<matchUser.scoreTeam2){
@@ -45,6 +46,8 @@ exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
 			    		}else{
 			    			matchUser.result = 0;
 			    		}
+			    		matchUser.scoreTeamReal1 = match.scoreTeam1;
+			    		matchUser.scoreTeamReal2 = match.scoreTeam2;
 			    		//implementar logica de puntos
 					    if(matchUser.result === match.result){
 					    	matchUser.points = 3;//puntos por acertar al resultado (ganador / empate)
@@ -77,11 +80,33 @@ exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
 					    	}
 					    	matchUser.points = 0;
 					    }
-					    global.init.db.ref('/betsAll/'+rankKey+'/matches/'+match.group+'/'+event.params.idMatch)
+					    //puntos extras por atinar al equipo clasificado en llave
+					    if(matchUser.group.length > 1){ //solo llaves
+					    	//equipos desbloqueados, no es necesario pero permite hacer pruebas con data <100%
+					    	if(matchUser.teamSource1 && matchUser.teamSource2){
+						    	if(matchUser.group === 'Final' ){
+						    		if(matchUser.team1 === match.team1){
+								    	matchUser.points += 5;
+								    }
+								    if(matchUser.team2 === match.team2){
+								    	matchUser.points += 5;
+								    }
+						    	}else{
+						    		if(matchUser.team1 === match.team1){
+								    	matchUser.points += 2;
+								    }
+								    if(matchUser.team2 === match.team2){
+								    	matchUser.points += 2;
+								    }
+						    	}
+						    }
+					    }					
+					    return global.init.db.ref('/betsAll/'+rankKey+'/matches/'+match.group+'/'+event.params.idMatch)
 						.update(matchUser);
-					});
+			        }).catch(error => {
+    					this.errorMessage = 'Error - ' + error.message
+  					});
 				});
-				return 1;
 			});
 		}
 		return 0;

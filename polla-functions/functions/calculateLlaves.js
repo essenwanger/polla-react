@@ -64,5 +64,6 @@ exports.calculateLlavesOctavos = () => functions.database.ref('/preBetsAll/{betI
 					'/matches/Octavos/'+childSnapshot.key).update(match);
 			}
 	    });
+	    return 1;
 	});
 });

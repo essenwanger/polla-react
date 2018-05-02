@@ -87,6 +87,10 @@ export default class PhaseScene extends Component {
     this.dataFirebase(nextProps);
   }
 
+  updateData(){
+    this.dataFirebase(this.props);
+  }
+
   dataFirebase(props){
     var betKey= props.bet;
     var groupKey= props.groups[props.position].group;
@@ -131,7 +135,7 @@ export default class PhaseScene extends Component {
     return (
       <Container>
         <HeaderPolla pop name={groupName} user={this.props.user} />
-        <Tabs ref={(tabView) => { this.tabView = tabView }}>
+        <Tabs ref={(tabView) => { this.tabView = tabView }} onChangeTab={({ i, ref, from })=> this.updateData()}>
           <Tab heading={ <TabHeading><Icon name="md-calendar" /></TabHeading>}>
             <Matches matches={this.state.matches} status={this.state.status} onScore={this.onScore}/>
           </Tab>
