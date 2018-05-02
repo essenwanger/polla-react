@@ -24,7 +24,9 @@ export default class LoginScene extends Component {
         if(snapshot.val()===null){
           Actions.terms({user: userLogin});
         } else {
-          Actions.reset('dashboard', {user: snapshot.val()});
+          var userSave = snapshot.val();
+          var betKey = snapshot.child("bets/all/0/betKey").val();//Siempre muestra la primera apuesta de ALL
+          Actions.reset('dashboard', {user: userSave, betKey: betKey});
         }
       });
     }, (e) => {
@@ -76,7 +78,9 @@ export default class LoginScene extends Component {
           Actions.terms({user: userLogin});
           this.setState({check: true});
         } else {
-          Actions.reset('dashboard', {user: snapshot.val()});
+          var userSave = snapshot.val();
+          var betKey = snapshot.child("bets/all/0/betKey").val();//Siempre muestra la primera apuesta de ALL
+          Actions.reset('dashboard', {user: userSave, betKey: betKey});
         }
       });
     }, (e) => {

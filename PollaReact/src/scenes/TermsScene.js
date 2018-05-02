@@ -70,17 +70,22 @@ export default class TermsScene extends Component {
   }
 
   prepareTerm() {
-    firebase.database().ref('users/'+this.user.userID).once('value').then((snapshot)=>{
+    firebase.database().ref('users/'+this.state.user.userID).once('value').then((snapshot)=>{
       if(snapshot.val()===null){
         this.setState({createUser: true});
       } else {
         this.setState({user: snapshot.val()});
       }
     });
-    firebase.database().ref('typeBets/'+this.codeTypeOfBet).once('value').then((snapshot)=>{
+    firebase.database().ref('typeBets/'+this.state.codeTypeOfBet).once('value').then((snapshot)=>{
       this.setState({typeOfBet: snapshot.val()});
       firebase.database().ref('subscribed' + this.state.typeOfBet.suffix + '/' + this.state.user.userID + '/').once('value').then((snapshot)=>{
-        this.setState({countBets: snapshot.val().count});
+        if(snapshot.val() === null) {
+          this.setState({countBets: 0});
+        } else {
+          this.setState({countBets: snapshot.val().count});
+        }
+        
       });
     });
     
@@ -89,7 +94,7 @@ export default class TermsScene extends Component {
   onAcceptTerms(){
 
     //Crear Apuesta
-    var dateTerms = dateUTCMinus5();
+    var dateTerms = this.dateUTCMinus5();
     var preBet = {
       profile: this.state.user,
       completed: false,
@@ -103,11 +108,10 @@ export default class TermsScene extends Component {
     var refPrePush = refPreBets.push(preBet);
 
     //alta de usuario en /users/{id-google}/
-    var userFirebase = {};
+    var userFirebase = {
+      profile: this.state.user
+    };
     if (this.state.createUser) {//Alta de Usuario
-      userFirebase = {
-        profile: this.state.user
-      };
       firebase.database().ref('users/' + this.state.user.userID + '/').set(userFirebase);
 
       //alta del usuario en el ranking /ranking/
@@ -118,9 +122,6 @@ export default class TermsScene extends Component {
       firebase.database().ref('subscribed' + this.state.typeOfBet.suffix + '/' + this.state.user.userID + '/').set(subscribed);
 
     } else {
-      userFirebase = {
-        profile: this.state.user
-      };
       firebase.database().ref('subscribed' + this.state.typeOfBet.suffix + '/' + this.state.user.userID + '/count').set((this.state.countBets+1));
     }
 
@@ -128,10 +129,10 @@ export default class TermsScene extends Component {
       betKey: refPrePush.key,
       completed: false
     };
-    firebase.database().ref('users/' + this.state.user.userID + '/bets/'+ this.state.codeTypeOfBet + '/'+ refPrePush.key).set(userBet);
+    firebase.database().ref('users/' + this.state.user.userID + '/bets/'+ this.state.codeTypeOfBet + '/'+ this.state.countBets).set(userBet);
 
     //Navegando al dashboard 
-    Actions.reset('dashboard', {user: userFirebase});
+    Actions.reset('dashboard', {user: userFirebase, betKey: refPrePush.key});
   }
 
   dateUTCMinus5(){
@@ -153,7 +154,7 @@ export default class TermsScene extends Component {
   }
   _renderButton(){
     if(this.state.presentationMode === 'Subscribe') {
-      return (<Button block onPress={this.onAcceptTerms}>
+      return (<Button full success onPress={this.onAcceptTerms}>
                 <Text>Aceptar</Text>
               </Button>);
     }
