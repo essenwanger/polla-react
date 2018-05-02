@@ -10,24 +10,27 @@ export default class TermsScene extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: props.user,//Para apuestas adicionales enviar siempre.
+      user: props.user,
+      createUser: false,
       matches: {},
-      roups: [],
+      groups: [],
       positionTable: [], 
-      typeOfBet: props.typeOfBet === undefined ? 'All' : props.typeOfBet,
-      presentationMode : props.presentationMode === undefined ? 'Login' : props.presentationMode,
-      textButton: props.presentationMode === undefined ? 'Aceptar' : ' Salir'
+      codeTypeOfBet: props.codeTypeOfBet === undefined ? 'all' : props.codeTypeOfBet,
+      typeOfBet: {},
+      presentationMode : props.presentationMode === undefined ? 'Subscribe' : props.presentationMode,
+      countBets: 0
     };    
     this.onAcceptTerms = this.onAcceptTerms.bind(this);
   }
 
   componentDidMount() {
-    if(this.state.presentationMode === 'Login') {
-      this.prepareLogin();
+    if(this.state.presentationMode === 'Subscribe') {
+      this.prepareSubscribe();
     }
+    this.prepareTerm();
   }
 
-  prepareLogin() {
+  prepareSubscribe() {
     //preparando matches
     firebase.database().ref('matches/').once('value').then((snapshot)=>{
       var matches={};
@@ -66,55 +69,92 @@ export default class TermsScene extends Component {
     });
   }
 
+  prepareTerm() {
+    firebase.database().ref('users/'+this.user.userID).once('value').then((snapshot)=>{
+      if(snapshot.val()===null){
+        this.setState({createUser: true});
+      } else {
+        this.setState({user: snapshot.val()});
+      }
+    });
+    firebase.database().ref('typeBets/'+this.codeTypeOfBet).once('value').then((snapshot)=>{
+      this.setState({typeOfBet: snapshot.val()});
+      firebase.database().ref('subscribed' + this.state.typeOfBet.suffix + '/' + this.state.user.userID + '/').once('value').then((snapshot)=>{
+        this.setState({countBets: snapshot.val().count});
+      });
+    });
+    
+  }
+
   onAcceptTerms(){
 
+    //Crear Apuesta
+    var dateTerms = dateUTCMinus5();
     var preBet = {
-      profile: this.state.user,//Verificar que exista primero
+      profile: this.state.user,
       completed: false,
       payable: false,
       matches: this.state.matches,
       groups: this.state.groups,
       positionTable: this.state.positionTable,
-      date: new Date()
+      date: dateTerms
     };
-
-    var refPreBets = firebase.database().ref('preBets' + this.state.typeOfBet);
+    var refPreBets = firebase.database().ref('preBets' + this.state.typeOfBet.suffix);
     var refPrePush = refPreBets.push(preBet);
 
     //alta de usuario en /users/{id-google}/
-    var userFirebase = {
-      profile: this.state.user,
-      bets: [
-        {
-          betKey: refPrePush.key,
-          completed: false
-        }
-      ]
-    };
-    firebase.database().ref('users/' + this.state.user.userID + '/').set(userFirebase);
+    var userFirebase = {};
+    if (this.state.createUser) {//Alta de Usuario
+      userFirebase = {
+        profile: this.state.user
+      };
+      firebase.database().ref('users/' + this.state.user.userID + '/').set(userFirebase);
 
-    //alta del usuario en el ranking /ranking/
-    var subscribed = {
-      profile: this.state.user,
-      count: 1      
+      //alta del usuario en el ranking /ranking/
+      var subscribed = {
+        profile: this.state.user,
+        count: 1      
+      };
+      firebase.database().ref('subscribed' + this.state.typeOfBet.suffix + '/' + this.state.user.userID + '/').set(subscribed);
+
+    } else {
+      userFirebase = {
+        profile: this.state.user
+      };
+      firebase.database().ref('subscribed' + this.state.typeOfBet.suffix + '/' + this.state.user.userID + '/count').set((this.state.countBets+1));
+    }
+
+    var userBet = {
+      betKey: refPrePush.key,
+      completed: false
     };
-    firebase.database().ref('subscribed' + this.state.typeOfBet + '/' + this.state.user.userID + '/').set(subscribed);
+    firebase.database().ref('users/' + this.state.user.userID + '/bets/'+ this.state.codeTypeOfBet + '/'+ refPrePush.key).set(userBet);
 
     //Navegando al dashboard 
     Actions.reset('dashboard', {user: userFirebase});
   }
 
+  dateUTCMinus5(){
+    var d = new Date();
+    var localTime = d.getTime();
+    var localOffset = d.getTimezoneOffset() * 60000;
+    var utc = localTime + localOffset;
+    var offset = -5; //Peru
+    var timePeru = utc + (3600000*offset);
+    return new Date(timePeru); 
+  }
+
   _renderHeader(){
-    if(this.state.presentationMode === 'Login') {
+    if(this.state.presentationMode === 'Subscribe') {
       return (<HeaderPolla pop={false} name='Terminos y condiciones' />);
     }else{
       return (<HeaderPolla pop={true}  name='Terminos y condiciones' />);
     }
   }
   _renderButton(){
-    if(this.state.presentationMode === 'Login') {
+    if(this.state.presentationMode === 'Subscribe') {
       return (<Button block onPress={this.onAcceptTerms}>
-                <Text>{this.state.textButton}</Text>
+                <Text>Aceptar</Text>
               </Button>);
     }
   }
