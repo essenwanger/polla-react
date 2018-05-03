@@ -11,6 +11,10 @@ exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
     	var match = event.data.val();
 
     	if(match.scoreTeam1 && match.scoreTeam2){
+
+    		match.scoreTeam1 = match.scoreTeam1.trim();
+			match.scoreTeam2 = match.scoreTeam2.trim();
+
 			if(match.scoreTeam1>match.scoreTeam2){
 				match.result=1;
     		}else if(match.scoreTeam1<match.scoreTeam2){
@@ -38,7 +42,8 @@ exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
 
 			        global.init.db.ref('/betsAll/'+rankKey+'/matches/'+match.group+'/'+event.params.idMatch)
 			        .once('value').then(snapshotUserMatch => {
-			        	var matchUser = snapshotUserMatch.val();	
+			        	var matchUser = snapshotUserMatch.val();
+
 						if(matchUser.scoreTeam1>matchUser.scoreTeam2){
 							matchUser.result = 1;
 			    		}else if(matchUser.scoreTeam1<matchUser.scoreTeam2){

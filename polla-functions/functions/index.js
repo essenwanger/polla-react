@@ -15,29 +15,22 @@ const LAPOLLA_CONFIG = {
 
 const letthegamesbegin          = require('./letthegamesbegin');
 const calculateRanking          = require('./calculateRanking');
-const calculatePositionTable    = require('./calculatePositionTable');
 const calculateNewPositionTable = require('./calculateNewPositionTable');
-const addUser                   = require('./addUser');
-const addMessage                = require('./addMessage');
+//const addUser                   = require('./addUser');
+//const addMessage                = require('./addMessage');
 const calculateLlaves           = require('./calculateLlaves');
 
-addMessage.initialize(LAPOLLA_CONFIG);
-addUser.initialize(LAPOLLA_CONFIG);
+//addMessage.initialize(LAPOLLA_CONFIG);
+//addUser.initialize(LAPOLLA_CONFIG);
 calculateNewPositionTable.initialize(LAPOLLA_CONFIG);
-calculatePositionTable.initialize(LAPOLLA_CONFIG);
 calculateRanking.initialize(LAPOLLA_CONFIG);
 letthegamesbegin.initialize(LAPOLLA_CONFIG);
 calculateLlaves.initialize(LAPOLLA_CONFIG);
 
-
-exports.addMessage = addMessage.addMessage();
-exports.addUser = addUser.addUser();
-
+//exports.addMessage = addMessage.addMessage();
+//exports.addUser = addUser.addUser();
 exports.calculateNewPositionTable = calculateNewPositionTable.calculateNewPositionTable();
-exports.calculatePositionTable = calculatePositionTable.calculatePositionTable();
-
 exports.calculatePoints = calculateRanking.calculatePoints();
 exports.calculateRanking = calculateRanking.calculateRanking();
-
 exports.letthegamesbegin = letthegamesbegin.letthegamesbegin();
 exports.calculateLlavesOctavos = calculateLlaves.calculateLlavesOctavos();
