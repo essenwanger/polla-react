@@ -6,7 +6,7 @@ exports.initialize = (laPollaConfig) => {
 };
 
 exports.calculateNewPositionTable = () => functions.database.ref('/preBetsAll/{betId}/matches/{faseGrupoId}/{matchId}')
-	.onWrite((event) => {
+	.onUpdate((event) => {
 
 		var match = event.data.val();
 
@@ -37,6 +37,8 @@ exports.calculateNewPositionTable = () => functions.database.ref('/preBetsAll/{b
 					if(item.scoreTeam1 && item.scoreTeam2){
 						if(item.scoreTeam1 === item.scoreTeam2){
 							draw = 1;
+							points1 = 1;
+							points2 = 1;
 						}else if(item.scoreTeam1<item.scoreTeam2){
 							won2 = 1;
 							points2 = 3;
@@ -166,7 +168,7 @@ exports.calculateNewPositionTable = () => functions.database.ref('/preBetsAll/{b
 					if(event.params.faseGrupoId==='Cuartos'){
 						siguienteFase = 'Semifinales';
 					}else if(event.params.faseGrupoId==='Semifinales'){
-						siguienteFase = 'Finales';
+						siguienteFase = 'Final';
 					}
 
 					return global.init.db.ref('/preBetsAll/'+event.params.betId+'/matches/'+siguienteFase).once('value').then((snapshot)=>{
@@ -178,20 +180,28 @@ exports.calculateNewPositionTable = () => functions.database.ref('/preBetsAll/{b
 								nextMatch['teamSource1']=nextMatch.teamName1;
 								nextMatch['teamSource2']=nextMatch.teamName2;
 							}
-
+							var updated = false;
 							if(results[nextMatch.teamSource1]){
-								nextMatch.team1     = results[nextMatch.teamSource1].team;
-								nextMatch.teamName1 = results[nextMatch.teamSource1].teamName;
+								if(nextMatch.team1 !== results[nextMatch.teamSource1].team){
+									updated = true;
+									nextMatch.team1     = results[nextMatch.teamSource1].team;
+									nextMatch.teamName1 = results[nextMatch.teamSource1].teamName;
+								}
 							}
 							if(results[nextMatch.teamSource2]){
-								nextMatch.team2     = results[nextMatch.teamSource2].team;
-								nextMatch.teamName2 = results[nextMatch.teamSource2].teamName;
+								if(nextMatch.team2 !== results[nextMatch.teamSource2].team){
+									updated = true;
+									nextMatch.team2     = results[nextMatch.teamSource2].team;
+									nextMatch.teamName2 = results[nextMatch.teamSource2].teamName;
+								}
 							}
-							if(results[nextMatch.teamSource1] || results[nextMatch.teamSource2]){
-								global.init.db.ref(
-									'/preBetsAll/'+event.params.betId+
-									'/matches/'+siguienteFase+
-									'/'+idMatch).update(nextMatch);
+							if(updated){
+								if(results[nextMatch.teamSource1] || results[nextMatch.teamSource2]){
+									global.init.db.ref(
+										'/preBetsAll/'+event.params.betId+
+										'/matches/'+siguienteFase+
+										'/'+idMatch).update(nextMatch);
+								}
 							}
 						});
 						return 1;

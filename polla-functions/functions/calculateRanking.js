@@ -6,11 +6,15 @@ exports.initialize = (laPollaConfig) => {
 };
 
 exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
-    .onWrite(event => {
+    .onUpdate(event => {
     	
     	var match = event.data.val();
 
     	if(match.scoreTeam1 && match.scoreTeam2){
+
+    		match.scoreTeam1 = match.scoreTeam1.trim();
+			match.scoreTeam2 = match.scoreTeam2.trim();
+
 			if(match.scoreTeam1>match.scoreTeam2){
 				match.result=1;
     		}else if(match.scoreTeam1<match.scoreTeam2){
@@ -38,7 +42,8 @@ exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
 
 			        global.init.db.ref('/betsAll/'+rankKey+'/matches/'+match.group+'/'+event.params.idMatch)
 			        .once('value').then(snapshotUserMatch => {
-			        	var matchUser = snapshotUserMatch.val();	
+			        	var matchUser = snapshotUserMatch.val();
+
 						if(matchUser.scoreTeam1>matchUser.scoreTeam2){
 							matchUser.result = 1;
 			    		}else if(matchUser.scoreTeam1<matchUser.scoreTeam2){
@@ -113,7 +118,7 @@ exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
 });
 
 exports.calculateRanking = () => functions.database.ref('/betsAll/{betId}/matches/{faseGrupoId}/{matchId}')
-    .onWrite(event => {
+    .onUpdate(event => {
     	return global.init.db.ref('/betsAll/'+event.params.betId+'/matches/'+event.params.faseGrupoId)
 		.once('value').then((snapshot)=>{
 			var totalPoints = 0;

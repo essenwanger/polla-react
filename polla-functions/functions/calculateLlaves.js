@@ -6,7 +6,7 @@ exports.initialize = (laPollaConfig) => {
 };
 
 exports.calculateLlavesOctavos = () => functions.database.ref('/preBetsAll/{betId}/positionTable/{faseGrupoId}')
-	.onWrite((event) => {
+	.onUpdate((event) => {
 
 	var positionTable = event.data.val();
 
@@ -31,26 +31,32 @@ exports.calculateLlavesOctavos = () => functions.database.ref('/preBetsAll/{betI
 			if(group1 === event.params.faseGrupoId){
 				if(positionTable[position1]){
 					if(positionTable[position1].played === 3){
-						match.team1 = positionTable[position1].team;
-						match.teamName1 = positionTable[position1].teamName;
+						if(match.team1 !== positionTable[position1].team){
+							match.team1 = positionTable[position1].team;
+							match.teamName1 = positionTable[position1].teamName;
+							updated = true;
+						}
 					}else{
 						match.team1 = match.teamSource1;
 						match.teamName1 = match.teamSource1;
+						updated = true;
 					}
-					updated = true;
 				}
 			}
 
 			if(group2 === event.params.faseGrupoId){
 				if(positionTable[position2]){
 					if(positionTable[position2].played === 3){
-						match.team2 = positionTable[position2].team;
-						match.teamName2 = positionTable[position2].teamName;
+						if(match.team2 !== positionTable[position2].team){
+							match.team2 = positionTable[position2].team;
+							match.teamName2 = positionTable[position2].teamName;
+							updated = true;
+						}
 					}else{
 						match.team2 = match.teamSource2;
 						match.teamName2 = match.teamSource2;
+						updated = true;
 					}
-					updated = true;
 				}
 			}
 

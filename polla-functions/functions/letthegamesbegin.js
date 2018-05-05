@@ -6,7 +6,7 @@ exports.initialize = (laPollaConfig) => {
 };
 
 exports.letthegamesbegin = () => functions.database.ref('/typeBets/{idType}/status')
-    .onWrite((event) => {
+    .onUpdate((event) => {
     
     if (event.data.val() !== 'opened'){
 
