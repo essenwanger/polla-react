@@ -35,4 +35,6 @@ exports.calculatePoints = calculateRanking.calculatePoints();
 exports.calculateRanking = calculateRanking.calculateRanking();
 exports.letthegamesbegin = letthegamesbegin.letthegamesbegin();
 exports.calculateLlavesOctavos = calculateLlaves.calculateLlavesOctavos();
+exports.generateBetsPDF = sendMailMassive.generateBetsPDF();
+
 exports.sendMailMassive = sendMailMassive.sendMailMassive();
