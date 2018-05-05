@@ -6,7 +6,7 @@ exports.initialize = (laPollaConfig) => {
 };
 
 exports.calculateLlavesOctavos = () => functions.database.ref('/preBetsAll/{betId}/positionTable/{faseGrupoId}')
-	.onWrite((event) => {
+	.onUpdate((event) => {
 
 	var positionTable = event.data.val();
 

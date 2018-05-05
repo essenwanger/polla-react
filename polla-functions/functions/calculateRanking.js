@@ -6,7 +6,7 @@ exports.initialize = (laPollaConfig) => {
 };
 
 exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
-    .onWrite(event => {
+    .onUpdate(event => {
     	
     	var match = event.data.val();
 
@@ -118,7 +118,7 @@ exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
 });
 
 exports.calculateRanking = () => functions.database.ref('/betsAll/{betId}/matches/{faseGrupoId}/{matchId}')
-    .onWrite(event => {
+    .onUpdate(event => {
     	return global.init.db.ref('/betsAll/'+event.params.betId+'/matches/'+event.params.faseGrupoId)
 		.once('value').then((snapshot)=>{
 			var totalPoints = 0;

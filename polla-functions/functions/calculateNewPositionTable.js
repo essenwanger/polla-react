@@ -6,7 +6,7 @@ exports.initialize = (laPollaConfig) => {
 };
 
 exports.calculateNewPositionTable = () => functions.database.ref('/preBetsAll/{betId}/matches/{faseGrupoId}/{matchId}')
-	.onWrite((event) => {
+	.onUpdate((event) => {
 
 		var match = event.data.val();
 
