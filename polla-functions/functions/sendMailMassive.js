@@ -14,8 +14,8 @@ const nodemailer = require('nodemailer');
 const mailTransport = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: '-----------@gmail.com',
-    pass: '-----------',
+    user: '-------@gmail.com',
+    pass: '-------',
   },
 });
 
@@ -38,6 +38,49 @@ exports.initialize = (laPollaConfig) => {
 		out + '</tbody></table>';
 		return new handlebars.SafeString (out);
 	});
+	handlebars.registerHelper('tableDetail', function(items) {
+  		var out = 
+  		'<table class="w3-table w3-bordered w3-striped w3-border">'+
+  			'<tbody><tr class="w3-green"><th>Fase</th><th>ID</th><th>Partido</th></tr></tbody>'+
+  			'<tbody>';
+		for (var i = 0; i < items.length; i++ ) {
+			out += '<tr class="w3-red">';
+		    out += '<td colspan="3">' + items[i]['title'] + '</td>';
+		    out += '</tr>';
+		    for (var j = 0; j < items[i]['data'].length; j++ ) {
+		    	var match = items[i]['data'][j];
+		    	out += '<tr>';
+		    	out += '<td>' + match.groupKey + '</td>';
+		    	out += '<td>' + match.matchId  + '</td>';
+		    	if(match.scorePenaltyTeam1 || match.scorePenaltyTeam2){
+		    		out += '<td>' + match.teamName1 + '('+match.scoreTeam1+')'+'('+match.scorePenaltyTeam1+')'+
+		    	           ' vs ' + match.teamName2 + '('+match.scoreTeam2+')'+'('+match.scorePenaltyTeam2+')'+
+		    	           '</td>';
+		    	}else{
+		    		out += '<td>' + match.teamName1 + '('+match.scoreTeam1+')'+
+		    	           ' vs ' + match.teamName2 + '('+match.scoreTeam2+')'+
+		    	           '</td>';
+		    	}
+		    	out += '</tr>';
+		    }
+
+		    /*
+			data['groupKey']   = groupKey;
+			data['matchKey']   = matchKey;
+			data['matchId']    = matchItem.id;
+			data['teamName1']  = matchItem.teamName1;
+			data['teamName2']  = matchItem.teamName2;
+			data['scoreTeam1'] = matchItem.scoreTeam1;
+			data['scoreTeam2'] = matchItem.scoreTeam2;
+			data['scorePenaltyTeam1'] = matchItem.scorePenaltyTeam1;
+			data['scorePenaltyTeam2'] = matchItem.scorePenaltyTeam2;
+		    */
+		}
+		out + '</tbody></table>';
+		return new handlebars.SafeString (out);
+	});
+
+
 };
 
 exports.generateBetsPDF = () => functions.https.onRequest((req, response) => {
@@ -55,19 +98,56 @@ exports.generateBetsPDF = () => functions.https.onRequest((req, response) => {
 			var typeBet = childSnapshot.val();
 			//if(typeBet.status !== 'opened'){
 				return global.init.db.ref('/bets'+typeBet.suffix).once('value').then((snapshot)=>{
-					var bets = [];
+					var bets  = [];
+					var users = [];
 					snapshot.forEach((childSnapshot)=>{
 						var item = childSnapshot.val();
 						var key  = childSnapshot.key;
-						bets.push({
+						users.push({
 							givenName : item.profile.givenName,
 							email     : item.profile.email
 						});
+
+						var detail = [];
+						for(var groupKey in item.matches){
+							var groupItem = item.matches[groupKey];
+							for(var matchKey in groupItem){
+								var matchItem = groupItem[matchKey];
+								var data = {};
+								data['groupKey']   = groupKey;
+								data['matchKey']   = matchKey;
+								data['matchId']    = matchItem.id;
+								data['teamName1']  = matchItem.teamName1;
+								data['teamName2']  = matchItem.teamName2;
+								data['scoreTeam1'] = matchItem.scoreTeam1;
+								data['scoreTeam2'] = matchItem.scoreTeam2;
+								data['scorePenaltyTeam1'] = matchItem.scorePenaltyTeam1;
+								data['scorePenaltyTeam2'] = matchItem.scorePenaltyTeam2;
+								/*
+								var data = {
+									groupKey   = groupKey,
+									matchKey   = matchKey,
+									matchId    = matchItem.id,
+									teamName1  = matchItem.teamName1,
+									teamName2  = matchItem.teamName2,
+									scoreTeam1 = matchItem.scoreTeam1,
+									scoreTeam2 = matchItem.scoreTeam2,
+									scorePenaltyTeam1 = matchItem.scorePenaltyTeam1,
+									scorePenaltyTeam2 = matchItem.scorePenaltyTeam2	
+								};*/
+								detail.push(data);
+							}
+						}
+						bets.push({
+							title     : item.profile.email,
+							data      : detail
+						});
 					});
 					const context = {
-				    	"date"   : new Date().toISOString(),
-				    	"title"  : APP_NAME,
-				    	"bets"   : bets
+				    	"date"    : new Date().toISOString(),
+				    	"title"   : APP_NAME,
+				    	"users"   : users,
+				    	"bets"    : bets
 					};
 					bucket.file('template.html').download({ destination: localTemplate }).then(() => {
 					    const source = fs.readFileSync(localTemplate, 'utf8');
@@ -117,6 +197,7 @@ exports.sendMailMassive = () => functions.storage.object().onFinalize((object) =
 				});
 				return 1;
 			});
+			//return sendStartingEmail('none.carlos@gmail.com','Carlos',tempFilePath);
 		}).catch(error => {
 			this.errorMessage = 'Error - ' + error.message
 		});
