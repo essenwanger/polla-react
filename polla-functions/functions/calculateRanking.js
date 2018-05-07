@@ -8,7 +8,7 @@ exports.initialize = (laPollaConfig) => {
 exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
     .onUpdate(event => {
     	
-    	var match = event.data.val();
+		var match = event.data.val();
 
     	if(match.scoreTeam1 && match.scoreTeam2){
 
@@ -24,7 +24,7 @@ exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
     			if(match.scorePenaltyTeam1 && match.scorePenaltyTeam2){
     				if(match.scorePenaltyTeam1>match.scorePenaltyTeam2){
 						match.resultPenalty=1;
-		    		}else if(match.scorePenaltyTeam1>match.scorePenaltyTeam2){
+		    		}else if(match.scorePenaltyTeam1<match.scorePenaltyTeam2){
 		    			match.resultPenalty=2;
 		    		}else{
 		    			match.resultPenalty=0; //resultado parcial
