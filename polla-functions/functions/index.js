@@ -12,6 +12,7 @@ const calculateNewPositionTable = require('./calculateNewPositionTable');
 //const addMessage                = require('./addMessage');
 const calculateLlaves           = require('./calculateLlaves');
 const sendMailMassive           = require('./sendMailMassive');
+const sendMailWelcome           = require('./sendMailWelcome');
 
 const LAPOLLA_CONFIG = {
     'credential': admin.credential.applicationDefault(),
@@ -27,6 +28,7 @@ calculateRanking.initialize(LAPOLLA_CONFIG);
 letthegamesbegin.initialize(LAPOLLA_CONFIG);
 calculateLlaves.initialize(LAPOLLA_CONFIG);
 sendMailMassive.initialize(LAPOLLA_CONFIG);
+sendMailWelcome.initialize(LAPOLLA_CONFIG);
 
 //exports.addMessage = addMessage.addMessage();
 //exports.addUser = addUser.addUser();
@@ -38,3 +40,4 @@ exports.calculateLlavesOctavos = calculateLlaves.calculateLlavesOctavos();
 exports.generateBetsPDF = sendMailMassive.generateBetsPDF();
 
 exports.sendMailMassive = sendMailMassive.sendMailMassive();
+exports.sendMailWelcome = sendMailWelcome.sendMailWelcome();

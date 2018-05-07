@@ -15,7 +15,8 @@
     "firebase-functions": "^1.0.2",
     "handlebars": "^4.0.11",
     "html-pdf": "^2.2.0",
-    "nodemailer": "^4.6.4"
+    "nodemailer": "^4.6.4",
+    "sendgrid": "^5.2.3"
   },
   "devDependencies": {
     "eslint": "^4.13.1",
