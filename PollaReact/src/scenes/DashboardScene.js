@@ -13,12 +13,13 @@ export default class DashboardScene extends Component {
     super(props);
     this.state = {
       user: props.user,
+      bet: props.user.bets[0].betKey,
       status: ''
     };
   }
 
   componentWillMount() {
-    firebase.database().ref('status/').once('value').then((snapshot)=>{
+    firebase.database().ref('typeBets/all/status/').once('value').then((snapshot)=>{
       this.setState({
         status: snapshot.val()
       });
@@ -27,8 +28,10 @@ export default class DashboardScene extends Component {
 
   render() {
     var fixture=null;
+    var ranking=null;
     if(this.state.status!=''){
-      fixture=(<Fixture user={this.state.user} status={this.state.status} />);
+      fixture=(<Fixture user={this.state.user} bet={this.state.bet} status={this.state.status} />);
+      ranking=(<Ranking user={this.state.user} status={this.state.status} />);
     }
     return (
       <Container>
@@ -38,7 +41,7 @@ export default class DashboardScene extends Component {
             {fixture}
           </Tab>
           <Tab heading={ <TabHeading><Icon name="md-podium" /></TabHeading>}>
-            <Ranking user={this.state.user} />
+            {ranking}
           </Tab>
           <Tab heading={ <TabHeading><Icon name="md-person" /></TabHeading>}>
             <Profile user={this.state.user} />

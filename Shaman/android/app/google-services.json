@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "776210840524",
+    "firebase_url": "https://shaman-5b899.firebaseio.com",
+    "project_id": "shaman-5b899",
+    "storage_bucket": "shaman-5b899.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:776210840524:android:7c50d618adb6f133",
+        "android_client_info": {
+          "package_name": "com.shaman"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "776210840524-ke9e1f8odfk448kn9srtncle5gvhfa4h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shaman",
+            "certificate_hash": "ef7c258afb249019e6cde2af781f79347f8dd57b"
+          }
+        },
+        {
+          "client_id": "776210840524-bolhuiog2030t59paeo9b9r03nhtqn1f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCaD9KhVt1zaDx_pkfn_j9HIfxxxCkAixY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "776210840524-bolhuiog2030t59paeo9b9r03nhtqn1f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

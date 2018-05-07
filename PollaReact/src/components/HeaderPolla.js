@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, BackHandler } from 'react-native';
 import { Header, Left, Body, Title, Right, Button, Icon } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 
@@ -7,10 +7,29 @@ export default class HeaderPolla extends Component {
 
   constructor(props) {
     super(props);
+    this.onBackPress = this.onBackPress.bind(this);
   }
 
   onPressBack() {
-    Actions.pop({ refresh: { updateData: Math.random() } })
+    Actions.pop();
+    Actions.refresh({ updateData: Math.random() });
+  }
+
+  componentDidMount () {
+    BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
+  }
+
+  componentWillUnmount () {
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
+  }
+
+  onBackPress () {
+    var user=this.props.user;
+    if (Actions.state.index === 1 && Actions.state.routes[1].routeName === 'phase') {
+      Actions.reset('dashboard', {user: user});
+      return true;
+    }
+    return false;
   }
 
   render() {

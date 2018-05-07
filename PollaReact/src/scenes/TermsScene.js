@@ -101,7 +101,7 @@ export default class TermsScene extends Component {
     firebase.database().ref('subscribed' + this.state.typeOfBet + '/' + this.state.user.userID + '/').set(subscribed);
 
     //Navegando al dashboard 
-    Actions.reset('dashboard', {user: this.state.user});
+    Actions.reset('dashboard', {user: userFirebase});
   }
 
   _renderHeader(){

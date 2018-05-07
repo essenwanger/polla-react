@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Actions } from 'react-native-router-flux';
-import { Content } from 'native-base';
+import { Content, Spinner } from 'native-base';
 import Phase from './Phase';
 import firebase from 'react-native-firebase';
 
@@ -11,15 +11,14 @@ export default class Fixture extends Component {
     this.state = {
       user: props.user,
       status: props.status,
-      groups: [],
-      navigateGroups: []
+      bet: props.bet,
+      groups: []
     };
   }
 
-  onPressPhase(position, group, name, order){
-    Actions.phase({user: this.state.user, group: group, status: this.state.status, 
-      groupName: name, order: order, navigateGroups: this.state.navigateGroups,
-      position: position});
+  onPressPhase(position){
+    Actions.phase({user: this.state.user, status: this.state.status, 
+      groups: this.state.groups, bet: this.state.bet, position: position});
   }
 
   componentWillMount() {
@@ -31,51 +30,34 @@ export default class Fixture extends Component {
   }
 
   dataFirebase(){
-    var userID= this.state.user.userID;
-    var groups=[];
-    var navigateGroups=[];
-    firebase.database().ref('users/'+userID+'/').once('value').then((snapshot)=>{
-      snapshot.val().bets[0].matches.forEach(function(value, key) {
-        var groupName='';
-        var group='';
-        var order='';
-        if(value.group===''){
-          groupName=value.round;
-          group=value.round;
-          order='round';
-        }else{
-          groupName='Grupo '+value.group;
-          group=value.group;
-          order='group';
-        }
-        if(groups[group]==null){
-          groups[group]={name: groupName, total:0, complete:0, percentage: '0%', order: order};
-          navigateGroups.push({group, groupName, order});
-        }
-        groups[group].total=groups[group].total+2;
-        if(value.scoreTeam1!==''){
-          groups[group].complete=groups[group].complete+1;
-        }
-        if(value.scoreTeam2!==''){
-          groups[group].complete=groups[group].complete+1;
-        }
-        var percentage=groups[group].complete/groups[group].total;
-        percentage=Math.round(percentage * 10000) / 100
-        groups[group].percentage=percentage+'%';
+    var betKey= this.state.bet;
+    var betNode= this.state.status==='opened'? 'preBetsAll/' : 'betsAll/'
+    firebase.database().ref(betNode+betKey+'/groups/').once('value').then((snapshot)=>{
+      var groups=[];
+      snapshot.forEach((childSnapshot)=>{
+        var childKey = childSnapshot.key;
+        var childData = childSnapshot.val();
+        childData.key=childKey;
+        groups.push(childData);
       });
       this.setState({
-        groups: groups,
-        navigateGroups: navigateGroups
+        groups: groups
       });
     });
   }
 
   render() {
     var groups=this.state.groups;
-    var items=Object.keys(groups).map((key, position) => (
-      <Phase key={key} name={groups[key].name} percentage={groups[key].percentage} 
-      onPressPhase={()=> this.onPressPhase(position, key, groups[key].name, groups[key].order)} />
-    ));
+    var items=null;
+    if(groups.length===0){
+      items=<Spinner color='#000' ></Spinner>;
+    }else{
+      items=groups.map((item, key) => (
+        <Phase key={key} name={item.group.length===1 ? ('Grupo '+item.group) : (item.group)} 
+        percentage={item.percentage+'%'} 
+        onPressPhase={()=> this.onPressPhase(key)} />
+      ));
+    }
     return (
         <Content padder>
           {items}
