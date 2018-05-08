@@ -13,4 +13,6 @@ target 'Shaman' do
   # [OPTIONAL PODS] - comment out pods for firebase products you won't be using.
   pod 'Firebase/Database'
 
+  pod 'CodePush', :path => '../node_modules/react-native-code-push'
+
 end

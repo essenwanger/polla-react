@@ -10,6 +10,7 @@ import DashboardScene from './scenes/DashboardScene';
 import PhaseScene from './scenes/PhaseScene';
 import AboutScene from './scenes/AboutScene';
 import DashboardRankScene from './scenes/DashboardRankScene';
+import codePush from "react-native-code-push";
 
 export default class App extends Component {
 
@@ -30,3 +31,5 @@ export default class App extends Component {
     );
   }
 }
+
+App = codePush(App);

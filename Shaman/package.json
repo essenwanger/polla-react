@@ -10,6 +10,7 @@
     "native-base": "^2.4.2",
     "react": "16.3.1",
     "react-native": "0.52.3",
+    "react-native-code-push": "^5.3.2",
     "react-native-firebase": "^4.0.5",
     "react-native-google-sign-in": "^1.0.16",
     "react-native-router-flux": "^4.0.0-beta.28"

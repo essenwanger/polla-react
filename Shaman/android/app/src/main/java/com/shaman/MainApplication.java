@@ -3,6 +3,8 @@ package com.shaman;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.microsoft.codepush.react.CodePush;
+import com.microsoft.codepush.react.CodePush;
 import com.reactlibrary.googlesignin.RNGoogleSignInPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.database.RNFirebaseDatabasePackage;
@@ -28,6 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+          new CodePush("2cd65a63-a04d-4898-8d62-d063db726271", getApplicationContext(), getUseDeveloperSupport()),
           new RNGoogleSignInPackage(),
           new RNFirebasePackage(),
           new RNFirebaseDatabasePackage(),
@@ -40,6 +43,12 @@ public class MainApplication extends Application implements ReactApplication {
     protected String getJSMainModuleName() {
       return "index";
     }
+
+    @Override
+    protected String getJSBundleFile() {
+      return CodePush.getJSBundleFile();
+    }
+
   };
 
   @Override
