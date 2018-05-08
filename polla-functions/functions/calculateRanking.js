@@ -6,9 +6,9 @@ exports.initialize = (laPollaConfig) => {
 };
 
 exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
-    .onUpdate(event => {
+    .onWrite((change, context) => {
     	
-		var match = event.data.val();
+		var match = change.after.val();
 
     	if(match.scoreTeam1 && match.scoreTeam2){
 
@@ -40,7 +40,7 @@ exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
 					var rankUser = childSnapshot.val();
 			        var rankKey  = childSnapshot.key;
 
-			        global.init.db.ref('/betsAll/'+rankKey+'/matches/'+match.group+'/'+event.params.idMatch)
+			        global.init.db.ref('/betsAll/'+rankKey+'/matches/'+match.group+'/'+context.params.idMatch)
 			        .once('value').then(snapshotUserMatch => {
 			        	var matchUser = snapshotUserMatch.val();
 
@@ -106,7 +106,7 @@ exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
 						    	}
 						    }
 					    }					
-					    return global.init.db.ref('/betsAll/'+rankKey+'/matches/'+match.group+'/'+event.params.idMatch)
+					    return global.init.db.ref('/betsAll/'+rankKey+'/matches/'+match.group+'/'+context.params.idMatch)
 						.update(matchUser);
 			        }).catch(error => {
     					this.errorMessage = 'Error - ' + error.message
@@ -118,8 +118,8 @@ exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
 });
 
 exports.calculateRanking = () => functions.database.ref('/betsAll/{betId}/matches/{faseGrupoId}/{matchId}')
-    .onUpdate(event => {
-    	return global.init.db.ref('/betsAll/'+event.params.betId+'/matches/'+event.params.faseGrupoId)
+    .onUpdate((change,context) => {
+    	return global.init.db.ref('/betsAll/'+context.params.betId+'/matches/'+context.params.faseGrupoId)
 		.once('value').then((snapshot)=>{
 			var totalPoints = 0;
 			snapshot.forEach((childSnapshot)=>{
@@ -129,7 +129,7 @@ exports.calculateRanking = () => functions.database.ref('/betsAll/{betId}/matche
 					totalPoints += match.points;
 				}
 			});
-			return global.init.db.ref('/rankingAll/'+event.params.betId).update({
+			return global.init.db.ref('/rankingAll/'+context.params.betId).update({
 				totalPoints:totalPoints});
 		});
     });
