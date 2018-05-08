@@ -6,11 +6,11 @@ exports.initialize = (laPollaConfig) => {
 };
 
 exports.letthegamesbegin = () => functions.database.ref('/typeBets/{idType}/status')
-    .onUpdate((event) => {
+    .onUpdate((change,context) => {
     
-    if (event.data.val() !== 'opened'){
+    if (change.after.val() !== 'opened'){
 
-    	return global.init.db.ref('/typeBets/'+event.params.idType).once('value').then((snapshot)=>{
+    	return global.init.db.ref('/typeBets/'+context.params.idType).once('value').then((snapshot)=>{
     		
     		var typeBet = snapshot.val();
     		

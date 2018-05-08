@@ -6,11 +6,11 @@ exports.initialize = (laPollaConfig) => {
 };
 
 exports.calculateLlavesOctavos = () => functions.database.ref('/preBetsAll/{betId}/positionTable/{faseGrupoId}')
-	.onUpdate((event) => {
+	.onUpdate((change,context) => {
 
-	var positionTable = event.data.val();
+	var positionTable = change.after.val();
 
-	return global.init.db.ref('/preBetsAll/'+event.params.betId+'/matches/Octavos').once('value').then((snapshot)=>{
+	return global.init.db.ref('/preBetsAll/'+context.params.betId+'/matches/Octavos').once('value').then((snapshot)=>{
 
 		snapshot.forEach((childSnapshot)=>{
 	    	
@@ -19,7 +19,6 @@ exports.calculateLlavesOctavos = () => functions.database.ref('/preBetsAll/{betI
 	    	if(!match['teamSource1'] || !match['teamSource2']){
 				match['teamSource1']=match.teamName1;
 				match['teamSource2']=match.teamName2;
-
 			}
 
 			var position1 = match.teamSource1.substr(1,1)-1;
@@ -28,7 +27,7 @@ exports.calculateLlavesOctavos = () => functions.database.ref('/preBetsAll/{betI
 			var group2    = match.teamSource2.substr(2,1);
 			var updated   = false;
 
-			if(group1 === event.params.faseGrupoId){
+			if(group1 === context.params.faseGrupoId){
 				if(positionTable[position1]){
 					if(positionTable[position1].played === 3){
 						if(match.team1 !== positionTable[position1].team){
@@ -44,7 +43,7 @@ exports.calculateLlavesOctavos = () => functions.database.ref('/preBetsAll/{betI
 				}
 			}
 
-			if(group2 === event.params.faseGrupoId){
+			if(group2 === context.params.faseGrupoId){
 				if(positionTable[position2]){
 					if(positionTable[position2].played === 3){
 						if(match.team2 !== positionTable[position2].team){
@@ -62,11 +61,11 @@ exports.calculateLlavesOctavos = () => functions.database.ref('/preBetsAll/{betI
 
 			if(updated){
 				/*
-				console.log('actualizar /preBetsAll/'+event.params.betId+
+				console.log('actualizar /preBetsAll/'+context.params.betId+
 					'/matches/Octavos/'+childSnapshot.key);
 				*/
 				global.init.db.ref(
-					'/preBetsAll/'+event.params.betId+
+					'/preBetsAll/'+context.params.betId+
 					'/matches/Octavos/'+childSnapshot.key).update(match);
 			}
 	    });
