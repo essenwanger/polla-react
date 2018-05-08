@@ -117,6 +117,65 @@ exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
 		return 0;
 });
 
+exports.calculatePointsTest = () => functions.database.ref('/matches/{idMatch}')
+	.onUpdate((change, context) => {
+		var matchRef = change.after.val();
+		
+		console.log(matchRef);
+
+		var userMatchRef;
+
+		var result = -2;
+		var matchGroup;
+
+		console.log(matchRef.key);
+		console.log("key1 " + context.params.idMatch);
+		console.log("keyA " + change.after.key);
+		console.log("keyB " + change.before.key);
+
+		matchRef.once("value", function(snapshot) { 
+			var matchData = snapshot.val();
+		
+			matchGroup = matchData.group;
+
+			if(matchData.scoreTeam1 && matchData.scoreTeam2) {
+				result = matchData.scoreTeam2 - matchData.scoreTeam1;
+				matchData.result = !(result === 0) ? (result/Math.abs(result)) : result; 
+			}
+
+			console.log(matchData.result);
+		/*
+		userMatchRef = admin.database().ref('/bets/{userId}/matches/' + matchGroup + '/' + matchId)
+		userMatchRef.on("value", function(snapshot) { 
+			var matchData = snapshot.val();
+			var points = 0;
+			
+			if(matchData.scoreTeam1 && matchData.scoreTeam2) {
+				var userResult = matchData.scoreTeam2 - matchData.scoreTeam1;
+				userResult = !(userResult === 0) ? (userResult/Math.abs(userResult)) : userResult; 
+			}
+
+			if(userResult === result) {
+				points = "13";
+			} else {	
+				points = "0";
+			}
+			
+			userMatchRef.update({
+				"points" : points
+			});
+			
+		}, function (errorObject) { 
+			console.log("Error al leer: " + errorObject.code); 
+		});
+		*/		
+
+	}, function (errorObject) { 
+		console.log("Error al leer: " + errorObject.code); 
+	});
+		return 0;
+	});
+
 exports.calculateRanking = () => functions.database.ref('/betsAll/{betId}/matches/{faseGrupoId}/{matchId}')
     .onUpdate((change,context) => {
     	return global.init.db.ref('/betsAll/'+context.params.betId+'/matches/'+context.params.faseGrupoId)
