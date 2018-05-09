@@ -6,18 +6,18 @@ exports.initialize = (laPollaConfig) => {
 };
 
 exports.calculateNewPositionTable = () => functions.database.ref('/preBetsAll/{betId}/matches/{faseGrupoId}/{matchId}')
-	.onUpdate((event) => {
+	.onUpdate((change,context) => {
 
-		var match = event.data.val();
+		var match = change.after.val();
 
-		if(event.params.faseGrupoId.length === 1 ){//Fase de grupos
+		if(context.params.faseGrupoId.length === 1 ){//Fase de grupos
 			var positionTable={};
 			
 			//TODO validar que se haya realizado un cambio significativo para positionTable
 			//scoreTeam1,scoreTeam2 diferente de nulo
 			//scoreTeam1,scoreTeam2 changed?
 
-			return global.init.db.ref('/preBetsAll/'+event.params.betId+'/matches/'+event.params.faseGrupoId).once('value').then((snapshot)=>{
+			return global.init.db.ref('/preBetsAll/'+context.params.betId+'/matches/'+context.params.faseGrupoId).once('value').then((snapshot)=>{
     			snapshot.forEach((childSnapshot)=>{
     				var item=childSnapshot.val();
 
@@ -133,15 +133,15 @@ exports.calculateNewPositionTable = () => functions.database.ref('/preBetsAll/{b
 				});
 
 				var positionTableAux = {};
-				positionTableAux[event.params.faseGrupoId]=orderedGroup;
-				return global.init.db.ref('/preBetsAll/'+event.params.betId+'/positionTable/')
+				positionTableAux[context.params.faseGrupoId]=orderedGroup;
+				return global.init.db.ref('/preBetsAll/'+context.params.betId+'/positionTable/')
 				.update(positionTableAux);
     		});
 		}else{
 
-			if(event.params.faseGrupoId==='Octavos' ||
-			   event.params.faseGrupoId==='Cuartos' ||
-			   event.params.faseGrupoId==='Semifinales'){
+			if(context.params.faseGrupoId==='Octavos' ||
+			   context.params.faseGrupoId==='Cuartos' ||
+			   context.params.faseGrupoId==='Semifinales'){
 
 				if(match.scoreTeam1 && match.scoreTeam2){
 
@@ -165,13 +165,13 @@ exports.calculateNewPositionTable = () => functions.database.ref('/preBetsAll/{b
 						}
 					}
 					var siguienteFase = 'Cuartos';
-					if(event.params.faseGrupoId==='Cuartos'){
+					if(context.params.faseGrupoId==='Cuartos'){
 						siguienteFase = 'Semifinales';
-					}else if(event.params.faseGrupoId==='Semifinales'){
+					}else if(context.params.faseGrupoId==='Semifinales'){
 						siguienteFase = 'Final';
 					}
 
-					return global.init.db.ref('/preBetsAll/'+event.params.betId+'/matches/'+siguienteFase).once('value').then((snapshot)=>{
+					return global.init.db.ref('/preBetsAll/'+context.params.betId+'/matches/'+siguienteFase).once('value').then((snapshot)=>{
 						snapshot.forEach((childSnapshot)=>{
 							var nextMatch = childSnapshot.val();
 							var idMatch = childSnapshot.key;
@@ -198,7 +198,7 @@ exports.calculateNewPositionTable = () => functions.database.ref('/preBetsAll/{b
 							if(updated){
 								if(results[nextMatch.teamSource1] || results[nextMatch.teamSource2]){
 									global.init.db.ref(
-										'/preBetsAll/'+event.params.betId+
+										'/preBetsAll/'+context.params.betId+
 										'/matches/'+siguienteFase+
 										'/'+idMatch).update(nextMatch);
 								}
