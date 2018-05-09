@@ -53,7 +53,7 @@ export default class Profile extends Component {
             <Col style={{ alignItems: 'center', height: 240, justifyContent: 'center' }}>
               <Thumbnail large source={{uri: this.state.user.profile.picture}}
               style={{ borderColor: '#000000', borderWidth: 0.2}}/>
-              <Text>{this.state.user.profile.givenName} DEMO 2</Text>
+              <Text>{this.state.user.profile.givenName} DEMO 3</Text>
             </Col>
           </Grid>
           <Card>
