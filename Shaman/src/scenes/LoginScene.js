@@ -40,6 +40,13 @@ export default class LoginScene extends Component {
   }
 
   componentDidMount() {
+    firebase.messaging().requestPermission()
+    .then(() => {
+    // User has authorised  
+    })
+    .catch(error => {
+    // User has rejected permissions  
+    });
     this.setupGoogleSignIn();
   }
 
