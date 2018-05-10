@@ -3,7 +3,7 @@ import { BackHandler } from 'react-native';
 import { Actions, Router, Scene } from 'react-native-router-flux';
 import { StyleProvider } from 'native-base';
 import getTheme from './theme/components';
-import chaman from './theme/variables/chaman';
+import shaman from './theme/variables/shaman';
 import LoginScene from './scenes/LoginScene';
 import TermsScene from './scenes/TermsScene';
 import DashboardScene from './scenes/DashboardScene';
@@ -15,7 +15,7 @@ export default class App extends Component {
 
   render() {
     return (
-      <StyleProvider style={getTheme(chaman)}>
+      <StyleProvider style={getTheme(shaman)}>
       <Router hideNavBar= "true">
         <Scene key="root">
           <Scene key="login" component={LoginScene} hideNavBar={true} initial={true}/>

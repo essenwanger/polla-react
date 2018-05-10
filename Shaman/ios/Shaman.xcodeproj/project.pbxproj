@@ -14,6 +14,7 @@
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		00E356F31AD99517003FC87E /* ShamanTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ShamanTests.m */; };
 		078124A483574E56BD6B2836 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9DEAB9A28D2E4D8098EF9F2D /* Octicons.ttf */; };
+		08D11F9807C06EA27950AB7C /* Pods_Shaman.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4191AD75FFC92C8F810453E /* Pods_Shaman.framework */; };
 		08DE873ACCE14B7583D5AF72 /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A0E2072BB9D4FD586C2CE6F /* Roboto.ttf */; };
 		0D0390A16AED4702AAD4A9EC /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E72C9A53F77E4A1DA0C53B61 /* Zocial.ttf */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
@@ -60,7 +61,6 @@
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		BDFE18E61B2E460CB4D96AA7 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B14EEC63BE25481B82938DFA /* Entypo.ttf */; };
-		E1D9B3FE122F93FAB140C227 /* libPods-Shaman.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D80467D0C8DF436149131B0 /* libPods-Shaman.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -357,7 +357,6 @@
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* ShamanTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShamanTests.m; sourceTree = "<group>"; };
 		016667B722DCECFA9ABA1809 /* Pods-Shaman.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shaman.release.xcconfig"; path = "Pods/Target Support Files/Pods-Shaman/Pods-Shaman.release.xcconfig"; sourceTree = "<group>"; };
-		0D80467D0C8DF436149131B0 /* libPods-Shaman.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Shaman.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Shaman.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shaman.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -368,6 +367,7 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Shaman/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Shaman/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
+		1C28318220A2531400144311 /* Shaman.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Shaman.entitlements; path = Shaman/Shaman.entitlements; sourceTree = "<group>"; };
 		1CA413D7209CFB680093C394 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Shaman/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		1CA413E6209CFDD90093C394 /* Shaman-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Shaman-Bridging-Header.h"; sourceTree = "<group>"; };
 		1CA4140F209CFE4C0093C394 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -396,6 +396,7 @@
 		9DEAB9A28D2E4D8098EF9F2D /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/native-base/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		B14EEC63BE25481B82938DFA /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/native-base/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
+		B4191AD75FFC92C8F810453E /* Pods_Shaman.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Shaman.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D283FBB992204A6D84858256 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/native-base/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		D3FC65873848479D98F7A3C9 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		E1400F6AD41C41A2AA07C3AA /* Roboto_medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto_medium.ttf; path = "../node_modules/native-base/Fonts/Roboto_medium.ttf"; sourceTree = "<group>"; };
@@ -435,7 +436,7 @@
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				1E02E2BD7CB04C3895ECBDF3 /* libRNFirebase.a in Frameworks */,
-				E1D9B3FE122F93FAB140C227 /* libPods-Shaman.a in Frameworks */,
+				08D11F9807C06EA27950AB7C /* Pods_Shaman.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -547,6 +548,7 @@
 		13B07FAE1A68108700A75B9A /* Shaman */ = {
 			isa = PBXGroup;
 			children = (
+				1C28318220A2531400144311 /* Shaman.entitlements */,
 				1CA413D7209CFB680093C394 /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -621,7 +623,7 @@
 				1CA41411209CFE570093C394 /* SafariServices.framework */,
 				1CA4140F209CFE4C0093C394 /* SystemConfiguration.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
-				0D80467D0C8DF436149131B0 /* libPods-Shaman.a */,
+				B4191AD75FFC92C8F810453E /* Pods_Shaman.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -833,6 +835,17 @@
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 7Q4S6MEJCC;
 						LastSwiftMigration = 0920;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Keychain = {
+								enabled = 0;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1256,9 +1269,18 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Shaman/Pods-Shaman-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1444,6 +1466,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Shaman/Shaman.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 7Q4S6MEJCC;
@@ -1477,6 +1500,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Shaman/Shaman.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7Q4S6MEJCC;
 				FRAMEWORK_SEARCH_PATHS = (

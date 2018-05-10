@@ -35,7 +35,7 @@ export default class DashboardScene extends Component {
     }
     return (
       <Container>
-        <HeaderPolla pop={false} name={'Chaman'} />
+        <HeaderPolla pop={false} name={'Shaman'} />
         <Tabs>
           <Tab heading={ <TabHeading><Icon name="md-football" /></TabHeading>}>
             {fixture}
