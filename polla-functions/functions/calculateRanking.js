@@ -119,34 +119,33 @@ exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
 
 exports.calculatePointsTest = () => functions.database.ref('/matches/{idMatch}')
 	.onUpdate((change, context) => {
-		var matchRef = change.after.val();
+		var matchData = change.after.val();
 		
-		console.log(matchRef);
+		console.log(matchData);
 
 		var userMatchRef;
 
 		var result = -2;
 		var matchGroup;
 
-		console.log(matchRef.key);
+		var matchId = matchData.key;
 		console.log("key1 " + context.params.idMatch);
 		console.log("keyA " + change.after.key);
 		console.log("keyB " + change.before.key);
-
-		matchRef.once("value", function(snapshot) { 
-			var matchData = snapshot.val();
 		
-			matchGroup = matchData.group;
+		matchGroup = matchData.group;
 
-			if(matchData.scoreTeam1 && matchData.scoreTeam2) {
-				result = matchData.scoreTeam2 - matchData.scoreTeam1;
-				matchData.result = !(result === 0) ? (result/Math.abs(result)) : result; 
-			}
+		if(matchData.scoreTeam1 && matchData.scoreTeam2) {
+			console.log(matchData.scoreTeam1);
+			console.log(matchData.scoreTeam2);
+			result = matchData.scoreTeam2 - matchData.scoreTeam1;
+			matchData.result = !(result === 0) ? (result/Math.abs(result)) : result; 
+		}
 
-			console.log(matchData.result);
-		/*
-		userMatchRef = admin.database().ref('/bets/{userId}/matches/' + matchGroup + '/' + matchId)
-		userMatchRef.on("value", function(snapshot) { 
+		console.log(matchData.result);
+		
+		userMatchRef = global.init.db.ref('/bets/{userId}/matches/' + matchGroup + '/' + matchId)
+		userMatchRef.once("value", function(snapshot) { 
 			var matchData = snapshot.val();
 			var points = 0;
 			
@@ -167,12 +166,7 @@ exports.calculatePointsTest = () => functions.database.ref('/matches/{idMatch}')
 			
 		}, function (errorObject) { 
 			console.log("Error al leer: " + errorObject.code); 
-		});
-		*/		
-
-	}, function (errorObject) { 
-		console.log("Error al leer: " + errorObject.code); 
-	});
+		});		
 		return 0;
 	});
 
