@@ -122,7 +122,7 @@ export default {
   footerPaddingBottom: isIphoneX ? 34 : 0,
 
   // FooterTab
-  tabBarTextColor: platform === "ios" ? "#2874F0" : "#fff",
+  tabBarTextColor: platform === "ios" ? "#06BA41" : "#fff",
   tabBarTextSize: platform === "ios" ? 14 : 11,
   activeTab: "#fff",
   sTabBarActiveTextColor: "#007aff",
@@ -130,8 +130,8 @@ export default {
   tabActiveBgColor: platform === "ios" ? "#cde1f9" : "#06BA41",
 
   // Header
-  toolbarBtnColor: platform === "ios" ? "#007aff" : "#fff",
-  toolbarDefaultBg: platform === "ios" ? "#F8F8F8" : "#00AE33",
+  toolbarBtnColor: platform === "ios" ? "#fff" : "#fff",
+  toolbarDefaultBg: platform === "ios" ? "#00AE33" : "#00AE33",
   toolbarHeight: platform === "ios" ? (isIphoneX ? 88 : 64) : 56,
   toolbarSearchIconSize: platform === "ios" ? 20 : 23,
   toolbarInputColor: platform === "ios" ? "#CECDD2" : "#fff",
@@ -210,9 +210,9 @@ export default {
   // Tab
   tabDefaultBg: platform === "ios" ? "#F8F8F8" : "#06BA41",
   topTabBarTextColor: platform === "ios" ? "#6b6b6b" : "#B3F9B6",
-  topTabBarActiveTextColor: platform === "ios" ? "#007aff" : "#fff",
+  topTabBarActiveTextColor: platform === "ios" ? "#06BA41" : "#fff",
   topTabBarBorderColor: platform === "ios" ? "#a7a6ab" : "#fff",
-  topTabBarActiveBorderColor: platform === "ios" ? "#007aff" : "#fff",
+  topTabBarActiveBorderColor: platform === "ios" ? "#06BA41" : "#fff",
 
   // Tabs
   tabBgColor: "#F8F8F8",
@@ -231,7 +231,7 @@ export default {
   titleFontSize: platform === "ios" ? 17 : 19,
   subTitleFontSize: platform === "ios" ? 12 : 14,
   subtitleColor: platform === "ios" ? "#8e8e93" : "#FFF",
-  titleFontColor: platform === "ios" ? "#000" : "#FFF",
+  titleFontColor: platform === "ios" ? "#FFF" : "#FFF",
 
   // Other
   borderRadiusBase: platform === "ios" ? 5 : 2,
