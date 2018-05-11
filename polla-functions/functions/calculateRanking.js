@@ -121,14 +121,16 @@ exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
 
 exports.calculateRanking = () => functions.database.ref('/betsAll/{betId}/matches/{faseGrupoId}/{matchId}')
     .onUpdate((change,context) => {
-    	return global.init.db.ref('/betsAll/'+context.params.betId+'/matches/'+context.params.faseGrupoId)
+    	return global.init.db.ref('/betsAll/'+context.params.betId+'/matches/')
 		.once('value').then((snapshot)=>{
 			var totalPoints = 0;
 			snapshot.forEach((childSnapshot)=>{
-				var match = childSnapshot.val();
-				var matchId = childSnapshot.key;
-				if(match.points){
-					totalPoints += match.points;
+				var group = childSnapshot.val();
+				for(var matchKey in group){
+					var match = group[matchKey];
+					if(match.points){
+						totalPoints += parseInt(match.points);
+					}
 				}
 			});
 			return global.init.db.ref('/rankingAll/'+context.params.betId).update({
