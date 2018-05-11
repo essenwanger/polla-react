@@ -13,7 +13,7 @@ export default class DashboardScene extends Component {
     super(props);
     this.state = {
       user: props.user,
-      bet: props.user.bets[0].betKey,
+      bet: props.betKey === undefined ? props.user.bets.all[0].betKey : props.betKey,
       status: ''
     };
   }

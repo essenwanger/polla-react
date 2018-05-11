@@ -22,7 +22,7 @@ exports.letthegamesbegin = () => functions.database.ref('/typeBets/{idType}/stat
     			snapshot.forEach((childSnapshot)=>{
 	    			var item = childSnapshot.val();
 	    			var key  = childSnapshot.key;
-	    			if(item.completed){
+	    			if(item.completed && item.payable){
 	    				bets[key] = item;
 	    				ranking[key] = {
 	    					profile : item.profile,

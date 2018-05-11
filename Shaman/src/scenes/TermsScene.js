@@ -14,9 +14,9 @@ export default class TermsScene extends Component {
       matches: {},
       roups: [],
       positionTable: [], 
-      typeOfBet: props.typeOfBet === undefined ? 'All' : props.typeOfBet,
-      presentationMode : props.presentationMode === undefined ? 'Login' : props.presentationMode,
-      textButton: props.presentationMode === undefined ? 'Aceptar' : ' Salir'
+      codeTypeOfBet: props.codeTypeOfBet === undefined ? 'all' : props.codeTypeOfBet,
+      typeOfBet: {},
+      presentationMode : props.presentationMode === undefined ? 'Login' : props.presentationMode
     };    
     this.onAcceptTerms = this.onAcceptTerms.bind(this);
   }
@@ -64,6 +64,10 @@ export default class TermsScene extends Component {
       });
       this.state.positionTable = snapshot;
     });
+
+    firebase.database().ref('typeBets/'+this.state.codeTypeOfBet).once('value').then((snapshot)=>{
+      this.setState({typeOfBet: snapshot.val()});
+    });
   }
 
   onAcceptTerms(){
@@ -78,30 +82,29 @@ export default class TermsScene extends Component {
       date: new Date()
     };
 
-    var refPreBets = firebase.database().ref('preBets' + this.state.typeOfBet);
+    var refPreBets = firebase.database().ref('preBets' + this.state.typeOfBet.suffix);
     var refPrePush = refPreBets.push(preBet);
 
     //alta de usuario en /users/{id-google}/
     var userFirebase = {
-      profile: this.state.user,
-      bets: [
-        {
-          betKey: refPrePush.key,
-          completed: false
-        }
-      ]
+      profile: this.state.user
     };
     firebase.database().ref('users/' + this.state.user.userID + '/').set(userFirebase);
+    firebase.database().ref('users/' + this.state.user.userID + '/bets/'+ this.state.codeTypeOfBet + '/0').set({
+      betKey: refPrePush.key,
+      completed: false
+    });
+
 
     //alta del usuario en el ranking /ranking/
     var subscribed = {
       profile: this.state.user,
       count: 1      
     };
-    firebase.database().ref('subscribed' + this.state.typeOfBet + '/' + this.state.user.userID + '/').set(subscribed);
+    firebase.database().ref('subscribed' + this.state.typeOfBet.suffix + '/' + this.state.user.userID + '/').set(subscribed);
 
     //Navegando al dashboard 
-    Actions.reset('dashboard', {user: userFirebase});
+    Actions.reset('dashboard', {user: userFirebase, betKey: refPrePush.key});
   }
 
   _renderHeader(){
@@ -113,8 +116,8 @@ export default class TermsScene extends Component {
   }
   _renderButton(){
     if(this.state.presentationMode === 'Login') {
-      return (<Button block onPress={this.onAcceptTerms}>
-                <Text>{this.state.textButton}</Text>
+      return (<Button full success onPress={this.onAcceptTerms}>
+                <Text>Aceptar</Text>
               </Button>);
     }
   }
