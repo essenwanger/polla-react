@@ -42,7 +42,7 @@ export default class AboutScene extends Component {
             </CardItem>
             <CardItem button onPress={()=>this.openUrl('https://twitter.com/carlos_gnu')}>
               <Left>
-                <Thumbnail source={require('../img/about/no_photo.jpeg')} />
+                <Thumbnail source={require('../img/about/carlos_montes.jpg')} />
                 <Body>
                   <Text>Carlos Montes de Oca</Text>
                   <Text note>@carlos_gnu</Text>
@@ -69,19 +69,19 @@ export default class AboutScene extends Component {
             </CardItem>
             <CardItem button onPress={()=>this.openUrl('https://twitter.com/lysbon')}>
               <Left>
-                <Thumbnail source={require('../img/about/no_photo.jpeg')} />
+                <Thumbnail source={require('../img/about/carlos_sosa.jpg')} />
                 <Body>
                   <Text>Carlos Sosa</Text>
                   <Text note>@lysbon</Text>
                 </Body>
               </Left>
             </CardItem>
-            <CardItem button onPress={()=>this.openUrl('https://twitter.com/alex')}>
+            <CardItem button onPress={()=>this.openUrl('https://www.facebook.com/alex.cusihuamanquispe')}>
               <Left>
-                <Thumbnail source={require('../img/about/no_photo.jpeg')} />
+                <Thumbnail source={require('../img/about/alex_cusihuaman.jpeg')} />
                 <Body>
                   <Text>Alex Cusihuaman</Text>
-                  <Text note>@alex</Text>
+                  <Text note>@alex.cusihuamanquispe</Text>
                 </Body>
               </Left>
             </CardItem>
