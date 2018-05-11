@@ -55,10 +55,10 @@ exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
 			    		matchUser.scoreTeamReal2 = match.scoreTeam2;
 			    		//implementar logica de puntos
 					    if(matchUser.result === match.result){
-					    	matchUser.points = 3;//puntos por acertar al resultado (ganador / empate)
+					    	matchUser.points = 1;//puntos por acertar al resultado (ganador / empate)
 					    	if(matchUser.scoreTeam1 === match.scoreTeam1 &&
 					    		matchUser.scoreTeam2 === match.scoreTeam2){
-					    		matchUser.points = 6;//puntos por acertar al score exacto
+					    		matchUser.points = 3;//puntos por acertar al score exacto
 					    	}
 					    	if(matchUser.result === 0){
 					    		if(matchUser.scorePenaltyTeam1 && matchUser.scorePenaltyTeam2){
@@ -70,20 +70,22 @@ exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
 						    			matchUser.resultPenalty=0; //NO DEBERIA PASAR
 						    		}
 						    		if(matchUser.resultPenalty === match.resultPenalty){
-						    			if(matchUser.scorePenaltyTeam1 === match.scorePenaltyTeam1 &&
+										/*
+										if(matchUser.scorePenaltyTeam1 === match.scorePenaltyTeam1 &&
 					    					matchUser.scorePenaltyTeam2 === match.scorePenaltyTeam2){
 					    					matchUser.points += 6;//puntos extras por acertar al score exacto en penales
-					    				}else{
-					    					matchUser.points += 3;//puntos extras por acetar al ganador en penales
-					    				}
+					    				}else{*/
+					    					matchUser.points += 1;//puntos extras por acetar al ganador en penales
+					    				//}
 						    		}
 				    			}
 					    	}
-					    }else{
+					    } else {
 					    	if(matchUser.result === match.resultPenalty){
-					    		matchUser.points = 2; //puntos por acertar al resultado en penales
-					    	}
-					    	matchUser.points = 0;
+					    		matchUser.points = 1; //puntos por acertar al resultado final
+					    	} else {
+								matchUser.points = 0;
+							}
 					    }
 					    //puntos extras por atinar al equipo clasificado en llave
 					    if(matchUser.group.length > 1){ //solo llaves
@@ -105,7 +107,7 @@ exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
 								    }
 						    	}
 						    }
-					    }					
+						}
 					    return global.init.db.ref('/betsAll/'+rankKey+'/matches/'+match.group+'/'+context.params.idMatch)
 						.update(matchUser);
 			        }).catch(error => {
@@ -116,59 +118,6 @@ exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
 		}
 		return 0;
 });
-
-exports.calculatePointsTest = () => functions.database.ref('/matches/{idMatch}')
-	.onUpdate((change, context) => {
-		var matchData = change.after.val();
-		
-		console.log(matchData);
-
-		var userMatchRef;
-
-		var result = -2;
-		var matchGroup;
-
-		var matchId = matchData.key;
-		console.log("key1 " + context.params.idMatch);
-		console.log("keyA " + change.after.key);
-		console.log("keyB " + change.before.key);
-		
-		matchGroup = matchData.group;
-
-		if(matchData.scoreTeam1 && matchData.scoreTeam2) {
-			console.log(matchData.scoreTeam1);
-			console.log(matchData.scoreTeam2);
-			result = matchData.scoreTeam2 - matchData.scoreTeam1;
-			matchData.result = !(result === 0) ? (result/Math.abs(result)) : result; 
-		}
-
-		console.log(matchData.result);
-		
-		userMatchRef = global.init.db.ref('/bets/{userId}/matches/' + matchGroup + '/' + matchId)
-		userMatchRef.once("value", function(snapshot) { 
-			var matchData = snapshot.val();
-			var points = 0;
-			
-			if(matchData.scoreTeam1 && matchData.scoreTeam2) {
-				var userResult = matchData.scoreTeam2 - matchData.scoreTeam1;
-				userResult = !(userResult === 0) ? (userResult/Math.abs(userResult)) : userResult; 
-			}
-
-			if(userResult === result) {
-				points = "13";
-			} else {	
-				points = "0";
-			}
-			
-			userMatchRef.update({
-				"points" : points
-			});
-			
-		}, function (errorObject) { 
-			console.log("Error al leer: " + errorObject.code); 
-		});		
-		return 0;
-	});
 
 exports.calculateRanking = () => functions.database.ref('/betsAll/{betId}/matches/{faseGrupoId}/{matchId}')
     .onUpdate((change,context) => {
