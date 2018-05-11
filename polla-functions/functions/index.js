@@ -34,6 +34,7 @@ sendMailWelcome.initialize(LAPOLLA_CONFIG);
 //exports.addUser = addUser.addUser();
 exports.calculateNewPositionTable = calculateNewPositionTable.calculateNewPositionTable();
 exports.calculatePoints = calculateRanking.calculatePoints();
+//exports.calculatePointsTest = calculateRanking.calculatePointsTest();
 exports.calculateRanking = calculateRanking.calculateRanking();
 exports.letthegamesbegin = letthegamesbegin.letthegamesbegin();
 exports.calculateLlavesOctavos = calculateLlaves.calculateLlavesOctavos();
