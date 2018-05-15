@@ -28,37 +28,21 @@ export default class PhaseScene extends Component {
       this.tabView.goToPage(0);
       setTimeout(() => {
         Actions.refresh({user: this.props.user, status: this.state.status, 
-        groups: this.props.groups, bet: this.state.bet, position: position});
+        groups: this.props.groups, bet: this.state.bet, position: position, active: false});
       }, 500);
     }else{
       Actions.refresh({user: this.props.user, status: this.state.status, 
-        groups: this.props.groups, bet: this.state.bet, position: position});
+        groups: this.props.groups, bet: this.state.bet, position: position, active: false});
     }
   }
 
-  onScore(id, team, score){
+  onScore(updates){
     firebase.database().ref('typeBets/all/status/').once('value').then((snapshot)=>{
       if(snapshot.val()==='opened'){
         var betKey= this.state.bet;
         var position= this.props.position;
         var groupKey= this.props.groups[position].group;
-        if(team==='1'){
-          firebase.database().ref('preBetsAll/'+betKey+'/matches/'+groupKey+'/'+id+'/').update({
-            scoreTeam1: score
-          });
-        }else if(team==='2'){
-          firebase.database().ref('preBetsAll/'+betKey+'/matches/'+groupKey+'/'+id+'/').update({
-            scoreTeam2: score
-          });
-        }else if(team==='1P'){
-          firebase.database().ref('preBetsAll/'+betKey+'/matches/'+groupKey+'/'+id+'/').update({
-            scorePenaltyTeam1: score
-          });
-        }else if(team==='2P'){
-          firebase.database().ref('preBetsAll/'+betKey+'/matches/'+groupKey+'/'+id+'/').update({
-            scorePenaltyTeam2: score
-          });
-        }
+        firebase.database().ref().update(updates);
         firebase.database().ref('preBetsAll/'+betKey+'/matches/'+groupKey+'/')
         .once('value').then((snapshot)=>{
           var total = 0;
@@ -137,17 +121,19 @@ export default class PhaseScene extends Component {
   }
 
   render() {
-    var groups=this.props.groups;
-    var group=groups[this.props.position].group;
-    var groupName=group.length===1 ? ('Grupo '+group) : (group);
+    let betKey= this.state.bet;
+    let groups=this.props.groups;
+    let groupKey=groups[this.props.position].group;
+    let groupName=groupKey.length===1 ? ('Grupo '+groupKey) : (groupKey);
     return (
       <Container>
         <HeaderPolla pop name={groupName} user={this.props.user} />
         <Tabs ref={(tabView) => { this.tabView = tabView }} onChangeTab={({ i, ref, from })=> this.updateData()}>
           <Tab heading={ <TabHeading><Icon name="md-calendar" /></TabHeading>}>
-            <Matches matches={this.state.matches} status={this.state.status} onScore={this.onScore}/>
+            <Matches matches={this.state.matches} status={this.state.status} 
+            betKey={betKey} groupKey={groupKey} onScore={this.onScore}/>
           </Tab>
-          {group.length===1 &&
+          {groupKey.length===1 &&
             <Tab heading={ <TabHeading><Icon name="md-grid" /></TabHeading>}>
               <PositionTable positionTable={this.state.positionTable} />
             </Tab>
