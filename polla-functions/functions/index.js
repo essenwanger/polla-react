@@ -6,6 +6,7 @@ const admin = require('firebase-admin');
 admin.initializeApp();
 
 const letthegamesbegin          = require('./letthegamesbegin');
+const updateMatch               = require('./updateMatch');
 const calculateRanking          = require('./calculateRanking');
 const calculateNewPositionTable = require('./calculateNewPositionTable');
 //const addUser                   = require('./addUser');
@@ -23,6 +24,7 @@ const LAPOLLA_CONFIG = {
 
 //addMessage.initialize(LAPOLLA_CONFIG);
 //addUser.initialize(LAPOLLA_CONFIG);
+updateMatch.initialize(LAPOLLA_CONFIG);
 calculateNewPositionTable.initialize(LAPOLLA_CONFIG);
 calculateRanking.initialize(LAPOLLA_CONFIG);
 letthegamesbegin.initialize(LAPOLLA_CONFIG);
@@ -32,6 +34,9 @@ sendMailWelcome.initialize(LAPOLLA_CONFIG);
 
 //exports.addMessage = addMessage.addMessage();
 //exports.addUser = addUser.addUser();
+exports.updateScore = updateMatch.updateScore();
+exports.randomScoreMatches = updateMatch.randomScoreMatches();
+exports.resetScoreMatches = updateMatch.resetScoreMatches();
 exports.calculateNewPositionTable = calculateNewPositionTable.calculateNewPositionTable();
 exports.calculatePoints = calculateRanking.calculatePoints();
 //exports.calculatePointsTest = calculateRanking.calculatePointsTest();
