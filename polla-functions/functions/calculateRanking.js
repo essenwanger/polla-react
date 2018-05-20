@@ -1,5 +1,6 @@
 // The Cloud Functions for Firebase SDK to create Cloud Functions and setup triggers.
 const functions = require('firebase-functions');
+const commons   = require('./commonCalculates');
 
 exports.initialize = (laPollaConfig) => {
   global.init = Object.freeze(laPollaConfig);
@@ -30,6 +31,16 @@ exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
 		    			match.resultPenalty=0; //resultado parcial
 		    		}
     			}
+    		}
+
+    		if(match.group.length === 1 ){//Fase de grupos
+    			return global.init.db.ref('/matches/').once('value').then((snapshot)=>{
+	    			var positionTable = commons.calcularTablaPosiciones(snapshot,match.grupo);
+					var positionTableGrupo = {};
+					positionTableGrupo[context.params.faseGrupoId]=positionTable;
+					return global.init.db.ref('/positionTable/')
+						.update(positionTableGrupo);
+	    		});
     		}
 
     		//para todos los usuarios registrados y aptos para jugar

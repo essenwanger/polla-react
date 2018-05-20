@@ -19,7 +19,7 @@ exports.randomScoreMatches = () => functions.https.onRequest((req, res) => {
       scorePenaltyTeam2 = '';
 
       if (childSnapshot.key >= 48) {
-        if (scoreTeam1 == scoreTeam2) {
+        if (scoreTeam1 === scoreTeam2) {
           scorePenaltyTeam1 = Math.floor(Math.random() * 2) + 4;
           scorePenaltyTeam2 = scorePenaltyTeam1 + (Math.random() < 0.5 ? -1 : 1);
         }
@@ -35,8 +35,10 @@ exports.randomScoreMatches = () => functions.https.onRequest((req, res) => {
         this.errorMessage = 'Error - ' + error.message
       });
     });
+    return 1;
+  }).catch(error => {
+    this.errorMessage = 'Error - ' + error.message
   });
-
   return res.redirect(303, global.init.db.ref('/matches'));
 });
 
@@ -59,8 +61,10 @@ exports.resetScoreMatches = () => functions.https.onRequest((req, res) => {
         this.errorMessage = 'Error - ' + error.message
       });
     });
+    return 1;
+  }).catch(error => {
+    this.errorMessage = 'Error - ' + error.message
   });
-
   return res.redirect(303, global.init.db.ref('/matches'));
 });
 
