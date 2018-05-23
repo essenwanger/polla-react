@@ -33,14 +33,46 @@ exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
     			}
     		}
 
-    		if(match.group.length === 1 ){//Fase de grupos
-    			return global.init.db.ref('/matches/').once('value').then((snapshot)=>{
-	    			var positionTable = commons.calcularTablaPosiciones(snapshot,match.grupo);
-					var positionTableGrupo = {};
-					positionTableGrupo[context.params.faseGrupoId]=positionTable;
-					return global.init.db.ref('/positionTable/')
-						.update(positionTableGrupo);
-	    		});
+    		if(match.group || match.round){
+    			if(match.group.length === 1 ){//Fase de grupos
+	    			return global.init.db.ref('/matches/').once('value').then((snapshot)=>{
+	    				var positionTable = commons.calcularTablaPosiciones(snapshot,match.group);
+						var positionTableGrupo = {};
+						positionTableGrupo[match.group]=positionTable;
+						return global.init.db.ref('/positionTable/')
+						.update(positionTableGrupo)
+						.then(()=>{
+							return global.init.db.ref('/matches/').once('value').then((snapshot)=>{
+								var matches = commons.calcularOctavos(positionTable,match.group,snapshot);
+						    	return global.init.db.ref(
+									'/matches/').update(matches);
+							});
+						});
+		    		});
+	    		}
+    			if(match.round){
+	    			var group = {};
+	    			group[context.params.idMatch] = match;
+	    			var results = commons.calcularResultadosFaseActual(match.round,group);
+					if(results){
+						var siguienteFase = 'Cuartos';
+						if(match.group==='Cuartos'){
+							siguienteFase = 'Semifinales';
+						}else if(match.group==='Semifinales'){
+							siguienteFase = 'Final';
+						}
+						return global.init.db.ref('/matches/').once('value').then((snapshot)=>{
+							var nextMatches = commons.calcularSiguienteFase(results,siguienteFase,snapshot);
+							console.log('Siguiente Fase');
+	    					console.log(nextMatches);
+							if(nextMatches){
+								return global.init.db.ref('/matches/').update(nextMatches);
+							}else{
+								return 0;
+							}
+						});
+					}
+    			}
     		}
 
     		//para todos los usuarios registrados y aptos para jugar

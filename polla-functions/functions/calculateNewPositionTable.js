@@ -229,35 +229,8 @@ exports.calculateNewPositionTable = () => functions.database.ref('/preBetsAll/{b
 				.update(positionTableGrupo);
     		});
 		}else{
-
-			if(context.params.faseGrupoId==='Octavos' ||
-			   context.params.faseGrupoId==='Cuartos' ||
-			   context.params.faseGrupoId==='Semifinales'){
-
-				var results = {};
-
-				for(var matchKey in group){
-					var match = group[matchKey];
-					if(match.scoreTeam1 && match.scoreTeam2){
-						if(match.scoreTeam1 > match.scoreTeam2){
-							results['[W'+match.id+']'] = {teamName:match.teamName1,team:match.team1};
-							results['[L'+match.id+']'] = {teamName:match.teamName2,team:match.team2};
-						}else if(match.scoreTeam1 < match.scoreTeam2){
-							results['[W'+match.id+']'] = {teamName:match.teamName2,team:match.team2};
-							results['[L'+match.id+']'] = {teamName:match.teamName1,team:match.team1};
-						}else{
-							if(match.scorePenaltyTeam1 && match.scorePenaltyTeam1){
-								if(match.scorePenaltyTeam1 > match.scorePenaltyTeam2){
-									results['[W'+match.id+']'] = {teamName:match.teamName1,team:match.team1};
-									results['[L'+match.id+']'] = {teamName:match.teamName2,team:match.team2};
-								}else if(match.scorePenaltyTeam1 < match.scorePenaltyTeam2){
-									results['[W'+match.id+']'] = {teamName:match.teamName2,team:match.team2};
-									results['[L'+match.id+']'] = {teamName:match.teamName1,team:match.team1};
-								}
-							}
-						}
-					}
-				}
+			var results = commons.calcularResultadosFaseActual(context.params.faseGrupoId,group);
+			if(results){
 				var siguienteFase = 'Cuartos';
 				if(context.params.faseGrupoId==='Cuartos'){
 					siguienteFase = 'Semifinales';
@@ -265,39 +238,14 @@ exports.calculateNewPositionTable = () => functions.database.ref('/preBetsAll/{b
 					siguienteFase = 'Final';
 				}
 				return global.init.db.ref('/preBetsAll/'+context.params.betId+'/matches/'+siguienteFase).once('value').then((snapshot)=>{
-					snapshot.forEach((childSnapshot)=>{
-						var nextMatch = childSnapshot.val();
-						var idMatch = childSnapshot.key;
-
-						if(!nextMatch['teamSource1'] || !nextMatch['teamSource2']){
-							nextMatch['teamSource1']=nextMatch.teamName1;
-							nextMatch['teamSource2']=nextMatch.teamName2;
-						}
-						var updated = false;
-						if(results[nextMatch.teamSource1]){
-							if(nextMatch.team1 !== results[nextMatch.teamSource1].team){
-								updated = true;
-								nextMatch.team1     = results[nextMatch.teamSource1].team;
-								nextMatch.teamName1 = results[nextMatch.teamSource1].teamName;
-							}
-						}
-						if(results[nextMatch.teamSource2]){
-							if(nextMatch.team2 !== results[nextMatch.teamSource2].team){
-								updated = true;
-								nextMatch.team2     = results[nextMatch.teamSource2].team;
-								nextMatch.teamName2 = results[nextMatch.teamSource2].teamName;
-							}
-						}
-						if(updated){
-							if(results[nextMatch.teamSource1] || results[nextMatch.teamSource2]){
-								global.init.db.ref(
-									'/preBetsAll/'+context.params.betId+
-									'/matches/'+siguienteFase+
-									'/'+idMatch).update(nextMatch);
-							}
-						}
-					});
-					return 1;
+					var nextMatches = commons.calcularSiguienteFase(results,siguienteFase,snapshot);
+					if(nextMatches){
+						return global.init.db.ref(
+							'/preBetsAll/'+context.params.betId+
+							'/matches/'+siguienteFase+'/').update(nextMatches);
+					}else{
+						return 0;
+					}
 				});
 			}
 		}
