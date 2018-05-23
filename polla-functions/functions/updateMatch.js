@@ -21,7 +21,7 @@ exports.randomScoreMatches = () => functions.https.onRequest((req, res) => {
       if (childSnapshot.key >= 48) {
         if (scoreTeam1 === scoreTeam2) {
           scorePenaltyTeam1 = (Math.floor(Math.random() * 2) + 4) + '';
-          scorePenaltyTeam2 = (scorePenaltyTeam1 + (Math.random() < 0.5 ? -1 : 1)) + '';
+          scorePenaltyTeam2 = (parseInt(scorePenaltyTeam1) + (Math.random() < 0.5 ? -1 : 1)) + '';
         }
         sleep(1000);
       }
