@@ -1,0 +1,30 @@
+2018-04-15T11:31:23.812Z - info: User function triggered, starting execution
+2018-04-15T11:31:24.388Z - info: Function crashed
+2018-04-15T11:31:24.389Z - info: Error: Reference.push failed: first argument contains undefined in property 'messages.original'
+    at Object.exports.validateFirebaseData (D:\workspace\polla\polla-react\polla-functions\node_modules\@firebase\database\dist\cjs\src\core\util\validation.js:103:15)
+    at D:\workspace\polla\polla-react\polla-functions\node_modules\@firebase\database\dist\cjs\src\core\util\validation.js:149:21
+    at Object.exports.forEach (D:\workspace\polla\polla-react\polla-functions\node_modules\@firebase\util\dist\cjs\src\obj.js:37:13)
+    at Object.exports.validateFirebaseData (D:\workspace\polla\polla-react\polla-functions\node_modules\@firebase\database\dist\cjs\src\core\util\validation.js:132:16)
+    at Object.exports.validateFirebaseDataArg (D:\workspace\polla\polla-react\polla-functions\node_modules\@firebase\database\dist\cjs\src\core\util\validation.js:91:13)
+    at Reference.push (D:\workspace\polla\polla-react\polla-functions\node_modules\@firebase\database\dist\cjs\src\api\Reference.js:227:22)
+    at exports.addMessage.functions.https.onRequest (D:\workspace\polla\polla-react\polla-functions\functions\index.js:15:44)
+    at cloudFunction (D:\workspace\polla\polla-react\polla-functions\node_modules\firebase-functions\lib\providers\https.js:37:41)
+    at app.use (C:\Users\Edison\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\@google-cloud\functions-emulator\src\supervisor\worker.js:142:11)
+    at Layer.handle [as handle_request] (C:\Users\Edison\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\express\lib\router\layer.js:95:5)
+2018-04-15T11:31:24.401Z - info: Execution took 589 ms, user function completed successfully
+2018-04-15T11:37:16.101Z - info: Worker for addMessage closed due to file changes.
+2018-04-15T11:42:42.779Z - info: Execution took 1220 ms, finished with status: 'crash'
+2018-04-15T11:43:03.591Z - info: User function triggered, starting execution
+2018-04-15T11:43:03.966Z - info: Function crashed
+2018-04-15T11:43:03.968Z - info: Error: Reference.push failed: first argument contains undefined in property 'messages.original'
+    at Object.exports.validateFirebaseData (D:\workspace\polla\polla-react\polla-functions\node_modules\@firebase\database\dist\cjs\src\core\util\validation.js:103:15)
+    at D:\workspace\polla\polla-react\polla-functions\node_modules\@firebase\database\dist\cjs\src\core\util\validation.js:149:21
+    at Object.exports.forEach (D:\workspace\polla\polla-react\polla-functions\node_modules\@firebase\util\dist\cjs\src\obj.js:37:13)
+    at Object.exports.validateFirebaseData (D:\workspace\polla\polla-react\polla-functions\node_modules\@firebase\database\dist\cjs\src\core\util\validation.js:132:16)
+    at Object.exports.validateFirebaseDataArg (D:\workspace\polla\polla-react\polla-functions\node_modules\@firebase\database\dist\cjs\src\core\util\validation.js:91:13)
+    at Reference.push (D:\workspace\polla\polla-react\polla-functions\node_modules\@firebase\database\dist\cjs\src\api\Reference.js:227:22)
+    at exports.addMessage.functions.https.onRequest (D:\workspace\polla\polla-react\polla-functions\functions\index.js:15:44)
+    at cloudFunction (D:\workspace\polla\polla-react\polla-functions\node_modules\firebase-functions\lib\providers\https.js:37:41)
+    at app.use (C:\Users\Edison\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\@google-cloud\functions-emulator\src\supervisor\worker.js:142:11)
+    at Layer.handle [as handle_request] (C:\Users\Edison\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\express\lib\router\layer.js:95:5)
+2018-04-15T11:43:03.981Z - info: Execution took 391 ms, user function completed successfully

@@ -13,15 +13,15 @@ exports.randomScoreMatches = () => functions.https.onRequest((req, res) => {
 
   matchRef.once('value').then((snapshot) => {
     snapshot.forEach((childSnapshot) => {
-      scoreTeam1 = Math.floor(Math.random() * 4);
-      scoreTeam2 = Math.floor(Math.random() * 4);
+      scoreTeam1 = Math.floor(Math.random() * 4) + '';
+      scoreTeam2 = Math.floor(Math.random() * 4) + '';
       scorePenaltyTeam1 = '';
       scorePenaltyTeam2 = '';
 
       if (childSnapshot.key >= 48) {
         if (scoreTeam1 === scoreTeam2) {
-          scorePenaltyTeam1 = Math.floor(Math.random() * 2) + 4;
-          scorePenaltyTeam2 = scorePenaltyTeam1 + (Math.random() < 0.5 ? -1 : 1);
+          scorePenaltyTeam1 = (Math.floor(Math.random() * 2) + 4) + '';
+          scorePenaltyTeam2 = (parseInt(scorePenaltyTeam1) + (Math.random() < 0.5 ? -1 : 1)) + '';
         }
         sleep(1000);
       }
@@ -79,10 +79,10 @@ exports.updateScore = () => functions.https.onRequest((req, res) => {
   var matchRef = global.init.db.ref('/matches/' + matchId);
 
   matchRef.update({
-    "scoreTeam1": scoreTeam1,
-    "scoreTeam2": scoreTeam2,
-    "scorePenaltyTeam1": scorePenaltyTeam1,
-    "scorePenaltyTeam2": scorePenaltyTeam2
+    "scoreTeam1": scoreTeam1 + '',
+    "scoreTeam2": scoreTeam2 + '',
+    "scorePenaltyTeam1": scorePenaltyTeam1 + '',
+    "scorePenaltyTeam2": scorePenaltyTeam2 + ''
   }).then(snapshot => {
     return res.redirect(303, snapshot.ref);
   }).catch(error => {
