@@ -7,10 +7,18 @@ const path = require('path');
 const os   = require('os');
 const fs   = require('fs');
 const handlebars = require('handlebars');
-const nodemailer = require('nodemailer');
+const base64 = require('file-base64');
 
+const SENDGRID_API_KEY = "----------";
+const SENDGRID_SENDER  = "contacto@shaman.pe";
+const PLANTILLA        = "----------";
+const Sendgrid         = require('sendgrid')(SENDGRID_API_KEY);
+
+//const nodemailer  = require('nodemailer');
+//const sgTransport = require('nodemailer-sendgrid-transport');
 //const gmailEmail    = functions.config().gmail.email;
 //const gmailPassword = functions.config().gmail.password;
+/*
 const mailTransport = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -18,8 +26,27 @@ const mailTransport = nodemailer.createTransport({
     pass: '-------',
   },
 });
+*/
 
 const APP_NAME = 'Shaman';
+/*
+var options = {
+  auth: {
+    api_user: '',
+    api_key: ''
+  }
+}*/
+//const mailTransport = nodemailer.createTransport(sgTransport(options));
+
+/*
+var mailTransport = nodemailer.createTransport({
+  service: 'SendGrid',
+  auth: {
+    user: '',
+    pass: ''
+  }
+});
+*/
 
 exports.initialize = (laPollaConfig) => {
 	global.init = Object.freeze(laPollaConfig);
@@ -189,15 +216,21 @@ exports.sendMailMassive = () => functions.storage.object().onFinalize((object) =
 			destination: tempFilePath,
 		}).then(() => {
 			console.log(typeBetSuffix);
-			return global.init.db.ref('/ranking'+typeBetSuffix).once('value').then((snapshot)=>{
-				snapshot.forEach((childSnapshot)=>{
-					var item = childSnapshot.val();
-					var key  = childSnapshot.key;
-					sendStartingEmail(item.profile.email,item.profile.givenName,tempFilePath);
+			return base64.encode(tempFilePath, function(err, base64String) {
+				if (err) {
+					console.log(err);
+					return;
+				}
+				console.log(base64String.length);
+  				return global.init.db.ref('/ranking'+typeBetSuffix).once('value').then((snapshot)=>{
+					snapshot.forEach((childSnapshot)=>{
+						var item = childSnapshot.val();
+						var key  = childSnapshot.key;
+						sendStartingEmail(item.profile.email,item.profile.givenName,base64String);
+					});
+					return 1;
 				});
-				return 1;
 			});
-			//return sendStartingEmail('none.carlos@gmail.com','Carlos',tempFilePath);
 		}).catch(error => {
 			this.errorMessage = 'Error - ' + error.message
 		});
@@ -206,6 +239,7 @@ exports.sendMailMassive = () => functions.storage.object().onFinalize((object) =
 	}
 });
 
+/*
 function sendStartingEmail(email, displayName, pathFile) {
   const mailOptions = {
     from: `${APP_NAME} <noreply@firebase.com>`,
@@ -225,4 +259,41 @@ function sendStartingEmail(email, displayName, pathFile) {
   return mailTransport.sendMail(mailOptions).then(() => {
     return console.log('New welcome email sent to:', email);
   });
+}
+*/
+function sendStartingEmail(email,displayName, base64String){
+	var fecha = new Date();
+	const sgReq = Sendgrid.emptyRequest({
+		method: 'POST',
+		path: '/v3/mail/send',
+		body: {
+		  personalizations: [{
+			to: [{ email: email }],
+			substitutions: {
+			  "-name-": displayName,
+			  "-finicio-": fecha.toString()
+			}, 
+			subject: `Es hora de jugar en ${APP_NAME} ✔`    
+		  }],
+		  from: { email: SENDGRID_SENDER },
+		  content: [{
+			type: 'text/html',
+			value: `Es hora de jugar en ${APP_NAME} ✔`
+		  }],
+		  attachments : [{
+		  	filename : 'apuestas.pdf',
+		  	type: 'application/pdf',
+		  	content: base64String
+		  }],
+		  template_id: PLANTILLA
+		}
+	});
+	//console.log(sgReq);
+	Sendgrid.API(sgReq, (err) => {
+		if (err) {
+		  console.log(err);
+		  return;
+		}
+    });
+    return;
 }

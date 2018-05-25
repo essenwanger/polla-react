@@ -1,10 +1,12 @@
 // The Cloud Functions for Firebase SDK to create Cloud Functions and setup triggers.
 const functions = require('firebase-functions');
+const commons   = require('./commonCalculates');
 
 exports.initialize = (laPollaConfig) => {
 	global.init = Object.freeze(laPollaConfig);
 };
 
+/*
 exports.calculateNewPositionTable = () => functions.database.ref('/preBetsAll/{betId}/matches/{faseGrupoId}/{matchId}')
 	.onUpdate((change,context) => {
 
@@ -207,6 +209,44 @@ exports.calculateNewPositionTable = () => functions.database.ref('/preBetsAll/{b
 						return 1;
 					});
 				}
+			}
+		}
+		return 1;
+	});
+*/
+
+exports.calculateNewPositionTable = () => functions.database.ref('/preBetsAll/{betId}/matches/{faseGrupoId}')
+	.onUpdate((change,context) => {
+
+		var group = change.after.val();
+
+		if(context.params.faseGrupoId.length === 1 ){//Fase de grupos
+			return global.init.db.ref('/preBetsAll/'+context.params.betId+'/matches/'+context.params.faseGrupoId).once('value').then((snapshot)=>{
+    			var positionTable = commons.calcularTablaPosiciones(snapshot,context.params.faseGrupoId);
+				var positionTableGrupo = {};
+				positionTableGrupo[context.params.faseGrupoId]=positionTable;
+				return global.init.db.ref('/preBetsAll/'+context.params.betId+'/positionTable/')
+				.update(positionTableGrupo);
+    		});
+		}else{
+			var results = commons.calcularResultadosFaseActual(context.params.faseGrupoId,group);
+			if(results){
+				var siguienteFase = 'Cuartos';
+				if(context.params.faseGrupoId==='Cuartos'){
+					siguienteFase = 'Semifinales';
+				}else if(context.params.faseGrupoId==='Semifinales'){
+					siguienteFase = 'Final';
+				}
+				return global.init.db.ref('/preBetsAll/'+context.params.betId+'/matches/'+siguienteFase).once('value').then((snapshot)=>{
+					var nextMatches = commons.calcularSiguienteFase(results,siguienteFase,snapshot);
+					if(nextMatches){
+						return global.init.db.ref(
+							'/preBetsAll/'+context.params.betId+
+							'/matches/'+siguienteFase+'/').update(nextMatches);
+					}else{
+						return 0;
+					}
+				});
 			}
 		}
 		return 1;
