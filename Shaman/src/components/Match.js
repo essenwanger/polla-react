@@ -12,9 +12,12 @@ export default class Match extends Component {
     super(props);
     this.teamFlag1 = Flag(this.props.data.team1);
     this.teamFlag2 = Flag(this.props.data.team2);
-    this.onScore = this.onScore.bind(this);
-    var penalty=false;
-    if(this.props.data.group.length!==1){
+    this.onChangeScore = this.onChangeScore.bind(this);
+    let penalty=false;
+    if(this.props.data.group.length!==1 && 
+      this.props.data.scoreTeam1!=='' && 
+      this.props.data.scoreTeam2!=='' &&
+      this.props.data.scoreTeam1===this.props.data.scoreTeam2){
       penalty=true;
     }
     this.state = { 
@@ -27,19 +30,51 @@ export default class Match extends Component {
     };
   }
 
-  onScore(text, typeScore){
+  onChangeScore(text, typeScore){
     switch (typeScore) {
     case '1':
       let scoreTeam1 = text;
       this.setState({
         scoreTeam1
       });
+      if(this.props.data.group.length!==1 && 
+        scoreTeam1!=='' && 
+        this.state.scoreTeam2!=='' &&
+        scoreTeam1===this.state.scoreTeam2){
+        this.setState({
+          penalty: true
+        });
+      }else{
+        this.setState({
+          scorePenaltyTeam1: '',
+          scorePenaltyTeam2: '',
+          penalty: false
+        });
+        this.props.onChangeScore(this.props.data.key, '1P', '');
+        this.props.onChangeScore(this.props.data.key, '2P', '');
+      }
       break;
     case '2':
       let scoreTeam2 = text;
       this.setState({
         scoreTeam2
       });
+      if(this.props.data.group.length!==1 && 
+        this.state.scoreTeam1!=='' && 
+        scoreTeam2!=='' &&
+        this.state.scoreTeam1===scoreTeam2){
+        this.setState({
+          penalty: true
+        });
+      }else{
+        this.setState({
+          scorePenaltyTeam1: '',
+          scorePenaltyTeam2: '',
+          penalty: false
+        });
+        this.props.onChangeScore(this.props.data.key, '1P', '');
+        this.props.onChangeScore(this.props.data.key, '2P', '');
+      }
       break;
     case '1P':
       let scorePenaltyTeam1 = text;
@@ -54,7 +89,7 @@ export default class Match extends Component {
       });
       break;
     }
-    this.props.onScore(this.props.data.key,typeScore,text);
+    this.props.onChangeScore(this.props.data.key, typeScore, text);
   }
 
   render() {
@@ -66,12 +101,12 @@ export default class Match extends Component {
         <Col size={20}>
           <Item regular style={{ width: 45, height: 40 }}>
             <Input keyboardType={'numeric'} maxLength={2} 
-            onChangeText={(text) => this.onScore(text,'1')} value={this.state.scoreTeam1} />
+            onChangeText={(text) => this.onChangeScore(text,'1')} value={this.state.scoreTeam1} />
           </Item>
           {this.state.penalty &&
             <Item regular style={{ width: 45, height: 40 }}>
               <Input keyboardType={'numeric'} maxLength={2} 
-              onChangeText={(text) => this.onScore(text,'1P')} value={this.state.scorePenaltyTeam1} />
+              onChangeText={(text) => this.onChangeScore(text,'1P')} value={this.state.scorePenaltyTeam1} />
             </Item>
           }
         </Col>
@@ -80,12 +115,12 @@ export default class Match extends Component {
         <Col style={{alignItems: 'flex-end'}} size={20}>
           <Item regular style={{ width: 45, height: 40 }}>
             <Input keyboardType={'numeric'} maxLength={2} 
-            onChangeText={(text) => this.onScore(text,'2')} value={this.state.scoreTeam2} />
+            onChangeText={(text) => this.onChangeScore(text,'2')} value={this.state.scoreTeam2} />
           </Item>
           {this.state.penalty &&
             <Item regular style={{ width: 45, height: 40 }}>
               <Input keyboardType={'numeric'} maxLength={2} 
-                onChangeText={(text) => this.onScore(text,'2P')} value={this.state.scorePenaltyTeam2}/>
+                onChangeText={(text) => this.onChangeScore(text,'2P')} value={this.state.scorePenaltyTeam2}/>
             </Item>
           }
         </Col>
