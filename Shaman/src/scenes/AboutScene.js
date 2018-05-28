@@ -76,12 +76,12 @@ export default class AboutScene extends Component {
                 </Body>
               </Left>
             </CardItem>
-            <CardItem button onPress={()=>this.openUrl('https://www.facebook.com/alex.cusihuamanquispe')}>
+            <CardItem button onPress={()=>this.openUrl('https://twitter.com/alexCusihuamanQ')}>
               <Left>
                 <Thumbnail source={require('../img/about/alex_cusihuaman.jpeg')} />
                 <Body>
                   <Text>Alex Cusihuaman</Text>
-                  <Text note>@alex.cusihuamanquispe</Text>
+                  <Text note>@alexCusihuamanQ</Text>
                 </Body>
               </Left>
             </CardItem>
