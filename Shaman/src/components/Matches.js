@@ -50,32 +50,20 @@ export default class Matches extends Component {
 
   render() {
     var matchesComponent=null;
-    if(this.props.status==='closed'){
+    if(this.props.status==='opened'){
       matchesComponent=this.props.matches.map((item, key) => (
         <Match key={item.id} data={item} onChangeScore={this.onChangeScore}/>
       ));
+      matchesComponent=<Card>{matchesComponent}</Card>;
     }else{
       if(this.props.groupKey.length===1){
         matchesComponent=this.props.matches.map((item, key) => (
           <MatchStaticGroup key={item.id} data={item} />
         ));
+        matchesComponent=<Card>{matchesComponent}</Card>;
       }else{
-        var matchesStatic = [];
-        this.props.matches.forEach((item, key)=>{
-          matchesStatic.push({
-            team1: item.team1, team2: item.team2,
-            scoreTeam1: item.scoreTeam1, scoreTeam2: item.scoreTeam2,
-            scorePenaltyTeam1: item.scorePenaltyTeam1, scorePenaltyTeam2: item.scorePenaltyTeam2,
-            points: item.points
-          });
-          matchesStatic.push({
-            team1: item.teamSource1, team2: item.teamSource2,
-            scoreTeam1: item.scoreTeamReal1, scoreTeam2: item.scoreTeamReal2,
-            scorePenaltyTeam1: item.scorePenaltyTeamReal1, scorePenaltyTeam2: item.scorePenaltyTeamReal2
-          });
-        });
-        matchesComponent=matchesStatic.map((item, key) => (
-          <MatchStaticRound key={key} data={item} />
+        matchesComponent=this.props.matches.map((item, key) => (
+          <MatchStaticRound key={item.id} data={item} />
         ));
       }
     }
@@ -108,9 +96,7 @@ export default class Matches extends Component {
             </Header>
           }
           <Content padder>
-            <Card>
               {matchesComponent}
-            </Card>
           </Content>
         </Container>
       );
