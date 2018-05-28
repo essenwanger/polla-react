@@ -25,6 +25,10 @@ export default class TermsScene extends Component {
     if(this.state.presentationMode === 'Login') {
       this.prepareLogin();
     }
+    
+    firebase.database().ref('typeBets/'+this.state.codeTypeOfBet).once('value').then((snapshot)=>{
+      this.setState({typeOfBet: snapshot.val()});
+    });
   }
 
   prepareLogin() {
@@ -63,10 +67,6 @@ export default class TermsScene extends Component {
         positionTable.push(childSnapshot);
       });
       this.state.positionTable = snapshot;
-    });
-
-    firebase.database().ref('typeBets/'+this.state.codeTypeOfBet).once('value').then((snapshot)=>{
-      this.setState({typeOfBet: snapshot.val()});
     });
   }
 
