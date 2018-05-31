@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Content, Spinner, Card, Container, Header, Body, Title, Button, Icon, Text } from 'native-base';
 import { StyleSheet} from 'react-native';
 import Match from './Match';
+import MatchStaticGroup from './MatchStaticGroup';
+import MatchStaticRound from './MatchStaticRound';
 
 export default class Matches extends Component {
 
@@ -47,9 +49,24 @@ export default class Matches extends Component {
   }
 
   render() {
-    var matchesComponent=this.props.matches.map((item, key) => (
-      <Match key={item.id} data={item} status={this.props.status} onChangeScore={this.onChangeScore}/>
-    ));
+    var matchesComponent=null;
+    if(this.props.status==='opened'){
+      matchesComponent=this.props.matches.map((item, key) => (
+        <Match key={item.id} data={item} onChangeScore={this.onChangeScore}/>
+      ));
+      matchesComponent=<Card>{matchesComponent}</Card>;
+    }else{
+      if(this.props.groupKey.length===1){
+        matchesComponent=this.props.matches.map((item, key) => (
+          <MatchStaticGroup key={item.id} data={item} />
+        ));
+        matchesComponent=<Card>{matchesComponent}</Card>;
+      }else{
+        matchesComponent=this.props.matches.map((item, key) => (
+          <MatchStaticRound key={item.id} data={item} />
+        ));
+      }
+    }
     if(this.props.matches.length===0){
       return (
         <Content padder>
@@ -59,27 +76,27 @@ export default class Matches extends Component {
     }else{
       return (
         <Container>
-          <Header style={styles.header} >
-            <Body>
-              {this.state.active ?
-                (
-                  <Button success block onPress={this.onScore}>
-                    <Icon name='ios-checkmark-circle-outline'/><Text>Guardar Apuesta</Text>
-                  </Button>
-                )
-                :
-                (
-                  <Button success disabled block>
-                    <Icon name='ios-checkmark-circle-outline'/><Text>Guardar Apuesta</Text>
-                  </Button>
-                )
-              }
-            </Body>
-          </Header>
+          {this.props.status==='opened' &&
+            <Header style={styles.header} >
+              <Body>
+                {this.state.active ?
+                  (
+                    <Button success block onPress={this.onScore}>
+                      <Icon name='ios-checkmark-circle-outline'/><Text>Guardar Apuesta</Text>
+                    </Button>
+                  )
+                  :
+                  (
+                    <Button success disabled block>
+                      <Icon name='ios-checkmark-circle-outline'/><Text>Guardar Apuesta</Text>
+                    </Button>
+                  )
+                }
+              </Body>
+            </Header>
+          }
           <Content padder>
-            <Card>
               {matchesComponent}
-            </Card>
           </Content>
         </Container>
       );

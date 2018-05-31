@@ -31,12 +31,12 @@ componentDidMount() {
         });
       });
     }else{
-      firebase.database().ref('rankingAll/').once('value').then((snapshot)=>{
+      firebase.database().ref('rankingAll/').orderByChild("totalPoints").once('value').then((snapshot)=>{
         var ranking=[];
         snapshot.forEach(function(childSnapshot) {
           var item = childSnapshot.val();
           item.key = childSnapshot.key;
-          ranking.push({
+          ranking.unshift({
             profile : item.profile,
             amount  : item.totalPoints,
             bet : item.key
