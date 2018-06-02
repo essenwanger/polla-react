@@ -35,6 +35,7 @@ sendMailWelcome.initialize(LAPOLLA_CONFIG);
 //exports.addMessage = addMessage.addMessage();
 //exports.addUser = addUser.addUser();
 exports.updateScore = updateMatch.updateScore();
+exports.resetGame = updateMatch.resetGame();
 exports.randomScoreMatches = updateMatch.randomScoreMatches();
 exports.resetScoreMatches = updateMatch.resetScoreMatches();
 exports.calculateNewPositionTable = calculateNewPositionTable.calculateNewPositionTable();
