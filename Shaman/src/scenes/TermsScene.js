@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View, WebView } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { Container, Header, Content, Card, CardItem, Text, Body, H3, Button, H2, H1 } from 'native-base';
 import firebase from 'react-native-firebase';
 import HeaderPolla from '../components/HeaderPolla';
+import HTMLView from 'react-native-htmlview';
 
 export default class TermsScene extends Component {
 
@@ -127,14 +128,8 @@ export default class TermsScene extends Component {
       <Container>
         {this._renderHeader()}
         <Content>
-          <Card>
-            <CardItem>
-              <Body>
-                <Text>{this.state.typeOfBet.descriptionRules}</Text>
-              </Body>
-            </CardItem>
-         </Card>
-         {this._renderButton()}
+          <HTMLView value={this.state.typeOfBet.descriptionRules} />
+          {this._renderButton()}
         </Content>
       </Container>
     );
@@ -142,12 +137,8 @@ export default class TermsScene extends Component {
 }
 
 const styles = StyleSheet.create({
-  numberFont: {
-    //fontWeight: 'bold',
-    //fontSize: 10,
-  },
-  textFont: {
-    fontWeight: 'normal',
-    //fontSize: 10,
-  },
+  htmlTerms: {
+    width: '100%',
+    height: '100%'
+  }
 });
