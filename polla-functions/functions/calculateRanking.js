@@ -26,8 +26,10 @@ function actualizarPuntos(match,context){
 
 	if(match.scoreTeam1>match.scoreTeam2){
 		match.result=1;
+		match.resultFinal=1;
 	}else if(match.scoreTeam1<match.scoreTeam2){
 		match.result=2;
+		match.resultFinal=2;
 	}else{
 		match.result=0;
 		if(match.scorePenaltyTeam1 && match.scorePenaltyTeam2){
@@ -39,6 +41,7 @@ function actualizarPuntos(match,context){
     			match.resultPenalty=0; //resultado parcial
     		}
 		}
+		match.resultFinal=match.resultPenalty;
 	}
 	//para todos los usuarios registrados y aptos para jugar
 	return global.init.db.ref('/rankingAll/').once('value').then((snapshot)=>{
@@ -59,23 +62,31 @@ function actualizarPuntos(match,context){
 	    		}else{
 	    			matchUser.result = 0;
 	    		}
+	    		
 	    		matchUser.scoreTeamReal1 = match.scoreTeam1;
 	    		matchUser.scoreTeamReal2 = match.scoreTeam2;
+	    		matchUser.scorePenaltyTeamReal1 = match.scorePenaltyTeam1;
+	    		matchUser.scorePenaltyTeamReal2 = match.scorePenaltyTeam2;
+	    		matchUser.teamReal1 = match.team1;
+	    		matchUser.teamReal2 = match.team2;
+	    		matchUser.teamNameReal1 = match.teamName1;
+	    		matchUser.teamNameReal2 = match.teamName2;
+
 	    		//implementar logica de puntos
 			    if(matchUser.result === match.result){
 			    	matchUser.points = 1;//puntos por acertar al resultado (ganador / empate)
 			    	if(matchUser.scoreTeam1 === match.scoreTeam1 &&
 			    		matchUser.scoreTeam2 === match.scoreTeam2){
-			    		matchUser.points = 3;//puntos por acertar al score exacto
+			    		matchUser.points += 2;//puntos por acertar al score exacto
 			    	}
 			    	if(matchUser.result === 0){
-			    		if(matchUser.scorePenaltyTeam1 && matchUser.scorePenaltyTeam2){
+						if(matchUser.scorePenaltyTeam1 && matchUser.scorePenaltyTeam2){
 		    				if(matchUser.scorePenaltyTeam1>matchUser.scorePenaltyTeam2){
 								matchUser.resultPenalty=1;
 				    		}else if(matchUser.scorePenaltyTeam1<matchUser.scorePenaltyTeam2){
 				    			matchUser.resultPenalty=2;
 				    		}else{
-				    			matchUser.resultPenalty=0; //NO DEBERIA PASAR
+				    			matchUser.resultPenalty=0;//NO DEBERIA PASAR
 				    		}
 				    		if(matchUser.resultPenalty === match.resultPenalty){
 								/*
@@ -87,6 +98,9 @@ function actualizarPuntos(match,context){
 			    				//}
 				    		}
 		    			}
+		    			matchUser.resultFinal = matchUser.resultPenalty;
+			    	}else{
+			    		matchUser.resultFinal = matchUser.result;
 			    	}
 			    } else {
 			    	if(matchUser.result === match.resultPenalty){
@@ -95,27 +109,108 @@ function actualizarPuntos(match,context){
 						matchUser.points = 0;
 					}
 			    }
+			    if(matchUser.id === '63'){//Final por 3 y 4
+			    	var team3User = '';
+			    	var team4User = '';
+			    	var team3Real = '';
+			    	var team4Real = '';
+			    	if(matchUser.resultFinal === 1){
+			    		team3User = matchUser.team1;
+			    		team4User = matchUser.team2;
+			    	}else if(matchUser.resultFinal === 2){
+			    		team3User = matchUser.team2;
+			    		team4User = matchUser.team1;
+			    	}
+			    	if(match.resultFinal === 1){
+			    		team3Real = match.team1;
+			    		team4Real = match.team2;
+			    	}else if(match.resultFinal === 2){
+			    		team3Real = match.team2;
+			    		team4Real = match.team1;
+			    	}
+			    	if(team3User === team3Real){
+			    		matchUser.points += 5;
+			    	}
+			    	if(team4User === team4Real){
+			    		matchUser.points += 3;
+			    	}
+			    }else if(matchUser.id === '64'){//Final por 3 y 4
+			    	var team1User = '';
+			    	var team2User = '';
+			    	var team1Real = '';
+			    	var team2Real = '';
+			    	if(matchUser.resultFinal === 1){
+			    		team1User = matchUser.team1;
+			    		team2User = matchUser.team2;
+			    	}else if(matchUser.resultFinal === 2){
+			    		team1User = matchUser.team2;
+			    		team2User = matchUser.team1;
+			    	}
+			    	if(match.resultFinal === 1){
+			    		team1Real = match.team1;
+			    		team2Real = match.team2;
+			    	}else if(match.resultFinal === 2){
+			    		team1Real = match.team2;
+			    		team2Real = match.team1;
+			    	}
+			    	if(team1User === team1Real){
+			    		matchUser.points += 15;
+			    	}
+			    	if(team2User === team2Real){
+			    		matchUser.points += 10;
+			    	}
+			    }
 			    //puntos extras por atinar al equipo clasificado en llave
 			    if(matchUser.group.length > 1){ //solo llaves
 			    	//equipos desbloqueados, no es necesario pero permite hacer pruebas con data <100%
 			    	if(matchUser.teamSource1 && matchUser.teamSource2){
-				    	if(matchUser.group === 'Final' ){
+				    	if(matchUser.group === 'Final'){
 				    		if(matchUser.team1 === match.team1){
-						    	matchUser.points += 5;
+						    	matchUser.points += 0;
 						    }
 						    if(matchUser.team2 === match.team2){
-						    	matchUser.points += 5;
+						    	matchUser.points += 0;
 						    }
 				    	}else{
 				    		if(matchUser.team1 === match.team1){
-						    	matchUser.points += 2;
+						    	matchUser.points += 0;
 						    }
 						    if(matchUser.team2 === match.team2){
-						    	matchUser.points += 2;
+						    	matchUser.points += 0;
 						    }
 				    	}
+				    	global.init.db.ref('/matches/').once('value').then((snapshot)=>{
+				    		snapshot.forEach( childSnapshot =>{			
+								var matchFase = childSnapshot.val();
+	        					var matchKey  = childSnapshot.key;
+	        					if(matchFase.group === matchUser.group){
+	        						var extraPoint = 0;
+	        						if(matchUser.group === 'Octavos'){
+	        							extraPoint = 1;
+	        						}else if(matchUser.group === 'Cuartos'){
+	        							extraPoint = 1;
+	        						}else if(matchUser.group === 'Semifinales'){
+	        							extraPoint = 2;
+	        						}else if(matchUser.group === 'Final'){
+	        							extraPoint = 3;
+	        						}
+	        						if(matchFase.team1 === matchUser.team1 ||
+	        						   matchFase.team1 === matchUser.team2){
+	        							matchUser.points += extraPoint;
+	        						}
+	        						if(matchFase.team2 === matchUser.team1 ||
+	        						   matchFase.team2 === matchUser.team2){
+	        							matchUser.points += extraPoint;
+	        						}
+	        					}
+	        				});
+	        				return 1;
+				    	}).catch(error => {
+				    		his.errorMessage = 'Error - ' + error.message
+				    	});
 				    }
 				}
+
 			    return global.init.db.ref('/betsAll/'+rankKey+'/matches/'+match.group+'/'+context.params.idMatch)
 				.update(matchUser);
 	        }).catch(error => {
