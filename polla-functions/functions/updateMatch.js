@@ -68,6 +68,38 @@ exports.resetScoreMatches = () => functions.https.onRequest((req, res) => {
   return res.redirect(303, global.init.db.ref('/matches'));
 });
 
+exports.resetGame = () => functions.https.onRequest((req, res) => {
+  const scoreTeam1 = '';
+  const scoreTeam2 = '';
+  const scorePenaltyTeam1 = '';
+  const scorePenaltyTeam2 = '';
+
+  global.init.db.ref('/').update({betsAll:{}});
+  global.init.db.ref('/').update({bets:{}});
+  global.init.db.ref('/').update({preBetsAll:{}});
+  global.init.db.ref('/').update({subscribedAll:{}});
+  global.init.db.ref('/').update({ranking:[]});
+  global.init.db.ref('/').update({rankingAll:[]});
+  global.init.db.ref('/').update({users:{}});
+  
+  var matchRef = global.init.db.ref('/matches');
+  matchRef.once('value').then((snapshot) => {
+    snapshot.forEach((childSnapshot) => {
+      global.init.db.ref('/matches/' + childSnapshot.key).update({
+        "scoreTeam1": '',
+        "scoreTeam2": '',
+        "scorePenaltyTeam1": '',
+        "scorePenaltyTeam2": ''
+      }).catch(error => {
+        this.errorMessage = 'Error - ' + error.message
+      });
+    });
+    return 1;
+  }).catch(error => {
+    this.errorMessage = 'Error - ' + error.message
+  });
+  return res.redirect(303, global.init.db.ref('/matches'));
+});
 
 exports.updateScore = () => functions.https.onRequest((req, res) => {
   const matchId = req.query.id;

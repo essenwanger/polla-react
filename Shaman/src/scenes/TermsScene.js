@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View, WebView } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { Container, Header, Content, Card, CardItem, Text, Body, H3, Button, H2, H1 } from 'native-base';
 import firebase from 'react-native-firebase';
 import HeaderPolla from '../components/HeaderPolla';
+import HTMLView from 'react-native-htmlview';
 
 export default class TermsScene extends Component {
 
@@ -25,6 +26,10 @@ export default class TermsScene extends Component {
     if(this.state.presentationMode === 'Login') {
       this.prepareLogin();
     }
+    
+    firebase.database().ref('typeBets/'+this.state.codeTypeOfBet).once('value').then((snapshot)=>{
+      this.setState({typeOfBet: snapshot.val()});
+    });
   }
 
   prepareLogin() {
@@ -63,10 +68,6 @@ export default class TermsScene extends Component {
         positionTable.push(childSnapshot);
       });
       this.state.positionTable = snapshot;
-    });
-
-    firebase.database().ref('typeBets/'+this.state.codeTypeOfBet).once('value').then((snapshot)=>{
-      this.setState({typeOfBet: snapshot.val()});
     });
   }
 
@@ -127,42 +128,8 @@ export default class TermsScene extends Component {
       <Container>
         {this._renderHeader()}
         <Content>
-          <Card>
-            <CardItem>
-              <Body>
-                <Text>Ingrese sus resultados de la fase de grupos.</Text>
-              </Body>
-            </CardItem>
-            <CardItem>
-              <Body>
-                <Text>Cada acierto le da tres (3) puntos al jugador.</Text>
-              </Body>
-            </CardItem>
-            <CardItem>
-              <Body>
-                <Text>Para la siguiente ronda, ubique los equipos clasificados en cada una de las posiciones correspondientes</Text>
-              </Body>
-            </CardItem>
-            <CardItem>
-              <Body>
-                <Text>Cada acierto en las posiciones (ambos equipos) le da un (1) punto al jugador</Text>
-              </Body>
-            </CardItem>
-            <CardItem>
-              <Body>
-                <Text>Para fase de llaves, escoja el equipo ganador en cada partido. En caso de empate en los primeros noventa (90) minutos, marque con una equis (X) y ponga el equipo que ganará en tiempo extra o penaltis. Cada acierto en el ganador le da tres (3) puntos. En caso de escoger empate en los primeros noventa (90) minutos del partido, debe elegir quién gana en tiempo extra o penaltis. En caso de acertar, gana tres (3) puntos: uno (1) por el empate y dos (2) por el ganador</Text>
-              </Body>
-            </CardItem>
-            <CardItem>
-              <Body>
-                <Text>El jugador que tenga más puntos al final del torneo, gana la polla</Text>
-              </Body>
-            </CardItem>
-            <CardItem footer>
-              <Text>Bizantinos</Text>
-            </CardItem>
-         </Card>
-         {this._renderButton()}
+          <HTMLView value={this.state.typeOfBet.descriptionRules} />
+          {this._renderButton()}
         </Content>
       </Container>
     );
@@ -170,12 +137,8 @@ export default class TermsScene extends Component {
 }
 
 const styles = StyleSheet.create({
-  numberFont: {
-    //fontWeight: 'bold',
-    //fontSize: 10,
-  },
-  textFont: {
-    fontWeight: 'normal',
-    //fontSize: 10,
-  },
+  htmlTerms: {
+    width: '100%',
+    height: '100%'
+  }
 });

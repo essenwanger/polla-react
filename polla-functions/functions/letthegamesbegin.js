@@ -45,8 +45,8 @@ exports.letthegamesbegin = () => functions.database.ref('/typeBets/{idType}/stat
     	});
 
     }else{
-    	global.init.db.ref('/').update({bets:'not yet implemented'});
-    	global.init.db.ref('/').update({ranking:'not yet implemented'});
+    	//global.init.db.ref('/').update({bets:'not yet implemented'});
+    	//global.init.db.ref('/').update({ranking:'not yet implemented'});
     	return 1;
     }
 

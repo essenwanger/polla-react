@@ -62,6 +62,20 @@ export default class PhaseScene extends Component {
           percentage=Math.round(percentage * 10000) / 100;
           firebase.database().ref('preBetsAll/'+betKey+'/groups/'+position+'/').update({
             percentage: percentage
+          }).then(function(){
+            firebase.database().ref('preBetsAll/'+betKey+'/groups/')
+            .once('value').then((snapshot)=>{
+              var completed=true;
+              snapshot.forEach((childSnapshot)=>{
+                var childData = childSnapshot.val();
+                if(childData.percentage!==100){
+                  completed=false;
+                }
+              });
+              firebase.database().ref('preBetsAll/'+betKey+'/').update({
+                completed: completed
+              });
+            });
           });
         });
       }else{
