@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, WebView } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import { Container, Header, Content, Card, CardItem, Text, Body, H3, Button, H2, H1 } from 'native-base';
+import { Container, Content, Text, Button, Spinner } from 'native-base';
 import firebase from 'react-native-firebase';
 import HeaderPolla from '../components/HeaderPolla';
 import HTMLView from 'react-native-htmlview';
@@ -16,7 +16,7 @@ export default class TermsScene extends Component {
       roups: [],
       positionTable: [], 
       codeTypeOfBet: props.codeTypeOfBet === undefined ? 'all' : props.codeTypeOfBet,
-      typeOfBet: {},
+      typeOfBet: null,
       presentationMode : props.presentationMode === undefined ? 'Login' : props.presentationMode
     };    
     this.onAcceptTerms = this.onAcceptTerms.bind(this);
@@ -115,6 +115,7 @@ export default class TermsScene extends Component {
       return (<HeaderPolla pop={true}  name='Terminos y condiciones' />);
     }
   }
+  
   _renderButton(){
     if(this.state.presentationMode === 'Login') {
       return (<Button full success onPress={this.onAcceptTerms}>
@@ -123,12 +124,20 @@ export default class TermsScene extends Component {
     }
   }
 
+  _renderHtml(){
+    if(this.state.typeOfBet === null) {
+      return (<Spinner color='#000' ></Spinner>);
+    }else{
+      return (<HTMLView value={this.state.typeOfBet.descriptionRules} />);
+    }
+  }
+
   render() {
     return (
       <Container>
         {this._renderHeader()}
         <Content>
-          <HTMLView value={this.state.typeOfBet.descriptionRules} />
+          {this._renderHtml()}
           {this._renderButton()}
         </Content>
       </Container>
