@@ -38,6 +38,7 @@ exports.updateScore = updateMatch.updateScore();
 exports.resetGame = updateMatch.resetGame();
 exports.randomScoreMatches = updateMatch.randomScoreMatches();
 exports.resetScoreMatches = updateMatch.resetScoreMatches();
+exports.resetMatches2nd = updateMatch.resetMatches2nd();
 exports.calculateNewPositionTable = calculateNewPositionTable.calculateNewPositionTable();
 exports.calculatePoints = calculateRanking.calculatePoints();
 //exports.calculatePointsTest = calculateRanking.calculatePointsTest();
