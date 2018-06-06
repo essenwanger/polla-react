@@ -93,8 +93,10 @@ export default class PhaseScene extends Component {
     this.dataFirebase(nextProps);
   }
 
-  updateData(){
-    this.dataFirebase(this.props);
+  updateData(i){
+    if((i===1 && this.state.status==='opened') || (i===0 && this.state.status==='closed')){
+      this.dataFirebase(this.props);
+    }
   }
 
   dataFirebase(props){
@@ -142,7 +144,8 @@ export default class PhaseScene extends Component {
     return (
       <Container>
         <HeaderPolla pop name={groupName} user={this.props.user} />
-        <Tabs ref={(tabView) => { this.tabView = tabView }} onChangeTab={({ i, ref, from })=> this.updateData()}>
+        <Tabs ref={(tabView) => { this.tabView = tabView }} 
+        onChangeTab={({ i, ref, from })=> this.updateData(i)}>
           <Tab heading={ <TabHeading><Icon name="md-calendar" /></TabHeading>}>
             <Matches matches={this.state.matches} status={this.state.status} 
             betKey={betKey} groupKey={groupKey} onScore={this.onScore}/>

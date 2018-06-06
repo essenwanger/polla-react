@@ -8,6 +8,7 @@ export default class Fixture extends Component {
 
   constructor(props) {
     super(props);
+    this.exist = true;
     this.state = {
       user: props.user,
       status: props.status,
@@ -25,8 +26,8 @@ export default class Fixture extends Component {
     this.dataFirebase();
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.dataFirebase();
+  componentWillUnmount() {
+    this.exist = false;
   }
 
   dataFirebase(){
@@ -40,9 +41,11 @@ export default class Fixture extends Component {
         childData.key=childKey;
         groups.push(childData);
       });
-      this.setState({
-        groups: groups
-      });
+      if(this.exist){
+        this.setState({
+          groups: groups
+        });
+      }
     });
   }
 
