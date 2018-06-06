@@ -128,7 +128,7 @@ export default class TermsScene extends Component {
     if(this.state.typeOfBet === null) {
       return (<Spinner color='#000' ></Spinner>);
     }else{
-      return (<HTMLView value={this.state.typeOfBet.descriptionRules} />);
+      return (<HTMLView value={this.state.typeOfBet.descriptionRules} stylesheet={styles} />);
     }
   }
 
@@ -146,8 +146,18 @@ export default class TermsScene extends Component {
 }
 
 const styles = StyleSheet.create({
-  htmlTerms: {
-    width: '100%',
-    height: '100%'
+  div: {
+    padding: 10,    
+  },
+  h3: {
+    fontSize: 30,
+    fontWeight: 'bold',
+  },
+  h4: {
+    fontSize: 20,
+    fontWeight: 'bold'
+  },
+  p: {
+    textAlign: 'justify'
   }
 });
