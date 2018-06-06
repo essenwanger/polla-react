@@ -68,6 +68,40 @@ exports.resetScoreMatches = () => functions.https.onRequest((req, res) => {
   return res.redirect(303, global.init.db.ref('/matches'));
 });
 
+exports.resetMatches2nd = () => functions.https.onRequest((req, res) => {
+  const scoreTeam1 = '';
+  const scoreTeam2 = '';
+  const scorePenaltyTeam1 = '';
+  const scorePenaltyTeam2 = '';
+  var matchesRef = global.init.db.ref('/matches');
+
+  matchesRef.once('value').then((snapshot) => {
+    snapshot.forEach((childSnapshot) => {
+      var matchRef = childSnapshot.val();
+      if(matchRef.teamSource1 || matchRef.teamSource2) {
+          global.init.db.ref('/matches/' + childSnapshot.key).update({
+            "scoreTeam1": '',
+            "scoreTeam2": '',
+            "scorePenaltyTeam1": '',
+            "scorePenaltyTeam2": '',
+            "team1": matchRef.teamSource1,
+            "team2": matchRef.teamSource2,
+            "teamName1": matchRef.teamSource1,
+            "teamName2": matchRef.teamSource2
+          }).catch(error => {
+            this.errorMessage = 'Error - ' + error.message
+          });
+      }
+
+      
+    });
+    return 1;
+  }).catch(error => {
+    this.errorMessage = 'Error - ' + error.message
+  });
+  return res.redirect(303, global.init.db.ref('/matches'));
+});
+
 exports.resetGame = () => functions.https.onRequest((req, res) => {
   const scoreTeam1 = '';
   const scoreTeam2 = '';
@@ -124,6 +158,8 @@ exports.updateScore = () => functions.https.onRequest((req, res) => {
   return res.redirect(303, matchRef);
 
 });
+
+
 
 function sleep(milliseconds) {
   var start = new Date().getTime();
