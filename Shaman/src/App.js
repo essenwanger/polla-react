@@ -10,7 +10,6 @@ import DashboardScene from './scenes/DashboardScene';
 import PhaseScene from './scenes/PhaseScene';
 import AboutScene from './scenes/AboutScene';
 import DashboardRankScene from './scenes/DashboardRankScene';
-import PruebaScene from './scenes/PruebaScene';
 
 export default class App extends Component {
 
