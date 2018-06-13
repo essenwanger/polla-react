@@ -26,6 +26,10 @@ export default class Fixture extends Component {
     this.dataFirebase();
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.dataFirebase();
+  }
+
   componentWillUnmount() {
     this.exist = false;
   }
