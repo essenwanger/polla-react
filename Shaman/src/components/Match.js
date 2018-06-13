@@ -98,7 +98,7 @@ export default class Match extends Component {
     score1=(
       <Col size={20}>
         <Item regular style={{ width: 45, height: 40 }}>
-          <Input keyboardType={'numeric'} maxLength={2} textAlign={'center'}
+          <Input keyboardType={'numeric'} maxLength={2} 
           onChangeText={(text) => this.onChangeScore(text,'1')} value={this.state.scoreTeam1} />
         </Item>
         {this.state.penalty &&
@@ -112,7 +112,7 @@ export default class Match extends Component {
     score2=(
       <Col style={{alignItems: 'flex-end'}} size={20}>
         <Item regular style={{ width: 45, height: 40 }}>
-          <Input keyboardType={'numeric'} maxLength={2} textAlign={'center'}
+          <Input keyboardType={'numeric'} maxLength={2} 
           onChangeText={(text) => this.onChangeScore(text,'2')} value={this.state.scoreTeam2} />
         </Item>
         {this.state.penalty &&
