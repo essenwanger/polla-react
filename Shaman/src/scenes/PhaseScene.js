@@ -28,9 +28,13 @@ export default class PhaseScene extends Component {
   }
 
   componentDidMount(){
-    setTimeout(()=>{
-      this.setState({activePage:this.props.position})
-    },0);
+    if(Platform.OS === 'ios'){
+      this.setState({activePage:this.props.position});
+    }else{
+      setTimeout(()=>{
+        this.setState({activePage:this.props.position})
+      },0);
+    }
   }
 
   updateData(i){
