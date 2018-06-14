@@ -64,12 +64,12 @@ exports.payableCompleted = () => functions.https.onRequest((req, res) => {
             var preBet = childSnapshot.val();
 
             if(preBet.completed === true) {
+                console.log('payable true');
                 global.init.db.ref('/preBetsAll/' + childSnapshot.key).update({
-                    "payable": 'true'
+                    "payable": true
                 }).catch(error => {
                     this.errorMessage = 'Error - ' + error.message
                 });
-                return true;
             }
         })
     }).catch(error => {
