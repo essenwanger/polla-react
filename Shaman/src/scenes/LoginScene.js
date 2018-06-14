@@ -100,12 +100,11 @@ export default class LoginScene extends Component {
           <View style={styles.imageContent} >
             <Image
               style={styles.imageBackground}
-              source={require('../img/background.png')}
+              source={require('../img/FND.png')}
             />
           </View>
           <View style={styles.bodyContent} >
-            <Image source={require('../img/logo.png')} style={styles.logoSize} />
-            <Text style={styles.whiteText}>by Bizantinos</Text>
+            
           </View>
           <View style={styles.footerContent} >
             { this.state.check ? 
