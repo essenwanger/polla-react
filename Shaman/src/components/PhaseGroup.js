@@ -176,7 +176,7 @@ export default class PhaseGroup extends Component {
         matchesComponent=this.state.matches.map((item, key) => (
           <MatchStaticGroup key={item.id} data={item} />
         ));
-        matchesComponent=<Card>{matchesComponent}</Card>;
+        //matchesComponent={matchesComponent};
       }else{
         matchesComponent=this.state.matches.map((item, key) => (
           <MatchStaticRound key={item.id} data={item} />
@@ -227,7 +227,7 @@ export default class PhaseGroup extends Component {
               </Body>
             </Header>
           }
-          <Content padder>
+          <Content>
             {matchesComponent}
           </Content>
           {footer}

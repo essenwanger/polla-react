@@ -43,7 +43,8 @@ export default class PhaseScene extends Component {
   render() {
     var items=null;
     items=this.state.groups.map((item, key) => (
-      <Tab key={key} heading={item.group.length===1 ? ('Grupo '+item.group) : (item.group)}>
+      <Tab key={key} heading={item.group.length===1 ? ('Grupo '+item.group) : (item.group)}
+       style={{backgroundColor: "transparent"}}>
         <PhaseGroup status={this.state.status} bet={this.state.bet} 
         group={item.group} position={key} user={this.props.user}/>
       </Tab>
