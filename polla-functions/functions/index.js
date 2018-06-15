@@ -54,4 +54,5 @@ exports.sendMailMassive = sendMailMassive.sendMailMassive();
 exports.sendMailWelcome = sendMailWelcome.sendMailWelcome();
 
 exports.listUsers = common.listUsers();
-
+exports.payable = common.payable();
+exports.payableCompleted = common.payableCompleted();

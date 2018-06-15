@@ -13,14 +13,16 @@ exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
     		if(!match.group || match.group === ''){
     			match.group = match.round;
     		}
-    		actualizarFases(match,context);
+    		//actualizarFases(match,context);
     		actualizarPuntos(match,context);
 		}
 		return 0;
 });
 
 function actualizarPuntos(match,context){
-
+	
+	console.log('actualizarPuntos');
+	
 	match.scoreTeam1 = match.scoreTeam1.trim();
 	match.scoreTeam2 = match.scoreTeam2.trim();
 
@@ -43,6 +45,7 @@ function actualizarPuntos(match,context){
 		}
 		match.resultFinal=match.resultPenalty;
 	}
+	console.log(match.result);
 	//para todos los usuarios registrados y aptos para jugar
 	return global.init.db.ref('/rankingAll/').once('value').then((snapshot)=>{
 		
@@ -55,14 +58,14 @@ function actualizarPuntos(match,context){
 	        .once('value').then(snapshotUserMatch => {
 	        	var matchUser = snapshotUserMatch.val();
 
-				if(matchUser.scoreTeam1>matchUser.scoreTeam2){
+	        	if(matchUser.scoreTeam1>matchUser.scoreTeam2){
 					matchUser.result = 1;
 	    		}else if(matchUser.scoreTeam1<matchUser.scoreTeam2){
 	    			matchUser.result = 2;
 	    		}else{
 	    			matchUser.result = 0;
 	    		}
-	    		
+
 	    		matchUser.scoreTeamReal1 = match.scoreTeam1;
 	    		matchUser.scoreTeamReal2 = match.scoreTeam2;
 	    		matchUser.scorePenaltyTeamReal1 = match.scorePenaltyTeam1;
@@ -97,8 +100,10 @@ function actualizarPuntos(match,context){
 			    					matchUser.points += 1;//puntos extras por acetar al ganador en penales
 			    				//}
 				    		}
+				    		matchUser.resultFinal = matchUser.resultPenalty;
+		    			}else{
+		    				matchUser.resultFinal = matchUser.result;
 		    			}
-		    			matchUser.resultFinal = matchUser.resultPenalty;
 			    	}else{
 			    		matchUser.resultFinal = matchUser.result;
 			    	}
@@ -206,21 +211,29 @@ function actualizarPuntos(match,context){
 	        				});
 	        				return 1;
 				    	}).catch(error => {
-				    		his.errorMessage = 'Error - ' + error.message
+				    		this.errorMessage = 'Error - ' + error.message
 				    	});
 				    }
 				}
+				//console.log(rankUser.profile.email);
+				//console.log('/betsAll/'+rankKey+'/matches/'+match.group+'/'+context.params.idMatch);
+				//console.log(matchUser);
 
 			    return global.init.db.ref('/betsAll/'+rankKey+'/matches/'+match.group+'/'+context.params.idMatch)
 				.update(matchUser);
+
 	        }).catch(error => {
+	        	console.log(error.message);
 				this.errorMessage = 'Error - ' + error.message
-				});
+			});
 		});
 	});
 }
 
 function actualizarFases(match,context){
+	
+	console.log('actualizarFases');
+
 	if(match.group){
 		if(match.group.length === 1 ){//Fase de grupos
 			return global.init.db.ref('/matches/').once('value').then((snapshot)=>{
