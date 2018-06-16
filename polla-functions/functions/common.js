@@ -14,6 +14,7 @@ exports.listUsers = () => functions.https.onRequest((req, res) => {
         snapshot.forEach((childSnapshot) => {
             console.log(childSnapshot.key + ',' + childSnapshot.val().profile.email + ',' + childSnapshot.val().profile.name + ',' + childSnapshot.val().completed + ',' + childSnapshot.val().payable);
         })
+        return 1;
     }).catch(error => {
     this.errorMessage = 'Error - ' + error.message
     });
@@ -24,11 +25,8 @@ exports.listUsers = () => functions.https.onRequest((req, res) => {
 
 exports.payable = () => functions.https.onRequest((req, res) => {
 
-    console.log('payable');
-
     const email = req.query.email;
     const payable = req.query.payable;
-  
     
     var betsRef = global.init.db.ref('/preBetsAll');
 
@@ -45,6 +43,7 @@ exports.payable = () => functions.https.onRequest((req, res) => {
                 return true;
             }
         })
+        return 1;
     }).catch(error => {
     this.errorMessage = 'Error - ' + error.message
     });
@@ -54,8 +53,6 @@ exports.payable = () => functions.https.onRequest((req, res) => {
 });
 
 exports.payableCompleted = () => functions.https.onRequest((req, res) => {
-
-    console.log('payable');
 
     var betsRef = global.init.db.ref('/preBetsAll');
 
@@ -72,6 +69,7 @@ exports.payableCompleted = () => functions.https.onRequest((req, res) => {
                 });
             }
         })
+        return 1;
     }).catch(error => {
     this.errorMessage = 'Error - ' + error.message
     });
