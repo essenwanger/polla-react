@@ -1,0 +1,106 @@
+{
+  "project_info": {
+    "project_number": "776210840524",
+    "firebase_url": "https://shaman-5b899.firebaseio.com",
+    "project_id": "shaman-5b899",
+    "storage_bucket": "shaman-5b899.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:776210840524:android:7c50d618adb6f133",
+        "android_client_info": {
+          "package_name": "com.shaman"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "776210840524-8nniv2u41qk76lsr5gn22ho9789dh2kv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shaman",
+            "certificate_hash": "0561acd67fe8fdd07bcb204f79c24bfbeda00c9a"
+          }
+        },
+        {
+          "client_id": "776210840524-ig1nj3qtd58nrvgk1r2bdoddqbq9vg1b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shaman",
+            "certificate_hash": "2bec991da11f806df91129c47ed63314661cad0d"
+          }
+        },
+        {
+          "client_id": "776210840524-hm15lkn3d7oepg0ardqtrmhg2mjkvf9n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shaman",
+            "certificate_hash": "a024e021c3ed50bf29e10120602b99ed6953ed53"
+          }
+        },
+        {
+          "client_id": "776210840524-9mi6s9bkl82tgj2856tq4s8osr9f3i28.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shaman",
+            "certificate_hash": "139e9d5b23cd25f64b701a5b89c6b7e633434487"
+          }
+        },
+        {
+          "client_id": "776210840524-dhkvm4b7c0qvlk6qp48r4k4ud7676vhl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shaman",
+            "certificate_hash": "f71cd7252fd0ed480dc5dd5199abfb55e9afd423"
+          }
+        },
+        {
+          "client_id": "776210840524-ke9e1f8odfk448kn9srtncle5gvhfa4h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shaman",
+            "certificate_hash": "ef7c258afb249019e6cde2af781f79347f8dd57b"
+          }
+        },
+        {
+          "client_id": "776210840524-bolhuiog2030t59paeo9b9r03nhtqn1f.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "776210840524-bolhuiog2030t59paeo9b9r03nhtqn1f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCaD9KhVt1zaDx_pkfn_j9HIfxxxCkAixY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "776210840524-bolhuiog2030t59paeo9b9r03nhtqn1f.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "776210840524-fmk9pos1c23kfnempoi2ntjshdsd9865.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.Shaman"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

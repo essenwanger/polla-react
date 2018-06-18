@@ -14,8 +14,9 @@ const calculateNewPositionTable = require('./calculateNewPositionTable');
 const calculateLlaves           = require('./calculateLlaves');
 const sendMailMassive           = require('./sendMailMassive');
 const sendMailWelcome           = require('./sendMailWelcome');
+const sendMailMatch             = require('./sendMailMatch');
 
-const common                    = require('./common');
+//const common                    = require('./common');
 
 const LAPOLLA_CONFIG = {
     'credential': admin.credential.applicationDefault(),
@@ -33,7 +34,7 @@ letthegamesbegin.initialize(LAPOLLA_CONFIG);
 calculateLlaves.initialize(LAPOLLA_CONFIG);
 sendMailMassive.initialize(LAPOLLA_CONFIG);
 sendMailWelcome.initialize(LAPOLLA_CONFIG);
-common.initialize(LAPOLLA_CONFIG);
+//common.initialize(LAPOLLA_CONFIG);
 
 //exports.addMessage = addMessage.addMessage();
 //exports.addUser = addUser.addUser();
@@ -52,7 +53,9 @@ exports.generateBetsPDF = sendMailMassive.generateBetsPDF();
 
 exports.sendMailMassive = sendMailMassive.sendMailMassive();
 exports.sendMailWelcome = sendMailWelcome.sendMailWelcome();
+exports.sendMailMatch         = sendMailMatch.sendMailMatch();
+exports.sendMailMatchLaunch   = sendMailMatch.sendMailMatchLaunch();
 
-exports.listUsers = common.listUsers();
-exports.payable = common.payable();
-exports.payableCompleted = common.payableCompleted();
+//exports.listUsers = common.listUsers();
+//exports.payable = common.payable();
+//exports.payableCompleted = common.payableCompleted();

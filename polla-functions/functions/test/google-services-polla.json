@@ -1,0 +1,106 @@
+{
+  "project_info": {
+    "project_number": "991338042977",
+    "firebase_url": "https://polla-react.firebaseio.com",
+    "project_id": "polla-react",
+    "storage_bucket": "polla-react.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:991338042977:android:596929df0c08f83d",
+        "android_client_info": {
+          "package_name": "com.pollareact"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "991338042977-o1uf29gmfs2267mh69uli9cvuult6qus.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pollareact",
+            "certificate_hash": "a024e021c3ed50bf29e10120602b99ed6953ed53"
+          }
+        },
+        {
+          "client_id": "991338042977-mf400mk8b4o4oeincnorf5c337cj9spk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pollareact",
+            "certificate_hash": "0561acd67fe8fdd07bcb204f79c24bfbeda00c9a"
+          }
+        },
+        {
+          "client_id": "991338042977-f9ja81l7ngsccb8jniqv9u7melp67rlm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pollareact",
+            "certificate_hash": "f71cd7252fd0ed480dc5dd5199abfb55e9afd423"
+          }
+        },
+        {
+          "client_id": "991338042977-qflhdrrqp54gi430h8lqt48d7mikdhmt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pollareact",
+            "certificate_hash": "2bec991da11f806df91129c47ed63314661cad0d"
+          }
+        },
+        {
+          "client_id": "991338042977-ehlmgjtlu3bgcei4iipggsuert3kel3f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pollareact",
+            "certificate_hash": "139e9d5b23cd25f64b701a5b89c6b7e633434487"
+          }
+        },
+        {
+          "client_id": "991338042977-mnsg8nti8m3iqjgd3r4jif1lhhq079v9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pollareact",
+            "certificate_hash": "ef7c258afb249019e6cde2af781f79347f8dd57b"
+          }
+        },
+        {
+          "client_id": "991338042977-oc4j8o5t8u46ups80kbbkrjome59o6rm.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "991338042977-oc4j8o5t8u46ups80kbbkrjome59o6rm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBspxr32KMQCY0ljwnabKsPWa6_RravSUk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "991338042977-oc4j8o5t8u46ups80kbbkrjome59o6rm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "991338042977-7nqq3btnte4rolituui9uivhhoub6aqc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.PollaReact"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

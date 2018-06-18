@@ -34,6 +34,7 @@ function actualizarPuntos(match,context){
 		match.resultFinal=2;
 	}else{
 		match.result=0;
+		match.resultFinal=0;
 		if(match.scorePenaltyTeam1 && match.scorePenaltyTeam2){
 			if(match.scorePenaltyTeam1>match.scorePenaltyTeam2){
 				match.resultPenalty=1;
@@ -42,8 +43,8 @@ function actualizarPuntos(match,context){
     		}else{
     			match.resultPenalty=0; //resultado parcial
     		}
+    		match.resultFinal=match.resultPenalty;
 		}
-		match.resultFinal=match.resultPenalty;
 	}
 	console.log(match.result);
 	//para todos los usuarios registrados y aptos para jugar
