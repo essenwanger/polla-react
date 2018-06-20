@@ -16,7 +16,7 @@ const sendMailMassive           = require('./sendMailMassive');
 const sendMailWelcome           = require('./sendMailWelcome');
 const sendMailMatch             = require('./sendMailMatch');
 
-//const common                    = require('./common');
+const common                    = require('./common');
 
 const LAPOLLA_CONFIG = {
     'credential': admin.credential.applicationDefault(),
@@ -39,10 +39,10 @@ sendMailWelcome.initialize(LAPOLLA_CONFIG);
 //exports.addMessage = addMessage.addMessage();
 //exports.addUser = addUser.addUser();
 exports.updateScore = updateMatch.updateScore();
-exports.resetGame = updateMatch.resetGame();
-exports.randomScoreMatches = updateMatch.randomScoreMatches();
-exports.resetScoreMatches = updateMatch.resetScoreMatches();
-exports.resetMatches2nd = updateMatch.resetMatches2nd();
+//exports.resetGame = updateMatch.resetGame();
+//exports.randomScoreMatches = updateMatch.randomScoreMatches();
+//exports.resetScoreMatches = updateMatch.resetScoreMatches();
+//exports.resetMatches2nd = updateMatch.resetMatches2nd();
 exports.calculateNewPositionTable = calculateNewPositionTable.calculateNewPositionTable();
 exports.calculatePoints = calculateRanking.calculatePoints();
 //exports.calculatePointsTest = calculateRanking.calculatePointsTest();
@@ -56,6 +56,7 @@ exports.sendMailWelcome = sendMailWelcome.sendMailWelcome();
 exports.sendMailMatch         = sendMailMatch.sendMailMatch();
 exports.sendMailMatchLaunch   = sendMailMatch.sendMailMatchLaunch();
 
-//exports.listUsers = common.listUsers();
-//exports.payable = common.payable();
-//exports.payableCompleted = common.payableCompleted();
+exports.listUsers = common.listUsers();
+exports.payable = common.payable();
+exports.payableCompleted = common.payableCompleted();
+exports.allBets = common.allBets();
