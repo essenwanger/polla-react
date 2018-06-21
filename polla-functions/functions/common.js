@@ -1,13 +1,13 @@
 const functions = require('firebase-functions');
 
 exports.initialize = (laPollaConfig) => {
-  global.init = Object.freeze(laPollaConfig);
+    global.init = Object.freeze(laPollaConfig);
 };
 
 exports.listUsers = () => functions.https.onRequest((req, res) => {
 
     console.log('list users');
-    
+
     var betsRef = global.init.db.ref('/preBetsAll');
 
     betsRef.once('value').then((snapshot) => {
@@ -16,25 +16,25 @@ exports.listUsers = () => functions.https.onRequest((req, res) => {
         })
         return 1;
     }).catch(error => {
-    this.errorMessage = 'Error - ' + error.message
+        this.errorMessage = 'Error - ' + error.message
     });
 
     return res.redirect(303, global.init.db.ref('/matches'));
-    
+
 });
 
 exports.payable = () => functions.https.onRequest((req, res) => {
 
     const email = req.query.email;
     const payable = req.query.payable;
-    
+
     var betsRef = global.init.db.ref('/preBetsAll');
 
     betsRef.once('value').then((snapshot) => {
         snapshot.forEach((childSnapshot) => {
             var preBet = childSnapshot.val();
 
-            if(preBet.profile.email === email) {
+            if (preBet.profile.email === email) {
                 global.init.db.ref('/preBetsAll/' + childSnapshot.key).update({
                     "payable": 'true'
                 }).catch(error => {
@@ -45,11 +45,11 @@ exports.payable = () => functions.https.onRequest((req, res) => {
         })
         return 1;
     }).catch(error => {
-    this.errorMessage = 'Error - ' + error.message
+        this.errorMessage = 'Error - ' + error.message
     });
 
     return res.redirect(303, global.init.db.ref('/preBetsAll'));
-    
+
 });
 
 exports.payableCompleted = () => functions.https.onRequest((req, res) => {
@@ -62,7 +62,7 @@ exports.payableCompleted = () => functions.https.onRequest((req, res) => {
         snapshot.forEach((childSnapshot) => {
             var preBet = childSnapshot.val();
 
-            if(preBet.completed === true) {
+            if (preBet.completed === true) {
                 global.init.db.ref('/preBetsAll/' + childSnapshot.key).update({
                     "payable": true
                 }).catch(error => {
@@ -72,11 +72,11 @@ exports.payableCompleted = () => functions.https.onRequest((req, res) => {
         })
         return 1;
     }).catch(error => {
-    this.errorMessage = 'Error - ' + error.message
+        this.errorMessage = 'Error - ' + error.message
     });
 
     return res.redirect(303, global.init.db.ref('/preBetsAll'));
-    
+
 });
 
 exports.allBets = () => functions.https.onRequest((req, res) => {
@@ -85,37 +85,38 @@ exports.allBets = () => functions.https.onRequest((req, res) => {
 
     var betsRef = global.init.db.ref('/betsAll');
 
-    var output  = "";
+    var output = "";
 
     betsRef.once('value').then((snapshot) => {
         snapshot.forEach((childSnapshot) => {
-            var bet = childSnapshot.val();            
+            var bet = childSnapshot.val();
             var betKey = childSnapshot.key;
-            
-            if(bet.completed) {
+
+            if (bet.completed) {
                 var email = bet.profile.email;
                 var name = bet.profile.name;
                 output += name + ',' + email + ',';
-                for(var groupKey in bet.matches) {
+                for (var groupKey in bet.matches) {
                     var matches = bet.matches[groupKey];
 
-                    for(var matchKey in matches) {
-                        var match = matches[matchKey]; 
-                        if(groupKey.length > 1) {
+                    for (var matchKey in matches) {
+                        var match = matches[matchKey];
+                        if (groupKey.length > 1) {
                             output += match.id + ',' + match.team1 + ',' + match.team2 + ',' + match.scoreTeam1 + '.' + match.scorePenaltyTeam1 + ',' + match.scoreTeam2 + '.' + match.scorePenaltyTeam2 + ',';
                         } else {
                             output += match.id + ',' + match.team1 + ',' + match.team2 + ',' + match.scoreTeam1 + ',' + match.scoreTeam2 + ',';
                         }
                     }
-                output += '<br />';
-                console.log(output);
+                    output += '<br />';
+                    console.log(output);
+                }
             }
-        })
-        return res.status(200).send(output);
+            return res.status(200).send(output);
+        }).catch(error => {
+            this.errorMessage = 'Error - ' + error.message
+        });
+        return res.redirect(303, global.init.db.ref('/'));
     }).catch(error => {
         this.errorMessage = 'Error - ' + error.message
     });
-
-    //return res.redirect(303, global.init.db.ref('/matches'));
-    
 });
