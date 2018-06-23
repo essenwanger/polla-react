@@ -13,15 +13,13 @@ exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
     		if(!match.group || match.group === ''){
     			match.group = match.round;
     		}
-    		//actualizarFases(match,context);
+    		actualizarFases(match,context);
     		actualizarPuntos(match,context);
 		}
 		return 0;
 });
 
 function actualizarPuntos(match,context){
-	
-	console.log('actualizarPuntos');
 	
 	match.scoreTeam1 = match.scoreTeam1.trim();
 	match.scoreTeam2 = match.scoreTeam2.trim();
@@ -46,7 +44,6 @@ function actualizarPuntos(match,context){
     		match.resultFinal=match.resultPenalty;
 		}
 	}
-	console.log(match.result);
 	//para todos los usuarios registrados y aptos para jugar
 	return global.init.db.ref('/rankingAll/').once('value').then((snapshot)=>{
 		
@@ -75,7 +72,7 @@ function actualizarPuntos(match,context){
 	    		matchUser.teamReal2 = match.team2;
 	    		matchUser.teamNameReal1 = match.teamName1;
 	    		matchUser.teamNameReal2 = match.teamName2;
-
+	    		matchUser.points = 0;
 	    		//implementar logica de puntos
 			    if(matchUser.result === match.result){
 			    	matchUser.points = 1;//puntos por acertar al resultado (ganador / empate)
@@ -212,7 +209,8 @@ function actualizarPuntos(match,context){
 	        				});
 	        				return 1;
 				    	}).catch(error => {
-				    		this.errorMessage = 'Error - ' + error.message
+				    		console.log(error.message);
+				    		this.errorMessage = 'Error - ' + error.message;
 				    	});
 				    }
 				}
@@ -233,8 +231,6 @@ function actualizarPuntos(match,context){
 
 function actualizarFases(match,context){
 	
-	console.log('actualizarFases');
-
 	if(match.group){
 		if(match.group.length === 1 ){//Fase de grupos
 			return global.init.db.ref('/matches/').once('value').then((snapshot)=>{

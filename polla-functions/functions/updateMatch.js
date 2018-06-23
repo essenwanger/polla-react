@@ -13,27 +13,30 @@ exports.randomScoreMatches = () => functions.https.onRequest((req, res) => {
 
   matchRef.once('value').then((snapshot) => {
     snapshot.forEach((childSnapshot) => {
-      scoreTeam1 = Math.floor(Math.random() * 4) + '';
-      scoreTeam2 = Math.floor(Math.random() * 4) + '';
-      scorePenaltyTeam1 = '';
-      scorePenaltyTeam2 = '';
+      if (childSnapshot.key < 48) {
+      //if (childSnapshot.key >= 0) {
+        scoreTeam1 = Math.floor(Math.random() * 4) + '';
+        scoreTeam2 = Math.floor(Math.random() * 4) + '';
+        scorePenaltyTeam1 = '';
+        scorePenaltyTeam2 = '';
 
-      if (childSnapshot.key >= 48) {
-        if (scoreTeam1 === scoreTeam2) {
-          scorePenaltyTeam1 = (Math.floor(Math.random() * 2) + 4) + '';
-          scorePenaltyTeam2 = (parseInt(scorePenaltyTeam1) + (Math.random() < 0.5 ? -1 : 1)) + '';
+        if (childSnapshot.key >= 48) {
+          if (scoreTeam1 === scoreTeam2) {
+            scorePenaltyTeam1 = (Math.floor(Math.random() * 2) + 4) + '';
+            scorePenaltyTeam2 = (parseInt(scorePenaltyTeam1) + (Math.random() < 0.5 ? -1 : 1)) + '';
+          }
+          sleep(1000);
         }
-        sleep(1000);
-      }
 
-      global.init.db.ref('/matches/' + childSnapshot.key).update({
-        "scoreTeam1": scoreTeam1,
-        "scoreTeam2": scoreTeam2,
-        "scorePenaltyTeam1": scorePenaltyTeam1,
-        "scorePenaltyTeam2": scorePenaltyTeam2
-      }).catch(error => {
-        this.errorMessage = 'Error - ' + error.message
-      });
+        global.init.db.ref('/matches/' + childSnapshot.key).update({
+          "scoreTeam1": scoreTeam1,
+          "scoreTeam2": scoreTeam2,
+          "scorePenaltyTeam1": scorePenaltyTeam1,
+          "scorePenaltyTeam2": scorePenaltyTeam2
+        }).catch(error => {
+          this.errorMessage = 'Error - ' + error.message
+        });
+      }
     });
     return 1;
   }).catch(error => {
