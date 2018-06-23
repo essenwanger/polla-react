@@ -2,7 +2,7 @@
 const functions = require('firebase-functions');
 const commons   = require('./commonCalculates');
 
-const SENDGRID_API_KEY = "";
+const SENDGRID_API_KEY = "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";
 const SENDGRID_SENDER  = "contacto@shaman.pe";
 const PLANTILLA        = "5735a368-7561-4dff-b6ee-eeb0ba077eb3";
 const PLANTILLA_EXEC   = "c134ddc8-4a4f-4a0d-a12e-df8d9cd604d0";
@@ -28,11 +28,11 @@ exports.sendMailMatchLaunch = () => functions.https.onRequest((req, response) =>
 				match.group = match.round;
 			}
 			body += '<tr>'+
-			           '<td>'+match.group+'['+match.id+','+match.teamName1+','+match.teamName2+']'+'</td>'+
+			           '<td>'+match.group+'['+key+','+match.teamName1+','+match.teamName2+']'+'</td>'+
 			           '<td>'+
-			           '<a href="https://us-central1-shaman-5b899.cloudfunctions.net/sendMailMatch?matchId='+match.id+'">Start</a>'+
+			           '<a href="https://us-central1-shaman-5b899.cloudfunctions.net/sendMailMatch?matchId='+key+'">Start</a>'+
 			           '<br>'+
-			           '<a href="https://us-central1-shaman-5b899.cloudfunctions.net/sendMailMatch?matchId='+match.id+'&demo=none.carlos">StartDemo</a>'+
+			           '<a href="https://us-central1-shaman-5b899.cloudfunctions.net/sendMailMatch?matchId='+key+'&demo=none.carlos">StartDemo</a>'+
 			           '<br><br>'+
 			           '</td>'+
 			        '</tr>';
@@ -71,7 +71,7 @@ exports.sendMailMatch = () => functions.https.onRequest((req, response) => {
 			snapshot.forEach((childSnapshot)=>{
 				var matchUser = childSnapshot.val().matches[match.group][matchID];
 				var profile   = childSnapshot.val().profile;
-				matchUser = commons.calculateResultFinal(matchUser);
+				matchUser = commons.calcularResultMatch(matchUser);
 				match.scoreCount +=1;
 				match.scoreSum1  += parseInt(matchUser.scoreTeam1);
 				match.scoreSum2  += parseInt(matchUser.scoreTeam2);
