@@ -1,58 +1,38 @@
 // The Cloud Functions for Firebase SDK to create Cloud Functions and setup triggers.
 const functions = require('firebase-functions');
 const commons   = require('./commonCalculates');
-
-const SENDGRID_API_KEY = "";
-const SENDGRID_SENDER  = "contacto@shaman.pe";
-const PLANTILLA        = "5735a368-7561-4dff-b6ee-eeb0ba077eb3";
-const PLANTILLA_EXEC   = "c134ddc8-4a4f-4a0d-a12e-df8d9cd604d0";
-const Sendgrid         = require('sendgrid')(SENDGRID_API_KEY);
+const gcs  = require('@google-cloud/storage')();
+const path = require('path');
+const os   = require('os');
+const fs   = require('fs');
+const handlebars = require('handlebars');
 
 const APP_NAME = 'Shaman';
+
+const nodemailer  = require('nodemailer');
+const mailTransport = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'bizantinosf@gmail.com',
+    pass: 'rick&morty',
+  },
+});
 
 exports.initialize = (laPollaConfig) => {
 	global.init = Object.freeze(laPollaConfig);
 };
 
-exports.sendMailMatchLaunch = () => functions.https.onRequest((req, response) => {
-	return global.init.db.ref('/matches').once('value').then((snapshot)=>{
-		var body = '<table>'+
-		             '<thead>'+
-		               '<tr><td>Partido</td><td>Link</td></tr>'+
-		             '</thead>'+
-		             '<tbody>';
-		snapshot.forEach((childSnapshot)=>{
-			var match = childSnapshot.val();
-			var key   = childSnapshot.key;
-			if(!match.group || match.group === ''){
-				match.group = match.round;
-			}
-			body += '<tr>'+
-			           '<td>'+match.group+'['+key+','+match.teamName1+','+match.teamName2+']'+'</td>'+
-			           '<td>'+
-			           '<a href="https://us-central1-shaman-5b899.cloudfunctions.net/sendMailMatch?matchId='+key+'">Start</a>'+
-			           '<br>'+
-			           '<a href="https://us-central1-shaman-5b899.cloudfunctions.net/sendMailMatch?matchId='+key+'&demo=none.carlos">StartDemo</a>'+
-			           '<br><br>'+
-			           '</td>'+
-			        '</tr>';
-		});
-		body += '</tbody></table>';
-		var email = 'none.carlos@gmail.com';
-		sendExecMatchEmail(email,body);
-		return response.status(200).send("Mailing already sent!");
-	});
-});
-
-exports.sendMailMatch = () => functions.https.onRequest((req, response) => {
+exports.sendMailMatchGmail = () => functions.https.onRequest((req, response) => {
 	const matchID = req.query.matchId;
 	const demo = req.query.demo;
+	const bucket = gcs.bucket('shaman-5b899.appspot.com');
+	const localTemplate = path.join(os.tmpdir(), 'localTemplateMatch.html');
 	var match = {};
 	var template = {};
 	var details = [];
+	
 	return global.init.db.ref('/matches/'+matchID).once('value').then((snapshot)=>{
 		match = snapshot.val();
-
 		match.scoreCount  = 0;
 		match.scoreSum1   = 0;
 		match.scoreSum2   = 0;
@@ -154,23 +134,54 @@ exports.sendMailMatch = () => functions.https.onRequest((req, response) => {
               match.detailString+
             '</tbody>'+
           	'</table>';
-
 			return template;
 		}).then( () => {
-			if(demo){
-				var email = demo+'@gmail.com';
-				sendMatchEmail(match,template,email);
-				return response.status(200).send("Mailing already sent!");
-			}else{
-				return global.init.db.ref('/rankingAll').once('value').then((snapshot)=>{
-					snapshot.forEach((childSnapshot)=>{
-						var user = childSnapshot.val();
-						var key  = childSnapshot.key;
-						sendMatchEmail(match,template,user.profile.email);
-					});
+			const context = {
+		    	"teamname1": template.teamname1,
+				"teamname2": template.teamname2,
+				"team1"    : template.team1,
+				"team2"    : template.team2,
+				"score1"   : (template.score1==='0'?'O':template.score1),
+				"score2"   : (template.score2==='0'?'O':template.score2),
+				"rad11"    : template.rad11,
+				"rad12"    : template.rad12,
+				"rad21"    : template.rad21,
+				"rad22"    : template.rad22,
+				"teamfav"  : template.teamfav,
+				"porc1"    : (template.percent1==='0'?'O':template.percent1),
+				"porc2"    : (template.percent2==='0'?'O':template.percent2),
+				"porc3"    : (template.percent3==='0'?'O':template.percent3),
+				"teamnamefav1": template.teamnamefav1,
+				"teamnamefav2": template.teamnamefav2,
+				"teamnamefav3": template.teamnamefav3,
+				"filas": template.filas
+			};
+			return bucket.file('template_resumen_previa.txt').download({ destination: localTemplate }).then(() => {
+			    const source = fs.readFileSync(localTemplate, 'utf8');
+			    const html = handlebars.compile(source)(context);
+			    if(demo){
+					var email = demo+'@gmail.com';
+					sendMatchEmail(email,html,match);
 					return response.status(200).send("Mailing already sent!");
-				});
-			}
+				}else{
+					global.init.db.ref('/rankingAll').once('value').then((snapshot)=>{
+						snapshot.forEach((childSnapshot)=>{
+							var user = childSnapshot.val();
+							var key  = childSnapshot.key;
+							sendMatchEmail(user.profile.email,html,match);
+							sleep(1000);
+						});
+						return response.status(200).send("Mailing already sent!");
+					}).catch(error => {
+			        	console.log(error.message);
+			        	return response.status(400).send("Something failed, check logs for details!");
+					});
+					return 1;
+				}
+			}).catch(error => {
+				console.log(error.message);
+				this.errorMessage = 'Error - ' + error.message
+			});
 		}).catch(error => {
         	console.log(error.message);
         	return response.status(400).send("Something failed, check logs for details!");
@@ -178,74 +189,26 @@ exports.sendMailMatch = () => functions.https.onRequest((req, response) => {
 	});
 });
 
-function sendExecMatchEmail(email,body){
-	const sgReq = Sendgrid.emptyRequest({
-		method: 'POST',
-		path: '/v3/mail/send',
-		body: {
-		  personalizations: [{
-			to: [{ email: email }],
-			subject: 'Lista de ejecuciones para la previa'   
-		  }],
-		  from: { email: SENDGRID_SENDER },
-		  content: [{
-			type: 'text/html',
-			value: body
-		  }],
-		  template_id: PLANTILLA_EXEC
-		}
+function sendMatchEmail(email, html, match) {
+	
+	console.log(email);
+
+	const mailOptions = {
+		from: `${APP_NAME} <bizantinosf@gmail.com>`,
+		to: email
+	};
+	mailOptions.subject = `La previa del ${match.teamName1} vs ${match.teamName2} ✔`;
+	mailOptions.html = html;
+	return mailTransport.sendMail(mailOptions).then(() => {
+		return console.log('New match email sent to:', email);
 	});
-	Sendgrid.API(sgReq, (err) => {
-		if (err) {
-		  console.log(err);
-		  return;
-		}
-    });
-    return;
 }
 
-function sendMatchEmail(match,template,email){
-	const sgReq = Sendgrid.emptyRequest({
-		method: 'POST',
-		path: '/v3/mail/send',
-		body: {
-		  personalizations: [{
-			to: [{ email: email }],
-			substitutions: {
-			  "-teamname1-": template.teamname1,
-			  "-teamname2-": template.teamname2,
-			  "-team1-"    : template.team1,
-			  "-team2-"    : template.team2,
-			  "-score1-"   : (template.score1==='0'?'O':template.score1),
-			  "-score2-"   : (template.score2==='0'?'O':template.score2),
-			  "-rad11-"    : template.rad11,
-			  "-rad12-"    : template.rad12,
-			  "-rad21-"    : template.rad21,
-			  "-rad22-"    : template.rad22,
-			  "-teamfav-"  : template.teamfav,
-			  "-porc1-"    : (template.percent1==='0'?'O':template.percent1),
-			  "-porc2-"    : (template.percent2==='0'?'O':template.percent2),
-			  "-porc3-"    : (template.percent3==='0'?'O':template.percent3),
-			  "-teamnamefav1-": template.teamnamefav1,
-			  "-teamnamefav2-": template.teamnamefav2,
-			  "-teamnamefav3-": template.teamnamefav3,
-			  "-filas-": template.filas
-			}, 
-			subject: `La previa del ${match.teamName1} vs ${match.teamName2} ✔`    
-		  }],
-		  from: { email: SENDGRID_SENDER },
-		  content: [{
-			type: 'text/html',
-			value: `La previa del ${match.teamName1} vs ${match.teamName2} ✔`
-		  }],
-		  template_id: PLANTILLA
-		}
-	});
-	Sendgrid.API(sgReq, (err) => {
-		if (err) {
-		  console.log(err);
-		  return;
-		}
-    });
-    return;
+function sleep(milliseconds) {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e30; i++) {
+    if ((new Date().getTime() - start) > milliseconds) {
+      break;
+    }
+  }
 }
