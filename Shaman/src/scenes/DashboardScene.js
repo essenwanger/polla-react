@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Actions } from 'react-native-router-flux';
-import { Container, Tabs, Tab, TabHeading, Icon } from 'native-base';
+import { Drawer, Container, Tabs, Tab, TabHeading, Icon } from 'native-base';
 import Profile from '../components/Profile';
 import Fixture from '../components/Fixture';
 import Ranking from '../components/Ranking';
+import MenuSideBar from '../components/MenuSideBar';
 import HeaderPolla from '../components/HeaderPolla';
 import firebase from 'react-native-firebase';
 
@@ -13,9 +14,11 @@ export default class DashboardScene extends Component {
     super(props);
     this.state = {
       user: props.user,
-      bet: props.betKey === undefined ? props.user.bets.all[0].betKey : props.betKey,
+      bet: props.betKey === undefined ? props.user.bets.all[0].betKey : props.betKey,      
       status: ''
     };
+    this.closeDrawer = this.closeDrawer.bind(this);
+    this.openDrawer = this.openDrawer.bind(this);
   }
 
   componentWillMount() {
@@ -25,6 +28,14 @@ export default class DashboardScene extends Component {
       });
     });
   }
+  
+  closeDrawer() {
+    this.drawer._root.close()
+  };
+
+  openDrawer(){
+    this.drawer._root.open()
+  };
 
   render() {
     var fixture=null;
@@ -34,20 +45,25 @@ export default class DashboardScene extends Component {
       ranking=(<Ranking user={this.state.user} status={this.state.status} />);
     }
     return (
-      <Container>
-        <HeaderPolla pop={false} name={'Shaman'} />
-        <Tabs>
-          <Tab heading={ <TabHeading><Icon name="md-football" /></TabHeading>}>
-            {fixture}
-          </Tab>
-          <Tab heading={ <TabHeading><Icon name="md-podium" /></TabHeading>}>
-            {ranking}
-          </Tab>
-          <Tab heading={ <TabHeading><Icon name="md-person" /></TabHeading>}>
-            <Profile user={this.state.user} />
-          </Tab>
-        </Tabs>
-      </Container>
+      <Drawer
+        ref={(ref) => { this.drawer = ref; }}
+        content={<MenuSideBar navigator={this.navigator} />}
+        onClose={this.closeDrawer} >
+        <Container>
+          <HeaderPolla pop={false} name={'Shaman'} openDrawer={this.openDrawer} />
+          <Tabs>
+            <Tab heading={ <TabHeading><Icon name="md-football" /></TabHeading>}>
+              {fixture}
+            </Tab>
+            <Tab heading={ <TabHeading><Icon name="md-podium" /></TabHeading>}>
+              {ranking}
+            </Tab>
+            <Tab heading={ <TabHeading><Icon name="md-person" /></TabHeading>}>
+              <Profile user={this.state.user} />
+            </Tab>
+          </Tabs>
+        </Container>
+      </Drawer>
     );
   }
 }

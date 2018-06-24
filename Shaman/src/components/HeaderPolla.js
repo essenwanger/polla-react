@@ -39,6 +39,11 @@ export default class HeaderPolla extends Component {
           <Button transparent onPress={this.onPressBack}>
             <Icon name='arrow-back' />
           </Button>;
+    } else {
+      button = 
+          <Button transparent onPress={this.props.openDrawer}>
+            <Icon name='menu' />
+          </Button>;
     }
     return (
       <Header hasTabs>
