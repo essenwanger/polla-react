@@ -15,6 +15,7 @@ const calculateLlaves           = require('./calculateLlaves');
 const sendMailMassive           = require('./sendMailMassive');
 const sendMailWelcome           = require('./sendMailWelcome');
 const sendMailMatch             = require('./sendMailMatch');
+const sendMailMatchGmail        = require('./sendMailMatchGmail');
 
 const common                    = require('./common');
 
@@ -34,6 +35,8 @@ letthegamesbegin.initialize(LAPOLLA_CONFIG);
 calculateLlaves.initialize(LAPOLLA_CONFIG);
 sendMailMassive.initialize(LAPOLLA_CONFIG);
 sendMailWelcome.initialize(LAPOLLA_CONFIG);
+sendMailMatch.initialize(LAPOLLA_CONFIG);
+sendMailMatchGmail.initialize(LAPOLLA_CONFIG);
 //common.initialize(LAPOLLA_CONFIG);
 
 //exports.addMessage = addMessage.addMessage();
@@ -56,6 +59,7 @@ exports.sendMailMassive = sendMailMassive.sendMailMassive();
 exports.sendMailWelcome = sendMailWelcome.sendMailWelcome();
 exports.sendMailMatch         = sendMailMatch.sendMailMatch();
 exports.sendMailMatchLaunch   = sendMailMatch.sendMailMatchLaunch();
+exports.sendMailMatchGmail   = sendMailMatchGmail.sendMailMatchGmail();
 
 exports.listUsers = common.listUsers();
 exports.payable = common.payable();
