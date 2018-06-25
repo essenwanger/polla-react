@@ -1,29 +1,31 @@
 exports.calcularResultMatch = (match) => {
-	
-	match.scoreTeam1 = match.scoreTeam1.trim();
-	match.scoreTeam2 = match.scoreTeam2.trim();
+	if(match.scoreTeam1 && match.scoreTeam2){
 
-	if(!match.group || match.group === ''){
-		match.group = match.round;
-	}
-	if(match.scoreTeam1>match.scoreTeam2){
-		match.result=1;
-		match.resultFinal=1;
-	}else if(match.scoreTeam1<match.scoreTeam2){
-		match.result=2;
-		match.resultFinal=2;
-	}else{
-		match.result=0;
-		match.resultFinal=0;
-		if(match.scorePenaltyTeam1 && match.scorePenaltyTeam2){
-			if(match.scorePenaltyTeam1>match.scorePenaltyTeam2){
-				match.resultPenalty=1;
-    		}else if(match.scorePenaltyTeam1<match.scorePenaltyTeam2){
-    			match.resultPenalty=2;
-    		}else{
-    			match.resultPenalty=0; //resultado parcial
-    		}
-    		match.resultFinal=match.resultPenalty;
+		match.scoreTeam1 = match.scoreTeam1.trim();
+		match.scoreTeam2 = match.scoreTeam2.trim();
+
+		if(!match.group || match.group === ''){
+			match.group = match.round;
+		}
+		if(match.scoreTeam1>match.scoreTeam2){
+			match.result=1;
+			match.resultFinal=1;
+		}else if(match.scoreTeam1<match.scoreTeam2){
+			match.result=2;
+			match.resultFinal=2;
+		}else{
+			match.result=0;
+			match.resultFinal=0;
+			if(match.scorePenaltyTeam1 && match.scorePenaltyTeam2){
+				if(match.scorePenaltyTeam1>match.scorePenaltyTeam2){
+					match.resultPenalty=1;
+	    		}else if(match.scorePenaltyTeam1<match.scorePenaltyTeam2){
+	    			match.resultPenalty=2;
+	    		}else{
+	    			match.resultPenalty=0; //resultado parcial
+	    		}
+	    		match.resultFinal=match.resultPenalty;
+			}
 		}
 	}
 	return match;
