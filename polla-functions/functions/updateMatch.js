@@ -14,7 +14,7 @@ exports.randomScoreMatches = () => functions.https.onRequest((req, res) => {
   matchRef.once('value').then((snapshot) => {
     snapshot.forEach((childSnapshot) => {
       if (childSnapshot.key < 48) {
-      //if (childSnapshot.key >= 0) {
+        //if (childSnapshot.key >= 0) {
         scoreTeam1 = Math.floor(Math.random() * 4) + '';
         scoreTeam2 = Math.floor(Math.random() * 4) + '';
         scorePenaltyTeam1 = '';
@@ -55,20 +55,20 @@ exports.resetScoreMatches = () => functions.https.onRequest((req, res) => {
 
   matchRef.once('value').then((snapshot) => {
     snapshot.forEach((childSnapshot) => {
-      global.init.db.ref('/matches/' + childSnapshot.key).update({
-        "scoreTeam1": '',
-        "scoreTeam2": '',
-        "scorePenaltyTeam1": '',
-        "scorePenaltyTeam2": ''
-      }).catch(error => {
-        this.errorMessage = 'Error - ' + error.message
-      });
+      global.init.db.ref('/matches/' + childSnapshot.key)
+        .update({
+          "scoreTeam1": '',
+          "scoreTeam2": '',
+          "scorePenaltyTeam1": '',
+          "scorePenaltyTeam2": ''
+        })
     });
-    return 1;
+    return res.redirect(303, global.init.db.ref('/matches'));
   }).catch(error => {
-    this.errorMessage = 'Error - ' + error.message
+    this.errorMessage = 'Error - ' + error.message;
+    console.log(this.errorMessage);
+    res.status(500).send(this.errorMessage);
   });
-  return res.redirect(303, global.init.db.ref('/matches'));
 });
 
 exports.resetMatches2nd = () => functions.https.onRequest((req, res) => {
@@ -81,28 +81,26 @@ exports.resetMatches2nd = () => functions.https.onRequest((req, res) => {
   matchesRef.once('value').then((snapshot) => {
     snapshot.forEach((childSnapshot) => {
       var matchRef = childSnapshot.val();
-      if(matchRef.teamSource1 || matchRef.teamSource2) {
-          global.init.db.ref('/matches/' + childSnapshot.key).update({
-            "scoreTeam1": '',
-            "scoreTeam2": '',
-            "scorePenaltyTeam1": '',
-            "scorePenaltyTeam2": '',
-            "team1": matchRef.teamSource1,
-            "team2": matchRef.teamSource2,
-            "teamName1": matchRef.teamSource1,
-            "teamName2": matchRef.teamSource2
-          }).catch(error => {
-            this.errorMessage = 'Error - ' + error.message
-          });
+      if (matchRef.teamSource1 || matchRef.teamSource2) {
+        global.init.db.ref('/matches/' + childSnapshot.key).update({
+          "scoreTeam1": '',
+          "scoreTeam2": '',
+          "scorePenaltyTeam1": '',
+          "scorePenaltyTeam2": '',
+          "team1": matchRef.teamSource1,
+          "team2": matchRef.teamSource2,
+          "teamName1": matchRef.teamSource1,
+          "teamName2": matchRef.teamSource2
+        })
       }
-
-      
     });
-    return 1;
+    return res.redirect(303, global.init.db.ref('/matches'));
   }).catch(error => {
-    this.errorMessage = 'Error - ' + error.message
+    this.errorMessage = 'Error - ' + error.message;
+    console.log(this.errorMessage);
+    res.status(500).send(this.errorMessage);
   });
-  return res.redirect(303, global.init.db.ref('/matches'));
+
 });
 
 exports.resetGame = () => functions.https.onRequest((req, res) => {
@@ -111,14 +109,28 @@ exports.resetGame = () => functions.https.onRequest((req, res) => {
   const scorePenaltyTeam1 = '';
   const scorePenaltyTeam2 = '';
 
-  global.init.db.ref('/').update({betsAll:{}});
-  global.init.db.ref('/').update({bets:{}});
-  global.init.db.ref('/').update({preBetsAll:{}});
-  global.init.db.ref('/').update({subscribedAll:{}});
-  global.init.db.ref('/').update({ranking:[]});
-  global.init.db.ref('/').update({rankingAll:[]});
-  global.init.db.ref('/').update({users:{}});
-  
+  global.init.db.ref('/').update({
+    betsAll: {}
+  });
+  global.init.db.ref('/').update({
+    bets: {}
+  });
+  global.init.db.ref('/').update({
+    preBetsAll: {}
+  });
+  global.init.db.ref('/').update({
+    subscribedAll: {}
+  });
+  global.init.db.ref('/').update({
+    ranking: []
+  });
+  global.init.db.ref('/').update({
+    rankingAll: []
+  });
+  global.init.db.ref('/').update({
+    users: {}
+  });
+
   var matchRef = global.init.db.ref('/matches');
   matchRef.once('value').then((snapshot) => {
     snapshot.forEach((childSnapshot) => {
@@ -148,12 +160,12 @@ exports.updateScore = () => functions.https.onRequest((req, res) => {
   var matchRef = global.init.db.ref('/matches/' + matchId);
 
   matchRef.update({
-    "scoreTeam1": scoreTeam1 + '',
-    "scoreTeam2": scoreTeam2 + '',
-    "scorePenaltyTeam1": scorePenaltyTeam1 + '',
-    "scorePenaltyTeam2": scorePenaltyTeam2 + ''
+    "scoreTeam1": String(scoreTeam1),
+    "scoreTeam2": String(scoreTeam2),
+    "scorePenaltyTeam1": String(scorePenaltyTeam1),
+    "scorePenaltyTeam2": String(scorePenaltyTeam2)
   }).then(snapshot => {
-    return res.redirect(303, snapshot.ref);
+    return res.redirect(200, snapshot.ref);
   }).catch(error => {
     this.errorMessage = 'Error - ' + error.message
   });
@@ -162,6 +174,97 @@ exports.updateScore = () => functions.https.onRequest((req, res) => {
 
 });
 
+exports.updateSpecificScore = () => functions.https.onRequest((req, res) => {
+  const matchesResult = [
+    ['5', '0'],
+    ['0', '1'],
+    ['3', '3'],
+    ['0', '1'],
+    ['2', '1'],
+    ['0', '1'],
+    ['1', '1'],
+    ['2', '0'],
+    ['1', '1'],
+    ['0', '1'],
+    ['0', '1'],
+    ['1', '0'],
+    ['3', '0'],
+    ['1', '2'],
+    ['1', '2'],
+    ['1', '2'],
+    ['3', '1'],
+    ['1', '0'],
+    ['1', '0'],
+    ['0', '1'],
+    ['1', '0'],
+    ['1', '1'],
+    ['0', '3'],
+    ['2', '0'],
+    ['2', '0'],
+    ['1', '2'],
+    ['2', '1'],
+    ['1', '2'],
+    ['5', '2'],
+    ['6', '1'],
+    ['0', '3'],
+    ['2', '2'],
+    ['4', '4'],
+    ['1', '2'],
+    ['1', '2'],
+    ['3', '1'],
+    ['1', '2'],
+    ['0', '2'],
+    ['1', '1'],
+    ['1', '2'],
+    ['1', '3'],
+    ['1', '2'],
+    ['1', '3'],
+    ['1', '1'],
+    ['1', '2'],
+    ['1', '1'],
+    ['1', '2'],
+    ['1', '1'],
+    ['', ''],
+    ['', ''],
+    ['', ''],
+    ['', ''],
+    ['', ''],
+    ['', ''],
+    ['', ''],
+    ['', ''],
+    ['', ''],
+    ['', ''],
+    ['', ''],
+    ['', ''],
+    ['', ''],
+    ['', ''],
+    ['', ''],
+    ['', '']
+  ];
+
+  var matches = '';
+
+  global.init.db.ref('/matches/').once('value')
+    .then(snapshot => {
+      snapshot.forEach(childSnapshot => {
+        match = childSnapshot.val();
+        sleep(200);
+        global.init.db.ref('/matches/' + childSnapshot.key).update({
+          "scoreTeam1": matchesResult[match.id - 1][0],
+          "scoreTeam2": matchesResult[match.id - 1][1],
+          "scorePenaltyTeam1": '',
+          "scorePenaltyTeam2": ''
+        })
+        matches += match.id + ',' + match.team1 + ',' + match.scoreTeam1 + ',' + matchesResult[match.id - 1][0] + ',' + match.team2 + ',' + match.scoreTeam2 + ',' + matchesResult[match.id - 1][1] + ',' + '<br />';
+      });
+      return res.status(200).send(matches);
+    })
+    .catch(error => {
+      this.errorMessage = 'Error - ' + error.message;
+      console.log(this.errorMessage);
+      res.status(500).send(this.errorMessage);
+    });
+});
 
 
 function sleep(milliseconds) {
