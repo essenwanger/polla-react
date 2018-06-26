@@ -34,6 +34,7 @@ function actualizarPuntos(match,context){
 			var rankUser = childSnapshot.val();
 	        var rankKey  = childSnapshot.key;
 
+	        //console.log('/betsAll/'+rankKey+'/matches/'+match.group+'/'+context.params.idMatch);
 	        global.init.db.ref('/betsAll/'+rankKey+'/matches/'+match.group+'/'+context.params.idMatch)
 	        .once('value').then(snapshotUserMatch => {
 	        	
@@ -180,7 +181,7 @@ function actualizarPuntos(match,context){
 
 				    return global.init.db.ref('/betsAll/'+rankKey+'/matches/'+match.group)
 			        .once('value').then(snapshotUserMatch => {
-			        	snapshot.forEach( childSnapshot =>{			
+			        	snapshotUserMatch.forEach( childSnapshot =>{			
 							var matchFase = childSnapshot.val();
         					var matchKey  = childSnapshot.key;
         					if(matchUser.group === 'Octavos'){
@@ -223,7 +224,7 @@ function actualizarPuntos(match,context){
 }
 
 function actualizarFases(match,context){
-	console.log(match.group);
+	//console.log(match.group);
 	if(match.group){
 		if(match.group.length === 1 ){//Fase de grupos
 			return global.init.db.ref('/matches/').once('value').then((snapshot)=>{
@@ -232,7 +233,7 @@ function actualizarFases(match,context){
 				positionTableGrupo[match.group]=positionTable;
 				return global.init.db.ref('/positionTable/').update(positionTableGrupo)
 				.then(()=>{
-					console.log('actualizar fase octavos');
+					//console.log('actualizar fase octavos');
 					return global.init.db.ref('/matches/').once('value').then((snapshot)=>{
 						var matches = commons.calcularOctavos(positionTable,match.group,snapshot);
 				    	return global.init.db.ref(
@@ -244,7 +245,7 @@ function actualizarFases(match,context){
     		});
 		}else{
 			var group = {};
-			console.log('actualizar fase octavos');
+			//console.log('actualizar fase octavos');
 			group[context.params.idMatch] = match;
 			var results = commons.calcularResultadosFaseActual(match.group,group);
 			if(results){
