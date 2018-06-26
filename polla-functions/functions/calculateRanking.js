@@ -17,7 +17,7 @@ exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
 		}
 		if ((match.scoreTeam1 && match.scoreTeam2) ||
 			(match.teamSource1 || match.teamSource2)) {
-				console.log('se actualizaran puntos ' + match.teamSource1 + ',' + match.teamSource2);
+				console.log('se actualizaran puntos ' + match.teamSource1 + ',' + match.scoreTeam1 + ',' + match.teamSource2 + ',' + match.scoreTeam2);
 				actualizarPuntos(match, context);
 		}
 		return 0;
@@ -182,7 +182,7 @@ function actualizarPuntos(match, context) {
 
 						return global.init.db.ref('/betsAll/' + rankKey + '/matches/' + match.group)
 							.once('value').then(snapshotUserMatch => {
-								snapshot.forEach(childSnapshot => {
+								snapshotUserMatch.forEach(childSnapshot => {
 									var matchFase = childSnapshot.val();
 									var matchKey = childSnapshot.key;
 									if (matchUser.group === 'Octavos') {

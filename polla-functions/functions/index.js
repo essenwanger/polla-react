@@ -41,12 +41,12 @@ sendMailMatchGmail.initialize(LAPOLLA_CONFIG);
 
 //exports.addMessage = addMessage.addMessage();
 //exports.addUser = addUser.addUser();
-exports.updateScore = updateMatch.updateScore();
-exports.updateSpecificScore = updateMatch.updateSpecificScore();
+//exports.updateScore = updateMatch.updateScore();
+//exports.updateSpecificScore = updateMatch.updateSpecificScore();
 //exports.resetGame = updateMatch.resetGame();
-exports.randomScoreMatches = updateMatch.randomScoreMatches();
-exports.resetScoreMatches = updateMatch.resetScoreMatches();
-exports.resetMatches2nd = updateMatch.resetMatches2nd();
+//exports.randomScoreMatches = updateMatch.randomScoreMatches();
+//exports.resetScoreMatches = updateMatch.resetScoreMatches();
+//exports.resetMatches2nd = updateMatch.resetMatches2nd();
 exports.calculateNewPositionTable = calculateNewPositionTable.calculateNewPositionTable();
 exports.calculatePoints = calculateRanking.calculatePoints();
 //exports.calculatePointsTest = calculateRanking.calculatePointsTest();
