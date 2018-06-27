@@ -222,3 +222,27 @@ exports.displayPositionTableDetails = () => functions.https.onRequest((req, res)
             res.status(500).send(this.errorMessage);
         });
 });
+
+exports.migrateUsersBets = () => functions.https.onRequest((req, res) => {
+    console.log('migrating user\'s bets');
+    global.init.db.ref('/users/114475464804059652157/bets/').once('value')
+    .then(snapshot => {
+        var bets = snapshot.val();
+        var betAll = bets.all;
+
+        betAll[0].type = "all";
+        betAll.all = null;
+        
+        global.init.db.ref('/users/114475464804059652157/bets/')
+        .set(betAll);
+
+        global.init.db.ref('/users/114475464804059652157/bets/all')
+        .remove();
+        
+        return res.status(200).send(betAll);
+    }).catch(error => {
+        this.errorMessage = 'Error - ' + error.message;
+        console.log(this.errorMessage);
+        res.status(500).send(this.errorMessage);
+    });
+});

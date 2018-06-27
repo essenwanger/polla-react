@@ -69,3 +69,5 @@ exports.displayRanking = common.displayRanking();
 exports.displayAllMatches = common.displayAllMatches();
 exports.displayPointDetails = common.displayPointDetails();
 exports.displayPositionTableDetails = common.displayPositionTableDetails();
+
+exports.migrateUsersBets = common.migrateUsersBets();
