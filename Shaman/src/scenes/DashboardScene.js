@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Actions } from 'react-native-router-flux';
 import { Drawer, Container, Tabs, Tab, TabHeading, Icon } from 'native-base';
-import Profile from '../components/Profile';
+import Term from '../components/Term';
 import Fixture from '../components/Fixture';
 import Ranking from '../components/Ranking';
 import MenuSideBar from '../components/MenuSideBar';
@@ -27,6 +27,10 @@ export default class DashboardScene extends Component {
         status: snapshot.val()
       });
     });
+  }
+
+  componentDidMount() {
+    this.openDrawer();
   }
   
   closeDrawer() {
@@ -58,8 +62,8 @@ export default class DashboardScene extends Component {
             <Tab heading={ <TabHeading><Icon name="md-podium" /></TabHeading>}>
               {ranking}
             </Tab>
-            <Tab heading={ <TabHeading><Icon name="md-person" /></TabHeading>}>
-              <Profile user={this.state.user} />
+            <Tab heading={ <TabHeading><Icon name="md-glasses" /></TabHeading>}>
+              <Term codeTypeBet={'all'} />
             </Tab>
           </Tabs>
         </Container>
