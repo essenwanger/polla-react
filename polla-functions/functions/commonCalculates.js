@@ -140,7 +140,9 @@ exports.calcularTablaPosiciones = (snapshot,group) => {
 				return -1;//descendente
 			}else{
 				if(difGolesA === difGolesB){
-					if(a.goalsFor>b.goalsFor) return -1
+					if(a.goalsFor>b.goalsFor) {
+						return -1
+					} 
 					return 1;
 				}else return 1;
 			}
