@@ -225,20 +225,28 @@ exports.displayPositionTableDetails = () => functions.https.onRequest((req, res)
 
 exports.migrateUsersBets = () => functions.https.onRequest((req, res) => {
     console.log('migrating user\'s bets');
-    global.init.db.ref('/users/114475464804059652157/bets/').once('value')
-    .then(snapshot => {
-        var bets = snapshot.val();
-        var betAll = bets.all;
 
-        betAll[0].type = "all";
-        betAll.all = null;
-        
-        global.init.db.ref('/users/114475464804059652157/bets/')
-        .set(betAll);
+    global.init.db.ref('/users/').once('value').then(snapshot => {
+        snapshot.forEach((childSnapshot) => {
+            var user = childSnapshot.val();
+            var userKey = childSnapshot.key;
+            //console.log('user key ' + userKey);
+            global.init.db.ref('/users/' + userKey + '/bets/').once('value')
+                .then(betSnapshot => {
+                    var bets = betSnapshot.val();
+                    var betAll = bets.all;
 
-        global.init.db.ref('/users/114475464804059652157/bets/all')
-        .remove();
-        
+                    betAll[0].type = "all";
+                    betAll[0].suffix = "All";
+                    betAll[0].name = "Todo el Mundial";
+                    /*
+                    global.init.db.ref('/users/' + userKey + '/bets/')
+                        .set(betAll);
+                    global.init.db.ref('/users/' + userKey + '/bets/all')
+                        .remove();
+                    */
+                });
+        });
         return res.status(200).send(betAll);
     }).catch(error => {
         this.errorMessage = 'Error - ' + error.message;
