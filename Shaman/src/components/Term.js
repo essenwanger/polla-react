@@ -37,13 +37,16 @@ export default class Term extends Component {
   }
 }
 
-const styles = StyleSheet.create({  
-  h1: {
-    fontSize: 10,
+const styles = StyleSheet.create({
+  div: {
+    padding: 10,    
+  },
+  h3: {
+    fontSize: 30,
     fontWeight: 'bold',
   },
-  h2: {
-    fontSize: 5,
+  h4: {
+    fontSize: 20,
     fontWeight: 'bold'
   },
   p: {

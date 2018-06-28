@@ -14,7 +14,7 @@ export default class DashboardScene extends Component {
     super(props);
     this.state = {
       user: props.user,
-      bet: props.betKey === undefined ? props.user.bets.all[0].betKey : props.betKey,      
+      bet: props.betKey === undefined ? props.user.bets[0].betKey : props.betKey,      
       status: ''
     };
     this.closeDrawer = this.closeDrawer.bind(this);
@@ -51,7 +51,7 @@ export default class DashboardScene extends Component {
     return (
       <Drawer
         ref={(ref) => { this.drawer = ref; }}
-        content={<MenuSideBar navigator={this.navigator} />}
+        content={<MenuSideBar navigator={this.navigator} user={this.state.user} />}
         onClose={this.closeDrawer} >
         <Container>
           <HeaderPolla pop={false} name={'Shaman'} openDrawer={this.openDrawer} />
@@ -62,7 +62,7 @@ export default class DashboardScene extends Component {
             <Tab heading={ <TabHeading><Icon name="md-podium" /></TabHeading>}>
               {ranking}
             </Tab>
-            <Tab heading={ <TabHeading><Icon name="md-glasses" /></TabHeading>}>
+            <Tab heading={ <TabHeading><Icon name="paper" /></TabHeading>}>
               <Term codeTypeBet={'all'} />
             </Tab>
           </Tabs>

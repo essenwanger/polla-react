@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Actions } from 'react-native-router-flux';
-import { ImageBackground , Image } from 'react-native';
-import { ListItem, Text, List, Content, Left, Icon, Body} from 'native-base';
+import { ImageBackground, Platform, Image } from 'react-native';
+import { ListItem, Text, List, Content, Right, Left, Icon, Body} from 'native-base';
 import firebase from 'react-native-firebase';
 import GoogleSignIn from 'react-native-google-sign-in';
 
@@ -11,8 +11,14 @@ export default class MenuSideBar extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      bets: props.user.bets,
+      iconName: Platform.OS === 'ios' ? 'ios-arrow-forward' : 'md-arrow-dropright'
+    };
     this.onPressLogout = this.onPressLogout.bind(this);
     this.onPressAbout = this.onPressAbout.bind(this);
+    this.onPressAddBet = this.onPressAddBet.bind(this);
+    this.onPressBet = this.onPressBet.bind(this);
   }
 
   onPressAbout(){
@@ -22,6 +28,14 @@ export default class MenuSideBar extends Component {
   onPressLogout(){
     GoogleSignIn.signOut();
     Actions.reset('login');
+  }
+
+  onPressBet(bet) {
+    console.log(bet);
+  }
+
+  onPressAddBet() {
+    console.log("Add bet");
   }
 
   componentDidMount() {
@@ -57,29 +71,49 @@ export default class MenuSideBar extends Component {
             <Text>Mis apuestas</Text>
           </ListItem>
           <List
-              dataArray={routes}
+              dataArray={this.state.bets}
               renderRow={data => {
               return (
-                  <ListItem button>
-                    <Text>{data}</Text>
+                  <ListItem button onPress={this.onPressBet} >
+                    <Body>
+                      <Text>{data.name}</Text>
+                    </Body>
+                    <Right>
+                      <Icon name={this.state.iconName} />
+                    </Right>                    
                   </ListItem>
               );
               }}
           />
-          <ListItem button>
-            <Text>Nueva Apuesta</Text>
+          <ListItem button onPress={this.onPressAddBet} >
+            <Body>
+              <Text>Apostar</Text>
+            </Body>
+            <Right>
+              <Icon name="md-add" />
+            </Right>
           </ListItem>
           <ListItem itemDivider>
-            <Text>Ayuda</Text>
+            <Text>Acerca de</Text>
           </ListItem>
           <ListItem button onPress={this.onPressAbout} >
-            <Text>Nosotros</Text>
+            <Body>
+              <Text>Nosotros</Text>
+            </Body>
+            <Right>
+              <Icon name="md-ionitron" />
+            </Right>
           </ListItem>
           <ListItem itemDivider>
             <Text>Sesión</Text>
           </ListItem>
           <ListItem button onPress={this.onPressLogout} >
-            <Text>Cerrar sesión</Text>
+            <Body>
+              <Text>Cerrar sesión</Text>
+            </Body>
+            <Right>
+              <Icon name="md-close-circle" />
+            </Right>
           </ListItem>
       </Content>
       );
