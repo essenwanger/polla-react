@@ -35,7 +35,7 @@ export default class TermsScene extends Component {
   }
 
   _renderHeader(){
-    return (<HeaderPolla pop={false} name='Terminos y condiciones' />);
+    return (<HeaderPolla name='Terminos y condiciones' />);
   }
   
   _renderButton(){

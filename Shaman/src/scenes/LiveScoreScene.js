@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { Actions } from 'react-native-router-flux';
-import { Container, Tabs, Tab, TabHeading, Icon, Content, Card, CardItem, 
-  Body, Text, Thumbnail } from 'native-base';
+import { Container, Icon, Content, Card, CardItem, 
+  Body, Text, Thumbnail, Header, Left, Button, Title, Right } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { Flag } from '../components/Helpers';
-import HeaderPolla from '../components/HeaderPolla';
 import firebase from 'react-native-firebase';
 
 export default class LiveScoreScene extends Component {
@@ -84,7 +83,17 @@ export default class LiveScoreScene extends Component {
     ));
     return (
       <Container>
-        <HeaderPolla pop={false} name={'Shaman'} />
+        <Header>
+          <Left>
+            <Button transparent>
+              <Icon name='menu' />
+            </Button>
+          </Left>
+          <Body style={{flex: 3}}>
+            <Title>Shaman</Title>
+          </Body>
+          <Right/>
+        </Header>
         <Content>
           {items}
         </Content>

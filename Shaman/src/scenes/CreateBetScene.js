@@ -51,6 +51,7 @@ export default class CreateBetScene extends Component {
           suffix: this.state.selectedType.suffix,
           type: this.state.selectedType.key
         });
+        Actions.reset('liveScore', {user: this.props.user});
       });
     }
   }
@@ -86,7 +87,7 @@ export default class CreateBetScene extends Component {
     return (
       <Root>
         <Container>
-          <HeaderPolla pop={false} name={'Shaman'} />
+          <HeaderPolla name={'Shaman'} />
           <Content>
             <Form>
               <Item>
