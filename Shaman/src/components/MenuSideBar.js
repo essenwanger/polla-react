@@ -5,7 +5,7 @@ import { ListItem, Text, List, Content, Right, Left, Icon, Body} from 'native-ba
 import firebase from 'react-native-firebase';
 import GoogleSignIn from 'react-native-google-sign-in';
 
-const routes = ["Todo el Mundial", "Octavos", "Cuartos", "Semifinal", "Final"];
+//tomar guia ranking
 
 export default class MenuSideBar extends Component {
 
