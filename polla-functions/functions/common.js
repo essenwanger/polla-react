@@ -259,3 +259,38 @@ exports.migrateUsersBets = () => functions.https.onRequest((req, res) => {
         res.status(500).send(this.errorMessage);
     });
 });
+
+
+exports.completed = () => functions.https.onRequest((req, res) => {
+
+    console.log('list bets completed');
+
+    var betsRef = global.init.db.ref('/preBetsAll');
+
+    betsRef.once('value').then((snapshot) => {
+        snapshot.forEach((childSnapshot) => {
+            var preBet = childSnapshot.val();
+
+            if (preBet.completed === true) {
+                var userId = preBet.profile.userID;
+                global.init.db.ref('/preBetsAll/' + childSnapshot.key).update({
+                    "completed": true
+                });
+                global.init.db.ref('/users/' + userId + '/bets/0').update({
+                    "completed": true
+                });
+                global.init.db.ref('/users/' + userId + '/bets/all/0').update({
+                    "completed": true
+                });
+            }
+        })
+        return 1;
+    }).catch(error => {
+        this.errorMessage = 'Error - ' + error.message;
+        console.log(this.errorMessage);
+        res.status(500).send(this.errorMessage);
+    });
+
+    return res.status(200).send('success!');
+
+});

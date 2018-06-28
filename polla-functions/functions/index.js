@@ -64,6 +64,7 @@ exports.sendMailMatchGmail   = sendMailMatchGmail.sendMailMatchGmail();
 exports.listUsers = common.listUsers();
 exports.payable = common.payable();
 exports.payableCompleted = common.payableCompleted();
+exports.completed = common.completed();
 exports.allBets = common.allBets();
 exports.displayRanking = common.displayRanking();
 exports.displayAllMatches = common.displayAllMatches();
