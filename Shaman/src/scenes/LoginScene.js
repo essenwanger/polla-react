@@ -24,7 +24,11 @@ export default class LoginScene extends Component {
         if(snapshot.val()===null){
           Actions.terms({user: userLogin});
         } else {
-          Actions.reset('dashboard', {user: snapshot.val()});
+          if(snapshot.val().bets===undefined){
+            Actions.reset('createBetScore', {user: snapshot.val()});
+          }else{
+            Actions.reset('liveScore', {user: snapshot.val()});
+          }
         }
       });
     }, (e) => {
@@ -89,15 +93,12 @@ export default class LoginScene extends Component {
           }else{
             Actions.reset('liveScore', {user: snapshot.val()});
           }
-          //Actions.reset('createBetScore', {user: snapshot.val()});
-          //console.log(snapshot.val().bets);
-          //Actions.reset('dashboard', {user: snapshot.val()});
         }
       });
     }, (e) => {
       this.setState({check: true});
     });
-
+    //GoogleSignIn.signOut();
   }
 
   render() {

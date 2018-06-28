@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Actions } from 'react-native-router-flux';
+import { Platform } from 'react-native';
 import { Container, Content, Form, Item, Input, Picker, Header, Left, 
   Button, Icon, Body, Title, Right, Text, Toast, Root } from 'native-base';
 import HeaderPolla from '../components/HeaderPolla';
@@ -81,9 +82,58 @@ export default class CreateBetScene extends Component {
 
   render() {
     var items=null;
+    var picker=null;
     items=this.state.typeBets.map((item, key) => (
       <Picker.Item key={key} label={item.name} value={item} />
     ));
+    if(Platform.OS === 'ios'){
+      picker=(
+        <Picker renderHeader={backAction =>
+          <Header>
+            <Left>
+              <Button transparent onPress={backAction}>
+                <Icon name="arrow-back" style={{ color: "#fff" }} />
+              </Button>
+            </Left>
+            <Body>
+              <Title>Apuesta</Title>
+            </Body>
+            <Right/>
+          </Header>}
+          mode="dropdown"
+          style={{ flex: 1 }}
+          placeholder="Selecciona tu tipo de Apuesta"
+          selectedValue={this.state.selectedType}
+          onValueChange={this.onValueChange.bind(this)}
+        >
+          {items}
+        </Picker>
+        );
+    }else{
+      picker=(
+        <Picker renderHeader={backAction =>
+          <Header>
+            <Left>
+              <Button transparent onPress={backAction}>
+                <Icon name="arrow-back" style={{ color: "#fff" }} />
+              </Button>
+            </Left>
+            <Body>
+              <Title>Apuesta</Title>
+            </Body>
+            <Right/>
+          </Header>}
+          mode="dropdown"
+          style={{ flex: 1 }}
+          placeholder="Selecciona tu tipo de Apuesta"
+          selectedValue={this.state.selectedType}
+          onValueChange={this.onValueChange.bind(this)}
+        >
+          <Picker.Item label="Selecciona tu tipo de Apuesta" value={undefined}/>
+          {items}
+        </Picker>
+        );
+    }
     return (
       <Root>
         <Container>
@@ -95,26 +145,7 @@ export default class CreateBetScene extends Component {
                 onChangeText={(nameBet) => this.setState({nameBet})} value={this.state.nameBet}/>
               </Item>
               <Item picker last>
-                <Picker
-                  renderHeader={backAction =>
-                  <Header>
-                    <Left>
-                      <Button transparent onPress={backAction}>
-                        <Icon name="arrow-back" style={{ color: "#fff" }} />
-                      </Button>
-                    </Left>
-                    <Body>
-                      <Title>Apuesta</Title>
-                    </Body>
-                    <Right/>
-                  </Header>}
-                  mode="dropdown"
-                  placeholder="Selecciona tu tipo de Apuesta"
-                  selectedValue={this.state.selectedType}
-                  onValueChange={this.onValueChange.bind(this)}
-                >
-                  {items}
-                </Picker>
+                {picker}
               </Item>
             </Form>
             <Button block success style={{marginHorizontal: 10, marginTop: 20}} 
