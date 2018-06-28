@@ -10,6 +10,8 @@ import DashboardScene from './scenes/DashboardScene';
 import PhaseScene from './scenes/PhaseScene';
 import AboutScene from './scenes/AboutScene';
 import DashboardRankScene from './scenes/DashboardRankScene';
+import LiveScoreScene from './scenes/LiveScoreScene';
+import CreateBetScene from './scenes/CreateBetScene';
 
 export default class App extends Component {
 
@@ -19,6 +21,8 @@ export default class App extends Component {
       <Router hideNavBar= "true">
         <Scene key="root">
           <Scene key="login" component={LoginScene} hideNavBar={true} initial={true}/>
+          <Scene key="createBetScore" component={CreateBetScene} hideNavBar={true}/>
+          <Scene key="liveScore" component={LiveScoreScene} hideNavBar={true}/>
           <Scene key="terms" component={TermsScene} hideNavBar={true}/>
           <Scene key="dashboard" component={DashboardScene} hideNavBar={true}/>
           <Scene key="phase" component={PhaseScene} hideNavBar={true}/>
