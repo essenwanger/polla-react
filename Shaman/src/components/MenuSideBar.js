@@ -93,7 +93,7 @@ export default class MenuSideBar extends Component {
             </Left>
             <Body>
               <Text>{this.props.user.profile.givenName}</Text>
-              <Text note style={{ fontWeight: "600" }}>{this.props.user.profile.email}</Text>
+              <Text note >{this.props.user.profile.email}</Text>
             </Body>
           </ListItem>
           <ListItem itemDivider>
