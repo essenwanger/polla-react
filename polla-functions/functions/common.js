@@ -245,6 +245,11 @@ exports.migrateUsersBets = () => functions.https.onRequest((req, res) => {
                     global.init.db.ref('/users/' + userKey + '/bets/all')
                         .remove();
                     */
+                    return 0;
+                }).catch(error => {
+                    this.errorMessage = 'Error - ' + error.message;
+                    console.log(this.errorMessage);
+                    res.status(500).send(this.errorMessage);
                 });
         });
         return res.status(200).send(betAll);
