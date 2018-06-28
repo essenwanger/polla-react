@@ -50,7 +50,7 @@ componentDidMount() {
   }
 
   onPressUser(user, betKey){
-    Actions.dashRank({userRank: user, bet: betKey});
+    Actions.dashRank({userRank: user, bet: betKey, userBet: this.props.userBet});
   }
   
   render() {

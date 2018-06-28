@@ -30,7 +30,7 @@ export default class DashboardScene extends Component {
     var ranking=null;
     if(this.state.status!=''){
       fixture=(<Fixture user={this.state.user} bet={this.state.bet.betKey} status={this.state.status} suffix={this.state.bet.suffix} userBet={this.state.bet} />);
-      ranking=(<Ranking user={this.state.user} status={this.state.status} suffix={this.state.bet.suffix} />);
+      ranking=(<Ranking user={this.state.user} status={this.state.status} suffix={this.state.bet.suffix} userBet={this.state.bet} />);
     }
     return (
         <Container>
