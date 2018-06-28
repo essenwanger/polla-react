@@ -19,7 +19,8 @@ export default class Fixture extends Component {
 
   onPressPhase(position){
     Actions.phase({user: this.state.user, status: this.state.status, 
-      groups: this.state.groups, bet: this.state.bet, position: position});
+      groups: this.state.groups, bet: this.state.bet, position: position,
+      userBet: this.props.userBet});
   }
 
   componentWillMount() {
@@ -36,7 +37,7 @@ export default class Fixture extends Component {
 
   dataFirebase(){
     var betKey= this.state.bet;
-    var betNode= this.state.status==='opened'? 'preBetsAll/' : 'betsAll/'
+    var betNode= this.state.status==='opened'? 'preBets'+this.props.suffix+'/' : 'bets'+this.props.suffix+'/'
     firebase.database().ref(betNode+betKey+'/groups/').once('value').then((snapshot)=>{
       var groups=[];
       snapshot.forEach((childSnapshot)=>{

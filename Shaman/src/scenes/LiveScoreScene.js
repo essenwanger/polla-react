@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Actions } from 'react-native-router-flux';
-import { Container, Icon, Content, Card, CardItem, 
+import { Drawer, Container, Icon, Content, Card, CardItem, 
   Body, Text, Thumbnail, Header, Left, Button, Title, Right } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import LiveScoreMatch from '../components/LiveScoreMatch';
 import firebase from 'react-native-firebase';
+import MenuSideBar from '../components/MenuSideBar';
 
 export default class LiveScoreScene extends Component {
 
@@ -13,6 +14,8 @@ export default class LiveScoreScene extends Component {
     this.state = {
       liveScore:[]
     };
+    this.closeDrawer = this.closeDrawer.bind(this);
+    this.openDrawer = this.openDrawer.bind(this);
   }
 
   componentDidMount() {
@@ -25,7 +28,16 @@ export default class LiveScoreScene extends Component {
       });
       this.setState({liveScore: liveScore});
     });
+    this.openDrawer();
   }
+
+  closeDrawer() {
+    this.drawer._root.close()
+  };
+ 
+  openDrawer(){
+    this.drawer._root.open()
+  };
 
   render() {
     var items=null;
@@ -33,22 +45,27 @@ export default class LiveScoreScene extends Component {
       <LiveScoreMatch key={key} data={item} />
     ));
     return (
-      <Container>
-        <Header>
-          <Left>
-            <Button transparent>
-              <Icon name='menu' />
-            </Button>
-          </Left>
-          <Body style={{flex: 3}}>
-            <Title>Shaman</Title>
-          </Body>
-          <Right/>
-        </Header>
-        <Content>
-          {items}
-        </Content>
-      </Container>
+      <Drawer
+        ref={(ref) => { this.drawer = ref; }}
+        content={<MenuSideBar navigator={this.navigator} user={this.props.user} closeDrawer={this.closeDrawer} />}
+        onClose={this.closeDrawer} >
+        <Container>
+          <Header>
+            <Left>
+              <Button transparent onPress={this.openDrawer} >
+                <Icon name='menu' />
+              </Button>
+            </Left>
+            <Body style={{flex: 3}}>
+              <Title>Shaman</Title>
+            </Body>
+            <Right/>
+          </Header>
+          <Content>
+            {items}
+          </Content>
+        </Container>
+      </Drawer>
     );
   }
 }

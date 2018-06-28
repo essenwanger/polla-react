@@ -16,7 +16,7 @@ export default class Ranking extends Component {
 
 componentDidMount() {
     if(this.props.status === 'opened'){
-      firebase.database().ref('subscribedAll/').once('value').then((snapshot)=>{
+      firebase.database().ref('subscribed'+this.props.suffix+'/').once('value').then((snapshot)=>{
         var suscribeds=[];
         snapshot.forEach(function(childSnapshot) {
           var item = childSnapshot.val();
@@ -31,7 +31,7 @@ componentDidMount() {
         });
       });
     }else{
-      firebase.database().ref('rankingAll/').orderByChild("totalPoints").once('value').then((snapshot)=>{
+      firebase.database().ref('ranking'+this.props.suffix+'/').orderByChild("totalPoints").once('value').then((snapshot)=>{
         var ranking=[];
         snapshot.forEach(function(childSnapshot) {
           var item = childSnapshot.val();

@@ -13,7 +13,8 @@ export default class CreateBetScene extends Component {
     this.state = {
       nameBet: '',
       selectedType: undefined,
-      typeBets: []
+      typeBets: [],
+      firstBet: props.firstBet === undefined ? true : props.firstBet
     };
     this.onCreate = this.onCreate.bind(this);
   }
@@ -134,10 +135,16 @@ export default class CreateBetScene extends Component {
         </Picker>
         );
     }
+    var header=null;
+    if (this.state.firstBet) {
+      header = <HeaderPolla name={'Shaman'} />;
+    } else {
+      header = <HeaderPolla pop name={'Shaman'} />;
+    }
     return (
       <Root>
         <Container>
-          <HeaderPolla name={'Shaman'} />
+          {header}
           <Content>
             <Form>
               <Item>

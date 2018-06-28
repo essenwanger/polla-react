@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
 import { Actions } from 'react-native-router-flux';
-import { ImageBackground, Platform, Image } from 'react-native';
-import { ListItem, Text, List, Content, Right, Left, Icon, Body} from 'native-base';
+import { ImageBackground, Platform, Image, BackHandler, Toast } from 'react-native';
+import { View, ListItem, Text, Thumbnail, List, Content, Right, Left, Icon, Body} from 'native-base';
 import firebase from 'react-native-firebase';
 import GoogleSignIn from 'react-native-google-sign-in';
 
 //tomar guia ranking
+//Back (false hace el atras del disposituvo) HeaderPolla
 
 export default class MenuSideBar extends Component {
 
   constructor(props) {
     super(props);
+    delete props.user.bets["all"];
     this.state = {
       bets: props.user.bets,
       iconName: Platform.OS === 'ios' ? 'ios-arrow-forward' : 'md-arrow-dropright'
@@ -18,10 +20,11 @@ export default class MenuSideBar extends Component {
     this.onPressLogout = this.onPressLogout.bind(this);
     this.onPressAbout = this.onPressAbout.bind(this);
     this.onPressAddBet = this.onPressAddBet.bind(this);
-    this.onPressBet = this.onPressBet.bind(this);
+    this.onBackPress = this.onBackPress.bind(this);
   }
 
   onPressAbout(){
+    this.props.closeDrawer();
     Actions.about();
   }
 
@@ -31,11 +34,17 @@ export default class MenuSideBar extends Component {
   }
 
   onPressBet(bet) {
-    console.log(bet);
+    this.props.closeDrawer();
+    Actions.dashboard({user: this.props.user, bet: bet});
   }
 
   onPressAddBet() {
-    console.log("Add bet");
+    Actions.createBetScore({user: this.props.user, firstBet: false});
+  }
+
+  onBackPress () {
+    this.props.closeDrawer();
+    return true;
   }
 
   componentDidMount() {
@@ -46,9 +55,19 @@ export default class MenuSideBar extends Component {
       });
   
     } catch(err) {
-      console.log("Play services error", err.code, err.message);
+      Toast.show({
+        text: 'Error de conexión con Google',
+        position: 'bottom',
+        buttonText: 'Ok',
+        type: 'danger'
+      });
     }
+    //BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
   }
+
+  //componentWillUnmount () {
+  //  BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
+  //}
 
   render() {
     return (
@@ -56,17 +75,27 @@ export default class MenuSideBar extends Component {
         <ImageBackground 
                 source={require('../img/background-drawer.jpg')}
                 style={{
-                height: 120,
-                alignSelf: "stretch",
-                justifyContent: "center",
-                alignItems: "center"
+                  height: 140,
+                  alignSelf: "stretch",
+                  justifyContent: "center",
+                  alignItems: "center"
                 }}>
             <Image
-                square
-                style={{ height: 120, width: 120 }}
-                source={require('../img/logo.png')}
-                />
+                  square
+                  style={{ height: 120, width: 120 }}
+                  source={require('../img/logo.png')}
+                  />
           </ImageBackground >
+          <ListItem icon itemDivider>
+            <Left>
+              <Thumbnail small source={{uri: this.props.user.profile.picture}}
+                  style={{ borderColor: '#000000', borderWidth: 0.2}}/>
+            </Left>
+            <Body>
+              <Text>{this.props.user.profile.givenName}</Text>
+              <Text note style={{ fontWeight: "600" }}>{this.props.user.profile.email}</Text>
+            </Body>
+          </ListItem>
           <ListItem itemDivider>
             <Text>Mis apuestas</Text>
           </ListItem>
@@ -74,7 +103,7 @@ export default class MenuSideBar extends Component {
               dataArray={this.state.bets}
               renderRow={data => {
               return (
-                  <ListItem button onPress={this.onPressBet} >
+                  <ListItem button onPress={()=>this.onPressBet(data)} >
                     <Body>
                       <Text>{data.name}</Text>
                     </Body>

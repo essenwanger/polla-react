@@ -52,7 +52,7 @@ export default class PhaseGroup extends Component {
     this.setState({
       matches: []
     });
-    var betNode= this.state.status==='opened'? 'preBetsAll/' : 'betsAll/'
+    var betNode= this.state.status==='opened'? 'preBets'+this.props.userBet.suffix+'/' : 'bets'+this.props.userBet.suffix+'/'
     firebase.database().ref(betNode+betKey+'/matches/'+groupKey+'/')
     .once('value').then((snapshot)=>{
       var matches = [];
@@ -75,7 +75,7 @@ export default class PhaseGroup extends Component {
       this.setState({
         positionTable: []
       });
-      var betNode= this.state.status==='opened'? 'preBetsAll/' : 'betsAll/'
+      var betNode= this.state.status==='opened'? 'preBets'+this.props.userBet.suffix+'/' : 'bets'+this.props.userBet.suffix+'/'
       firebase.database().ref(betNode+betKey+'/positionTable/'+groupKey+'/')
       .once('value').then((snapshot)=>{
         var positionTable = [];
@@ -97,13 +97,13 @@ export default class PhaseGroup extends Component {
     var betKey= this.props.bet;
     var groupKey= this.props.group;
     if(typeScore==='1'){
-      updates['preBetsAll/' + betKey + '/matches/' + groupKey + '/' + id + '/scoreTeam1'] = score;
+      updates['preBets'+this.props.userBet.suffix+'/' + betKey + '/matches/' + groupKey + '/' + id + '/scoreTeam1'] = score;
     }else if(typeScore==='2'){
-      updates['preBetsAll/' + betKey + '/matches/' + groupKey + '/' + id + '/scoreTeam2'] = score;
+      updates['preBets'+this.props.userBet.suffix+'/' + betKey + '/matches/' + groupKey + '/' + id + '/scoreTeam2'] = score;
     }else if(typeScore==='1P'){
-      updates['preBetsAll/' + betKey + '/matches/' + groupKey + '/' + id + '/scorePenaltyTeam1'] = score;
+      updates['preBets'+this.props.userBet.suffix+'/' + betKey + '/matches/' + groupKey + '/' + id + '/scorePenaltyTeam1'] = score;
     }else if(typeScore==='2P'){
-      updates['preBetsAll/' + betKey + '/matches/' + groupKey + '/' + id + '/scorePenaltyTeam2'] = score;
+      updates['preBets'+this.props.userBet.suffix+'/' + betKey + '/matches/' + groupKey + '/' + id + '/scorePenaltyTeam2'] = score;
     }
     this.setState({
       active: true,
@@ -116,13 +116,13 @@ export default class PhaseGroup extends Component {
       active: false
     });
     let updates = this.state.updates;
-    firebase.database().ref('typeBets/all/status/').once('value').then((snapshot)=>{
+    firebase.database().ref('typeBets/'+this.props.userBet.type+'/status/').once('value').then((snapshot)=>{
       if(snapshot.val()==='opened'){
         var betKey= this.props.bet;
         var groupKey= this.props.group;
         var position= this.props.position;
         firebase.database().ref().update(updates);
-        firebase.database().ref('preBetsAll/'+betKey+'/matches/'+groupKey+'/')
+        firebase.database().ref('preBets'+this.props.userBet.suffix+'/'+betKey+'/matches/'+groupKey+'/')
         .once('value').then((snapshot)=>{
           var total = 0;
           var complete = 0;
@@ -139,10 +139,10 @@ export default class PhaseGroup extends Component {
           });
           var percentage=complete/total;
           percentage=Math.round(percentage * 10000) / 100;
-          firebase.database().ref('preBetsAll/'+betKey+'/groups/'+position+'/').update({
+          firebase.database().ref('preBets'+this.props.userBet.suffix+'/'+betKey+'/groups/'+position+'/').update({
             percentage: percentage
           }).then(function(){
-            firebase.database().ref('preBetsAll/'+betKey+'/groups/')
+            firebase.database().ref('preBets'+this.props.userBet.suffix+'/'+betKey+'/groups/')
             .once('value').then((snapshot)=>{
               var completed=true;
               snapshot.forEach((childSnapshot)=>{
@@ -151,7 +151,7 @@ export default class PhaseGroup extends Component {
                   completed=false;
                 }
               });
-              firebase.database().ref('preBetsAll/'+betKey+'/').update({
+              firebase.database().ref('preBets'+this.props.userBet.suffix+'/'+betKey+'/').update({
                 completed: completed
               });
             });
