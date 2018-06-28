@@ -12,7 +12,8 @@ export default class CreateBetScene extends Component {
     this.state = {
       nameBet: '',
       selectedType: undefined,
-      typeBets: []
+      typeBets: [],
+      firstBet: props.firstBet === undefined ? true : props.firstBet
     };
     this.onCreate = this.onCreate.bind(this);
   }
@@ -84,10 +85,16 @@ export default class CreateBetScene extends Component {
     items=this.state.typeBets.map((item, key) => (
       <Picker.Item key={key} label={item.name} value={item} />
     ));
+    var header=null;
+    if (this.state.firstBet) {
+      header = <HeaderPolla name={'Shaman'} />;
+    } else {
+      header = <HeaderPolla pop name={'Shaman'} />;
+    }
     return (
       <Root>
         <Container>
-          <HeaderPolla name={'Shaman'} />
+          {header}
           <Content>
             <Form>
               <Item>

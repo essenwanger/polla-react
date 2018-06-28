@@ -23,7 +23,8 @@ export default class PhaseScene extends Component {
     this.state = {
       status: props.status,
       bet: props.bet,
-      groups: props.groups
+      groups: props.groups,
+      userBet: props.userBet
     };
   }
 
@@ -46,7 +47,7 @@ export default class PhaseScene extends Component {
       <Tab key={key} heading={item.group.length===1 ? ('Grupo '+item.group) : (item.group)}
        style={{backgroundColor: "transparent"}}>
         <PhaseGroup status={this.state.status} bet={this.state.bet} 
-        group={item.group} position={key} user={this.props.user}/>
+        group={item.group} position={key} user={this.props.user} userBet={this.props.userBet}/>
       </Tab>
     ));
     return (
