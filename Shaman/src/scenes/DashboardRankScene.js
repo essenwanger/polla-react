@@ -18,7 +18,7 @@ export default class DashboardRankScene extends Component {
     return (
       <Container>
         <HeaderPolla pop={true} name={this.state.user.givenName} />
-          <Fixture user={this.state.user} bet={this.state.bet} status={'closed'} />
+          <Fixture user={this.state.user} bet={this.state.bet} status={'closed'} userBet={this.props.userBet} suffix={this.props.userBet.suffix} />
       </Container>
     );
   }
