@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Actions } from 'react-native-router-flux';
+import { BackHandler } from 'react-native';
 import { Drawer, Container, Icon, Content, Card, CardItem, 
   Body, Text, Thumbnail, Header, Left, Button, Title, Right } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
@@ -12,10 +13,31 @@ export default class LiveScoreScene extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      liveScore:[]
+      liveScore:[],
+      drawer: false
     };
     this.closeDrawer = this.closeDrawer.bind(this);
     this.openDrawer = this.openDrawer.bind(this);
+    this.onBackPress = this.onBackPress.bind(this);
+  }
+
+  componentWillMount () {
+    BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
+  }
+
+  componentWillUnmount () {
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
+  }
+
+  onBackPress () {
+    if(this.state.drawer){
+      this.setState({
+        drawer: false
+      });
+      this.drawer._root.close();
+      return true;
+    }
+    return false;
   }
 
   componentDidMount() {
@@ -28,14 +50,19 @@ export default class LiveScoreScene extends Component {
       });
       this.setState({liveScore: liveScore});
     });
-    this.openDrawer();
   }
 
   closeDrawer() {
+    this.setState({
+      drawer: false
+    });
     this.drawer._root.close()
   };
  
   openDrawer(){
+    this.setState({
+      drawer: true
+    });
     this.drawer._root.open()
   };
 

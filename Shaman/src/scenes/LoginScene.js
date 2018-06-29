@@ -98,7 +98,6 @@ export default class LoginScene extends Component {
     }, (e) => {
       this.setState({check: true});
     });
-    //GoogleSignIn.signOut();
   }
 
   render() {

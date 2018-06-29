@@ -15,9 +15,17 @@ export default class HeaderPolla extends Component {
     Actions.refresh({ updateData: Math.random() });
   }
 
+  componentWillMount () {
+    BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
+  }
+
+  componentWillUnmount () {
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
+  }
+
   onBackPress () {
     var user=this.props.user;
-    if (Actions.state.index === 1 && Actions.state.routes[1].routeName === 'phase') {
+    if (Actions.state.routes[Actions.state.index].routeName === 'phase') {
       Actions.reset('dashboard', {user: user});
       return true;
     }

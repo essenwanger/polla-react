@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Actions } from 'react-native-router-flux';
-import { ImageBackground, Platform, Image, BackHandler, Toast } from 'react-native';
+import { ImageBackground, Platform, Image, Toast } from 'react-native';
 import { View, ListItem, Text, Thumbnail, List, Content, Right, Left, Icon, Body} from 'native-base';
 import firebase from 'react-native-firebase';
 import GoogleSignIn from 'react-native-google-sign-in';
@@ -12,7 +12,9 @@ export default class MenuSideBar extends Component {
 
   constructor(props) {
     super(props);
-    delete props.user.bets["all"];
+    if(props.user.bets!==undefined){
+      delete props.user.bets["all"];
+    }
     this.state = {
       bets: props.user.bets,
       iconName: Platform.OS === 'ios' ? 'ios-arrow-forward' : 'md-arrow-dropright'
@@ -20,7 +22,6 @@ export default class MenuSideBar extends Component {
     this.onPressLogout = this.onPressLogout.bind(this);
     this.onPressAbout = this.onPressAbout.bind(this);
     this.onPressAddBet = this.onPressAddBet.bind(this);
-    this.onBackPress = this.onBackPress.bind(this);
   }
 
   onPressAbout(){
@@ -42,11 +43,6 @@ export default class MenuSideBar extends Component {
     Actions.createBetScore({user: this.props.user, firstBet: false});
   }
 
-  onBackPress () {
-    this.props.closeDrawer();
-    return true;
-  }
-
   componentDidMount() {
     try {
       GoogleSignIn.configure({
@@ -62,12 +58,7 @@ export default class MenuSideBar extends Component {
         type: 'danger'
       });
     }
-    //BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
   }
-
-  //componentWillUnmount () {
-  //  BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
-  //}
 
   render() {
     return (
@@ -85,7 +76,7 @@ export default class MenuSideBar extends Component {
                   style={{ height: 120, width: 120 }}
                   source={require('../img/logo.png')}
                   />
-          </ImageBackground >
+          </ImageBackground>
           <ListItem icon itemDivider>
             <Left>
               <Thumbnail small source={{uri: this.props.user.profile.picture}}

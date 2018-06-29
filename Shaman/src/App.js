@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { BackHandler } from 'react-native';
 import { Actions, Router, Scene } from 'react-native-router-flux';
 import { StyleProvider } from 'native-base';
 import getTheme from './theme/components';
@@ -33,4 +32,5 @@ export default class App extends Component {
       </StyleProvider>
     );
   }
+
 }

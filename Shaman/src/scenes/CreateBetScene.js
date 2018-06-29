@@ -42,9 +42,12 @@ export default class CreateBetScene extends Component {
       var refPrePush = refPreBets.push(preBet);
       firebase.database().ref('users/' + this.props.user.profile.userID + '/bets/').
       once('value').then((snapshot)=>{
+        let user=this.props.user;
+        user.bets=[];
         var con=0;
         if(snapshot.val()!==null){
           con=snapshot.val().length;
+          user.bets=snapshot.val();
         }
         firebase.database().ref('users/' + this.props.user.profile.userID + '/bets/'+con).set({
           betKey: refPrePush.key,
@@ -53,7 +56,14 @@ export default class CreateBetScene extends Component {
           suffix: this.state.selectedType.suffix,
           type: this.state.selectedType.key
         });
-        Actions.reset('liveScore', {user: this.props.user});
+        user.bets[con]={
+          betKey: refPrePush.key,
+          completed: false,
+          name: this.state.nameBet,
+          suffix: this.state.selectedType.suffix,
+          type: this.state.selectedType.key
+        };
+        Actions.reset('liveScore', {user: user});
       });
     }
   }
