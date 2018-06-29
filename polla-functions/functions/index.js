@@ -17,6 +17,8 @@ const sendMailWelcome           = require('./sendMailWelcome');
 const sendMailMatch             = require('./sendMailMatch');
 const sendMailMatchGmail        = require('./sendMailMatchGmail');
 
+const createPolla        		= require('./createPolla');
+
 const common                    = require('./common');
 
 const LAPOLLA_CONFIG = {
@@ -37,6 +39,7 @@ sendMailMassive.initialize(LAPOLLA_CONFIG);
 sendMailWelcome.initialize(LAPOLLA_CONFIG);
 sendMailMatch.initialize(LAPOLLA_CONFIG);
 sendMailMatchGmail.initialize(LAPOLLA_CONFIG);
+createPolla.initialize(LAPOLLA_CONFIG);
 //common.initialize(LAPOLLA_CONFIG);
 
 //exports.addMessage = addMessage.addMessage();
@@ -48,6 +51,7 @@ sendMailMatchGmail.initialize(LAPOLLA_CONFIG);
 //exports.resetScoreMatches = updateMatch.resetScoreMatches();
 //exports.resetMatches2nd = updateMatch.resetMatches2nd();
 exports.calculateNewPositionTable = calculateNewPositionTable.calculateNewPositionTable();
+exports.calculateNewPositionTableOct = calculateNewPositionTable.calculateNewPositionTableOct();
 exports.calculatePoints = calculateRanking.calculatePoints();
 //exports.calculatePointsTest = calculateRanking.calculatePointsTest();
 exports.calculateRanking = calculateRanking.calculateRanking();
@@ -69,3 +73,5 @@ exports.displayRanking = common.displayRanking();
 exports.displayAllMatches = common.displayAllMatches();
 exports.displayPointDetails = common.displayPointDetails();
 exports.displayPositionTableDetails = common.displayPositionTableDetails();
+exports.createPolla = createPolla.createPolla();
+exports.createPollaOct = createPolla.createPollaOct();
