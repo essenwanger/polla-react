@@ -52,7 +52,7 @@ export default class PhaseGroup extends Component {
     this.setState({
       matches: []
     });
-    var betNode= this.state.status==='opened'? 'preBets'+this.props.userBet.suffix+'/' : 'bets'+this.props.userBet.suffix+'/'
+    var betNode= this.state.status==='opened'? 'preBets'+props.userBet.suffix+'/' : 'bets'+props.userBet.suffix+'/'
     firebase.database().ref(betNode+betKey+'/matches/'+groupKey+'/')
     .once('value').then((snapshot)=>{
       var matches = [];
@@ -121,8 +121,9 @@ export default class PhaseGroup extends Component {
         var betKey= this.props.bet;
         var groupKey= this.props.group;
         var position= this.props.position;
+        var suffix = this.props.userBet.suffix;
         firebase.database().ref().update(updates);
-        firebase.database().ref('preBets'+this.props.userBet.suffix+'/'+betKey+'/matches/'+groupKey+'/')
+        firebase.database().ref('preBets'+suffix+'/'+betKey+'/matches/'+groupKey+'/')
         .once('value').then((snapshot)=>{
           var total = 0;
           var complete = 0;
@@ -139,10 +140,10 @@ export default class PhaseGroup extends Component {
           });
           var percentage=complete/total;
           percentage=Math.round(percentage * 10000) / 100;
-          firebase.database().ref('preBets'+this.props.userBet.suffix+'/'+betKey+'/groups/'+position+'/').update({
+          firebase.database().ref('preBets'+suffix+'/'+betKey+'/groups/'+position+'/').update({
             percentage: percentage
           }).then(function(){
-            firebase.database().ref('preBets'+this.props.userBet.suffix+'/'+betKey+'/groups/')
+            firebase.database().ref('preBets'+suffix+'/'+betKey+'/groups/')
             .once('value').then((snapshot)=>{
               var completed=true;
               snapshot.forEach((childSnapshot)=>{
@@ -151,7 +152,7 @@ export default class PhaseGroup extends Component {
                   completed=false;
                 }
               });
-              firebase.database().ref('preBets'+this.props.userBet.suffix+'/'+betKey+'/').update({
+              firebase.database().ref('preBets'+suffix+'/'+betKey+'/').update({
                 completed: completed
               });
             });

@@ -10,12 +10,10 @@ export default class Term extends Component {
     super(props);  
     this.state = {
       typeBet: null
-    };
-    console.log(props);     
+    };  
   }
 
-  componentWillMount() {    
-    console.log(this.props.codeTypeBet);
+  componentWillMount() {
     firebase.database().ref('typeBets/'+this.props.codeTypeBet).once('value').then((snapshot)=>{
       this.setState({typeBet: snapshot.val()});
     });
