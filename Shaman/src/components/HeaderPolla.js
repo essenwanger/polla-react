@@ -7,29 +7,11 @@ export default class HeaderPolla extends Component {
 
   constructor(props) {
     super(props);
-    this.onBackPress = this.onBackPress.bind(this);
   }
 
   onPressBack() {
     Actions.pop();
     Actions.refresh({ updateData: Math.random() });
-  }
-
-  componentWillMount () {
-    BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
-  }
-
-  componentWillUnmount () {
-    BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
-  }
-
-  onBackPress () {
-    var user=this.props.user;
-    if (Actions.state.routes[Actions.state.index].routeName === 'phase') {
-      Actions.reset('dashboard', {user: user});
-      return true;
-    }
-    return false;
   }
 
   render() {
