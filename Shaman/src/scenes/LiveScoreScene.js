@@ -19,14 +19,28 @@ export default class LiveScoreScene extends Component {
     this.closeDrawer = this.closeDrawer.bind(this);
     this.openDrawer = this.openDrawer.bind(this);
     this.onBackPress = this.onBackPress.bind(this);
+    this.onValueChange = this.onValueChange.bind(this);
+    this.ref = firebase.database().ref('liveScore');
+  }
+
+  onValueChange (snapshot) {
+    var liveScore=[];
+    snapshot.forEach((childSnapshot)=>{
+      var childKey = childSnapshot.key;
+      var childData = childSnapshot.val();
+      liveScore.push(childData);
+    });
+    this.setState({liveScore: liveScore});
   }
 
   componentWillMount () {
     BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
+    this.ref.on('value', this.onValueChange);
   }
 
   componentWillUnmount () {
     BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
+    this.ref.off('value', this.onValueChange);
   }
 
   onBackPress () {
@@ -38,18 +52,6 @@ export default class LiveScoreScene extends Component {
       return true;
     }
     return false;
-  }
-
-  componentDidMount() {
-    firebase.database().ref('liveScore').once('value').then((snapshot)=>{
-      var liveScore=[];
-      snapshot.forEach((childSnapshot)=>{
-        var childKey = childSnapshot.key;
-        var childData = childSnapshot.val();
-        liveScore.push(childData);
-      });
-      this.setState({liveScore: liveScore});
-    });
   }
 
   closeDrawer() {
