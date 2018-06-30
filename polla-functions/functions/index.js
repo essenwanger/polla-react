@@ -55,8 +55,10 @@ createPolla.initialize(LAPOLLA_CONFIG);
 
 exports.calculateNewPositionTable = calculateNewPositionTable.calculateNewPositionTable();
 exports.calculateNewPositionTableOct = calculateNewPositionTable.calculateNewPositionTableOct();
+//exports.calculateNewPositionTableTest = calculateNewPositionTable.calculateNewPositionTableTest();
 
 exports.calculatePoints = calculateMatch.calculatePoints();
+exports.calculatePointsTest = calculateMatch.calculatePointsTest();
 //exports.calculatePointsTest = calculateRanking.calculatePointsTest();
 
 exports.calculateRanking = calculateRanking.calculateRanking();
@@ -64,9 +66,10 @@ exports.calculateRankingOct = calculateRanking.calculateRankingOct();
 
 exports.letthegamesbegin = letthegamesbegin.letthegamesbegin();
 exports.calculateLlavesOctavos = calculateLlaves.calculateLlavesOctavos();
-exports.generateBetsPDF = sendMailMassive.generateBetsPDF();
 
+exports.generateBetsPDF = sendMailMassive.generateBetsPDF();
 exports.sendMailMassive = sendMailMassive.sendMailMassive();
+
 exports.sendMailWelcome = sendMailWelcome.sendMailWelcome();
 exports.sendMailMatch         = sendMailMatch.sendMailMatch();
 exports.sendMailMatchLaunch   = sendMailMatch.sendMailMatchLaunch();

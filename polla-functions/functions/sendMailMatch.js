@@ -4,8 +4,8 @@ const commons   = require('./commonCalculates');
 
 const SENDGRID_API_KEY = "";
 const SENDGRID_SENDER  = "contacto@shaman.pe";
-const PLANTILLA        = "5735a368-7561-4dff-b6ee-eeb0ba077eb3";
-const PLANTILLA_EXEC   = "c134ddc8-4a4f-4a0d-a12e-df8d9cd604d0";
+const PLANTILLA        = "";
+const PLANTILLA_EXEC   = "";
 const Sendgrid         = require('sendgrid')(SENDGRID_API_KEY);
 
 const APP_NAME = 'Shaman';

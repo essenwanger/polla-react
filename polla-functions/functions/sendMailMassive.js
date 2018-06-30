@@ -9,9 +9,9 @@ const fs   = require('fs');
 const handlebars = require('handlebars');
 const base64 = require('file-base64');
 
-const SENDGRID_API_KEY = "----------";
+const SENDGRID_API_KEY = "";
 const SENDGRID_SENDER  = "contacto@shaman.pe";
-const PLANTILLA        = "----------";
+const PLANTILLA        = "";
 const Sendgrid         = require('sendgrid')(SENDGRID_API_KEY);
 
 //const nodemailer  = require('nodemailer');
@@ -112,19 +112,23 @@ exports.initialize = (laPollaConfig) => {
 
 exports.generateBetsPDF = () => functions.https.onRequest((req, response) => {
 	
+	const suffix = req.query.suffix;
+
 	const options = {
     	"format": 'A4',
     	"orientation": "portrait"
 	};
-	const bucket = gcs.bucket('shaman-5b899.appspot.com');
+	//const bucket = gcs.bucket('shaman-5b899.appspot.com');
+	const bucket = gcs.bucket('polla-react.appspot.com');
 	const localTemplate = path.join(os.tmpdir(), 'localTemplate.html');
 	const localPDFFile  = path.join(os.tmpdir(), 'localPDFFile.pdf');
 
-	return global.init.db.ref('/typeBets/').once('value').then((snapshot)=>{
-		snapshot.forEach((childSnapshot)=>{
-			var typeBet = childSnapshot.val();
+	//return global.init.db.ref('/typeBets/').once('value').then((snapshot)=>{
+		//snapshot.forEach((childSnapshot)=>{
+			//var typeBet = childSnapshot.val();
 			//if(typeBet.status !== 'opened'){
-				return global.init.db.ref('/bets'+typeBet.suffix).once('value').then((snapshot)=>{
+				//var suffix = typeBet.suffix;
+				return global.init.db.ref('/bets'+suffix).once('value').then((snapshot)=>{
 					var bets  = [];
 					var users = [];
 					snapshot.forEach((childSnapshot)=>{
@@ -176,28 +180,29 @@ exports.generateBetsPDF = () => functions.https.onRequest((req, response) => {
 				    	"users"   : users,
 				    	"bets"    : bets
 					};
-					bucket.file('template.html').download({ destination: localTemplate }).then(() => {
+					return bucket.file('template.html').download({ destination: localTemplate }).then(() => {
 					    const source = fs.readFileSync(localTemplate, 'utf8');
 					    const html = handlebars.compile(source)(context);
 					    return pdf.create(html, options).toFile(localPDFFile, function(err, res) {
 							if (err){
 								return response.status(400).send("PDF creation error");
 							}
-							return bucket.upload(localPDFFile, { destination: typeBet.suffix + '.pdf', metadata: { contentType: 'application/pdf'}}).then(() => {
+							return bucket.upload(localPDFFile, { destination: suffix + '.pdf', metadata: { contentType: 'application/pdf'}}).then(() => {
 								return response.status(200).send("PDF creation done!");
 							}).catch(error => {
 								return response.status(400).send("PDF creation failed :(!");
 							});
 					    });
 					}).catch(error => {
-						this.errorMessage = 'Error - ' + error.message
+						console.log(error.message);
 					});
-					return 1;
+				}).catch(error => {
+					console.log(error.message);
 				});
 			//}
-		});
-		return 1;
-	});
+		//});
+		//return 1;
+	//});
 });
 
 exports.sendMailMassive = () => functions.storage.object().onFinalize((object) => {
@@ -222,6 +227,7 @@ exports.sendMailMassive = () => functions.storage.object().onFinalize((object) =
 					return;
 				}
 				console.log(base64String.length);
+  				
   				return global.init.db.ref('/ranking'+typeBetSuffix).once('value').then((snapshot)=>{
 					snapshot.forEach((childSnapshot)=>{
 						var item = childSnapshot.val();
@@ -230,6 +236,9 @@ exports.sendMailMassive = () => functions.storage.object().onFinalize((object) =
 					});
 					return 1;
 				});
+				
+				//sendStartingEmail('none.carlos@gmail.com','Carlitos',base64String);
+				//return 1;
 			});
 		}).catch(error => {
 			this.errorMessage = 'Error - ' + error.message

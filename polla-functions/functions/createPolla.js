@@ -50,16 +50,10 @@ function construirPolla(user, betID, suffix){
 						count += 1;
 					}
     			});
-
-    			console.log(count);
-
     			var subscribed = {
 	      			profile: user,
 	      			count: count
 	    		};
-
-	    		console.log('/subscribed'+suffix+'/'+user.userID);
-
 	    		return global.init.db.ref('/subscribed'+suffix+'/'+user.userID)
 				.update(subscribed);
 
@@ -79,7 +73,6 @@ function construirPolla(user, betID, suffix){
 						}
 					}
 					if(add){
-
 						if(item.group!=='' && matches[item.group]===undefined){
 							groups.push({group: item.group, percentage: '0'});
 							matches[item.group]=[];
