@@ -12,14 +12,18 @@ exports.calculatePointsTest = () => functions.https.onRequest((req, res) => {
 		if(!match.group || match.group === ''){
 			match.group = match.round;
 		}
+		//console.log(match);
+    	/*
     	if(match.scoreTeam1 && match.scoreTeam2){    		
     		actualizarFases(match,idMatch);
 		}
+		*/
 		if((match.scoreTeam1 && match.scoreTeam2)||
 			(match.teamSource1 || match.teamSource2)){
 			global.init.db.ref('/typeBets').once('value').then((snapshot)=>{
 				snapshot.forEach(function(childSnapshot) {
 					var tipoPolla = childSnapshot.val();
+					//console.log(tipoPolla);
 					actualizarPuntos(match,idMatch,tipoPolla);
 				});
 				return 1;
@@ -39,7 +43,7 @@ exports.calculatePoints = () => functions.database.ref('/matches/{idMatch}')
     	if(!match.group || match.group === ''){
 			match.group = match.round;
 		}
-    	if(match.scoreTeam1 && match.scoreTeam2){    		
+		if(match.scoreTeam1 && match.scoreTeam2){    		
     		actualizarFases(match,context.params.idMatch);
 		}
 		if((match.scoreTeam1 && match.scoreTeam2)||
@@ -87,7 +91,8 @@ function actualizarPuntos(match,idMatch,tipoPolla){
 
 	    		//LOGICA DE PUNTOS
 	    		if(match.scoreTeam1 && match.scoreTeam2){
-	    			if(matchUser.team1 === match.teamReal1 && matchUser.team2 === match.teamReal2){
+	    			if(matchUser.team1 === matchUser.teamReal1 && 
+	    			   matchUser.team2 === matchUser.teamReal2){
 	    				if(matchUser.result === match.result || matchUser.result === match.resultPenalty){
 					    	matchUser.points = 1;//puntos por acertar al resultado (ganador / empate)
 					    	if(matchUser.scoreTeam1 === match.scoreTeam1 &&
@@ -218,6 +223,12 @@ function actualizarPuntos(match,idMatch,tipoPolla){
 			    		this.errorMessage = 'Error - ' + error.message;
 			    	});
 				    */
+				    
+				    /*
+				    if(rankKey === '-LEBlhRt1zagp7UEEPNm'){
+						console.log(matchUser);
+					}
+					*/
 
 				    return global.init.db.ref('/bets'+tipoPolla.suffix+'/'+rankKey+'/matches/'+match.group)
 			        .once('value').then(snapshotUserMatch => {
@@ -236,17 +247,34 @@ function actualizarPuntos(match,idMatch,tipoPolla){
     						if(matchFase.team1 === matchUser.teamReal1 ||
     						   matchFase.team1 === matchUser.teamReal2){
     							matchUser.points += extraPoint;
+    							/*
+    							if(rankKey === '-LEBlhRt1zagp7UEEPNm'){
+    								console.log('extra1-'+extraPoint);
+    							}
+    							*/
     						}
     						if(matchFase.team2 === matchUser.teamReal1 ||
     						   matchFase.team2 === matchUser.teamReal2){
     							matchUser.points += extraPoint;
+    							/*
+    							if(rankKey === '-LEBlhRt1zagp7UEEPNm'){
+    								console.log('extra2-'+extraPoint);
+    							}
+    							*/
     						}
+
         				});
-        				return 1;
-			        }).then(()=> {
-			    		return global.init.db.ref('/bets'+tipoPolla.suffix+'/'+rankKey+'/matches/'+match.group+'/'+idMatch)
+			        	/*
+			        	if(rankKey === '-LEBlhRt1zagp7UEEPNm'){
+							console.log('final-'+matchUser.points);
+							console.log(matchUser);
+							console.log('/bets'+tipoPolla.suffix+'/'+rankKey+'/matches/'+match.group+'/'+idMatch);
+						}
+						*/
+
+        				return global.init.db.ref('/bets'+tipoPolla.suffix+'/'+rankKey+'/matches/'+match.group+'/'+idMatch)
 						.update(matchUser);
-			    	}).catch(error => {
+			        }).catch(error => {
 			    		console.log(error.message);
 			    	});
 				}else{
