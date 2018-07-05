@@ -217,37 +217,73 @@ exports.calculateNewPositionTable = () => functions.database.ref('/preBetsAll/{b
 
 exports.calculateNewPositionTable = () => functions.database.ref('/preBetsAll/{betId}/matches/{faseGrupoId}')
 	.onUpdate((change,context) => {
-
 		var group = change.after.val();
-
-		if(context.params.faseGrupoId.length === 1 ){//Fase de grupos
-			return global.init.db.ref('/preBetsAll/'+context.params.betId+'/matches/'+context.params.faseGrupoId).once('value').then((snapshot)=>{
-    			var positionTable = commons.calcularTablaPosiciones(snapshot,context.params.faseGrupoId);
-				var positionTableGrupo = {};
-				positionTableGrupo[context.params.faseGrupoId]=positionTable;
-				return global.init.db.ref('/preBetsAll/'+context.params.betId+'/positionTable/')
-				.update(positionTableGrupo);
-    		});
-		}else{
-			var results = commons.calcularResultadosFaseActual(context.params.faseGrupoId,group);
-			if(results){
-				var siguienteFase = 'Cuartos';
-				if(context.params.faseGrupoId==='Cuartos'){
-					siguienteFase = 'Semifinales';
-				}else if(context.params.faseGrupoId==='Semifinales'){
-					siguienteFase = 'Final';
-				}
-				return global.init.db.ref('/preBetsAll/'+context.params.betId+'/matches/'+siguienteFase).once('value').then((snapshot)=>{
-					var nextMatches = commons.calcularSiguienteFase(results,siguienteFase,snapshot);
-					if(nextMatches){
-						return global.init.db.ref(
-							'/preBetsAll/'+context.params.betId+
-							'/matches/'+siguienteFase+'/').update(nextMatches);
-					}else{
-						return 0;
-					}
-				});
-			}
-		}
+		calculatePreMatch(
+			group,
+			context.params.faseGrupoId,
+			context.params.betId,
+			'All');
 		return 1;
 	});
+
+exports.calculateNewPositionTableOct = () => functions.database.ref('/preBetsOct/{betId}/matches/{faseGrupoId}')
+	.onUpdate((change,context) => {
+		var group = change.after.val();
+		calculatePreMatch(
+			group,
+			context.params.faseGrupoId,
+			context.params.betId,
+			'Oct');
+		return 1;
+	});
+/*
+exports.calculateNewPositionTableTest = () => functions.https.onRequest((req, res) => {
+	//const suffix = req.query.suffix;
+	const suffix = 'Oct';
+	const betId = '-LGCnARM5Osj_lkDfJY3';
+	const faseGrupoId = 'Octavos';
+
+	return global.init.db.ref('/preBetsOct/'+betId+'/matches/'+faseGrupoId).once('value').then((snapshot)=>{
+		var group = snapshot.val();
+		calculatePreMatch(group,faseGrupoId,betId,suffix);
+		return res.status(200).send("Calculated!");
+	}).catch(error => {
+		return res.status(400).send(error.message);
+	});
+});
+*/
+function calculatePreMatch(group,faseGrupoId,betId,suffix){
+	if(faseGrupoId.length === 1 ){//Fase de grupos
+		return global.init.db.ref('/preBets'+suffix+'/'+betId+'/matches/'+faseGrupoId).once('value').then((snapshot)=>{
+			var positionTable = commons.calcularTablaPosiciones(snapshot,faseGrupoId);
+			var positionTableGrupo = {};
+			positionTableGrupo[faseGrupoId]=positionTable;
+			return global.init.db.ref('/preBets'+suffix+'/'+betId+'/positionTable/')
+			.update(positionTableGrupo);
+		});
+	}else{
+		var results = commons.calcularResultadosFaseActual(faseGrupoId,group);
+		//console.log(results);
+		if(results){
+			var siguienteFase = 'Cuartos';
+			if(faseGrupoId==='Cuartos'){
+				siguienteFase = 'Semifinales';
+			}else if(faseGrupoId==='Semifinales'){
+				siguienteFase = 'Final';
+			}
+			//console.log('/preBets'+suffix+'/'+betId+'/matches/'+siguienteFase);
+			return global.init.db.ref('/preBets'+suffix+'/'+betId+'/matches/'+siguienteFase).once('value').then((snapshot)=>{
+				//console.log(snapshot.val());
+				var nextMatches = commons.calcularSiguienteFase(results,siguienteFase,snapshot);
+				//console.log(nextMatches);
+				if(nextMatches){
+					return global.init.db.ref(
+						'/preBets'+suffix+'/'+betId+
+						'/matches/'+siguienteFase+'/').update(nextMatches);
+				}else{
+					return 0;
+				}
+			});
+		}
+	}
+}

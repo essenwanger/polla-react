@@ -8,6 +8,7 @@ admin.initializeApp();
 const letthegamesbegin          = require('./letthegamesbegin');
 const updateMatch               = require('./updateMatch');
 const calculateRanking          = require('./calculateRanking');
+const calculateMatch            = require('./calculateMatch');
 const calculateNewPositionTable = require('./calculateNewPositionTable');
 //const addUser                   = require('./addUser');
 //const addMessage                = require('./addMessage');
@@ -16,6 +17,8 @@ const sendMailMassive           = require('./sendMailMassive');
 const sendMailWelcome           = require('./sendMailWelcome');
 const sendMailMatch             = require('./sendMailMatch');
 const sendMailMatchGmail        = require('./sendMailMatchGmail');
+
+const createPolla        		= require('./createPolla');
 
 const common                    = require('./common');
 
@@ -31,12 +34,14 @@ const LAPOLLA_CONFIG = {
 updateMatch.initialize(LAPOLLA_CONFIG);
 calculateNewPositionTable.initialize(LAPOLLA_CONFIG);
 calculateRanking.initialize(LAPOLLA_CONFIG);
+calculateMatch.initialize(LAPOLLA_CONFIG);
 letthegamesbegin.initialize(LAPOLLA_CONFIG);
 calculateLlaves.initialize(LAPOLLA_CONFIG);
 sendMailMassive.initialize(LAPOLLA_CONFIG);
 sendMailWelcome.initialize(LAPOLLA_CONFIG);
 sendMailMatch.initialize(LAPOLLA_CONFIG);
 sendMailMatchGmail.initialize(LAPOLLA_CONFIG);
+createPolla.initialize(LAPOLLA_CONFIG);
 //common.initialize(LAPOLLA_CONFIG);
 
 //exports.addMessage = addMessage.addMessage();
@@ -47,15 +52,24 @@ sendMailMatchGmail.initialize(LAPOLLA_CONFIG);
 //exports.randomScoreMatches = updateMatch.randomScoreMatches();
 //exports.resetScoreMatches = updateMatch.resetScoreMatches();
 //exports.resetMatches2nd = updateMatch.resetMatches2nd();
+
 exports.calculateNewPositionTable = calculateNewPositionTable.calculateNewPositionTable();
-exports.calculatePoints = calculateRanking.calculatePoints();
+exports.calculateNewPositionTableOct = calculateNewPositionTable.calculateNewPositionTableOct();
+//exports.calculateNewPositionTableTest = calculateNewPositionTable.calculateNewPositionTableTest();
+
+exports.calculatePoints = calculateMatch.calculatePoints();
+exports.calculatePointsTest = calculateMatch.calculatePointsTest();
 //exports.calculatePointsTest = calculateRanking.calculatePointsTest();
+
 exports.calculateRanking = calculateRanking.calculateRanking();
+exports.calculateRankingOct = calculateRanking.calculateRankingOct();
+
 exports.letthegamesbegin = letthegamesbegin.letthegamesbegin();
 exports.calculateLlavesOctavos = calculateLlaves.calculateLlavesOctavos();
-exports.generateBetsPDF = sendMailMassive.generateBetsPDF();
 
+exports.generateBetsPDF = sendMailMassive.generateBetsPDF();
 exports.sendMailMassive = sendMailMassive.sendMailMassive();
+
 exports.sendMailWelcome = sendMailWelcome.sendMailWelcome();
 exports.sendMailMatch         = sendMailMatch.sendMailMatch();
 exports.sendMailMatchLaunch   = sendMailMatch.sendMailMatchLaunch();
@@ -66,9 +80,12 @@ exports.payable = common.payable();
 exports.payableCompleted = common.payableCompleted();
 exports.completed = common.completed();
 exports.allBets = common.allBets();
+exports.migrateUsersBets = common.migrateUsersBets();
 exports.displayRanking = common.displayRanking();
 exports.displayAllMatches = common.displayAllMatches();
 exports.displayPointDetails = common.displayPointDetails();
 exports.displayPositionTableDetails = common.displayPositionTableDetails();
 
-exports.migrateUsersBets = common.migrateUsersBets();
+exports.createPolla = createPolla.createPolla();
+exports.createPollaOct = createPolla.createPollaOct();
+//exports.createPollaTest = createPolla.createPollaTest();

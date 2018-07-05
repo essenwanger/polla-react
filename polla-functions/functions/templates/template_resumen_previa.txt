@@ -1,0 +1,466 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html data-editor-version="2" class="sg-campaigns" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" /><!--[if !mso]><!-->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" /><!--<![endif]-->
+    <!--[if (gte mso 9)|(IE)]>
+    <xml>
+    <o:OfficeDocumentSettings>
+    <o:AllowPNG/>
+    <o:PixelsPerInch>96</o:PixelsPerInch>
+    </o:OfficeDocumentSettings>
+    </xml>
+    <![endif]-->
+    <!--[if (gte mso 9)|(IE)]>
+    <style type="text/css">
+      body {width: 600px;margin: 0 auto;}
+      table {border-collapse: collapse;}
+      table, td {mso-table-lspace: 0pt;mso-table-rspace: 0pt;}
+      img {-ms-interpolation-mode: bicubic;}
+    </style>
+    <![endif]-->
+
+    <style type="text/css">
+      body, p, div {
+        font-family: arial;
+        font-size: 14px;
+      }
+      body {
+        color: #000000;
+      }
+      body a {
+        color: 0 auto;
+        text-decoration: none;
+      }
+      p { margin: 0; padding: 0; }
+      table.wrapper {
+        width:100% !important;
+        table-layout: fixed;
+        -webkit-font-smoothing: antialiased;
+        -webkit-text-size-adjust: 100%;
+        -moz-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+      }
+      img.max-width {
+        max-width: 100% !important;
+      }
+      .column.of-2 {
+        width: 50%;
+      }
+      .column.of-3 {
+        width: 33.333%;
+      }
+      .column.of-4 {
+        width: 25%;
+      }
+      @media screen and (max-width:480px) {
+        .preheader .rightColumnContent,
+        .footer .rightColumnContent {
+            text-align: left !important;
+        }
+        .preheader .rightColumnContent div,
+        .preheader .rightColumnContent span,
+        .footer .rightColumnContent div,
+        .footer .rightColumnContent span {
+          text-align: left !important;
+        }
+        .preheader .rightColumnContent,
+        .preheader .leftColumnContent {
+          font-size: 80% !important;
+          padding: 5px 0;
+        }
+        table.wrapper-mobile {
+          width: 100% !important;
+          table-layout: fixed;
+        }
+        img.max-width {
+          height: auto !important;
+          max-width: 480px !important;
+        }
+        a.bulletproof-button {
+          display: block !important;
+          width: auto !important;
+          font-size: 80%;
+          padding-left: 0 !important;
+          padding-right: 0 !important;
+        }
+        .columns {
+          width: 100% !important;
+        }
+        .column {
+          display: block !important;
+          width: 100% !important;
+          padding-left: 0 !important;
+          padding-right: 0 !important;
+          margin-left: 0 !important;
+          margin-right: 0 !important;
+        }
+      }
+    </style>
+    <!--user entered Head Start-->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>La previa del partido</title>
+  <!-- Designed by https://github.com/kaytcat -->
+  <!-- Header image designed by Freepik.com -->
+
+
+  <style type="text/css">
+  /* Take care of image borders and formatting */
+
+  img {
+    max-width: 600px;
+    outline: none;
+    text-decoration: none;
+    -ms-interpolation-mode: bicubic;
+  }
+
+  a img { border: none; }
+  table { border-collapse: collapse !important; }
+  #outlook a { padding:0; }
+  .ReadMsgBody { width: 100%; }
+  .ExternalClass {width:100%;}
+  .backgroundTable {margin:0 auto; padding:0; width:100%;}
+  table td {border-collapse: collapse;}
+  .ExternalClass * {line-height: 115%;}
+
+  /* General styling */
+
+  td {
+    font-family: Arial, sans-serif;
+    color: #6f6f6f;
+  }
+
+  body {
+    -webkit-font-smoothing:antialiased;
+    -webkit-text-size-adjust:none;
+    width: 100%;
+    height: 100%;
+    color: #6f6f6f;
+    font-weight: 400;
+    font-size: 18px;
+  }
+
+
+  h1 {
+    margin: 10px 0;
+  }
+
+  a {
+    color: #27aa90;
+    text-decoration: none;
+  }
+
+  .force-full-width {
+    width: 100% !important;
+  }
+
+  .force-width-80 {
+    width: 80% !important;
+  }
+
+
+  .body-padding {
+    padding: 0 75px;
+  }
+
+  .mobile-align {
+    text-align: right;
+  }
+
+
+
+  </style>
+
+  <style type="text/css" media="screen">
+      @media screen {
+        @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,900);
+        /* Thanks Outlook 2013! */
+        * {
+          font-family: 'Source Sans Pro', 'Helvetica Neue', 'Arial', 'sans-serif' !important;
+        }
+        .w280 {
+          width: 280px !important;
+        }
+
+      }
+  </style>
+
+  <style type="text/css" media="only screen and (max-width: 480px)">
+    /* Mobile styles */
+    @media only screen and (max-width: 480px) {
+
+      table[class*="w320"] {
+        width: 320px !important;
+      }
+
+      td[class*="w320"] {
+        width: 280px !important;
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+      }
+
+      img[class*="w320"] {
+        width: 250px !important;
+        height: 67px !important;
+      }
+
+      td[class*="mobile-spacing"] {
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+      }
+
+      *[class*="mobile-hide"] {
+        display: none !important;
+      }
+
+      *[class*="mobile-br"] {
+        font-size: 12px !important;
+      }
+
+      td[class*="mobile-w20"] {
+        width: 20px !important;
+      }
+
+      img[class*="mobile-w20"] {
+        width: 20px !important;
+      }
+
+      td[class*="mobile-center"] {
+        text-align: center !important;
+      }
+
+      table[class*="w100p"] {
+        width: 100% !important;
+      }
+
+      td[class*="activate-now"] {
+        padding-right: 0 !important;
+        padding-top: 20px !important;
+      }
+
+      td[class*="mobile-block"] {
+        display: block !important;
+      }
+
+      td[class*="mobile-align"] {
+        text-align: left !important;
+      }
+
+    }
+  </style>
+     <!--End Head user entered-->
+  </head>
+  <body>
+    <center class="wrapper" data-link-color="0 auto" data-body-style="font-size: 14px; font-family: arial; color: #000000; background-color: #ffffff;">
+      <div class="webkit">
+        <table cellpadding="0" cellspacing="0" border="0" width="100%" class="wrapper" bgcolor="#ffffff">
+          <tr>
+            <td valign="top" bgcolor="#ffffff" width="100%">
+              <table width="100%" role="content-container" class="outer" align="center" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td width="100%">
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td>
+                          <!--[if mso]>
+                          <center>
+                          <table><tr><td width="600">
+                          <![endif]-->
+                          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="width: 100%; max-width:600px;" align="center">
+                            <tr>
+                              <td role="modules-container" style="padding: 0px 0px 0px 0px; color: #000000; text-align: left;" bgcolor="#ffffff" width="100%" align="left">
+                                
+    <table class="module preheader preheader-hide" role="module" data-type="preheader" border="0" cellpadding="0" cellspacing="0" width="100%"
+           style="display: none !important; mso-hide: all; visibility: hidden; opacity: 0; color: transparent; height: 0; width: 0;">
+      <tr>
+        <td role="module-content">
+          <p>Resumen de todas apuestas</p>
+        </td>
+      </tr>
+    </table>
+  <table class="module" role="module" data-type="code" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;">
+      <tr>
+        <td height="100%" valign="top">
+          <table cellspacing="0" cellpadding="0" align="center" width="100%">
+  <tbody><tr>
+    <td style="background-color:#e9e9d9" align="center" width="100%" valign="top">
+
+    <center>
+
+      <table class="w320" cellspacing="0" cellpadding="0" width="600">
+        <tbody><tr>
+          <td align="center" valign="top">
+
+
+          <table style="margin:0 auto;" cellspacing="0" cellpadding="0" width="100%">
+            <tbody><tr>
+              <td style="text-align: center;">
+                <div style="background-image:url('https://firebasestorage.googleapis.com/v0/b/shaman-5b899.appspot.com/o/Logo-Shaman.png?alt=media&amp;token=ff637489-5372-4550-8b1d-7727bfa5e6d7'); 
+                            width:200px;height:260px;background-position:center;margin:auto 1.5em;display:inline-block;">&nbsp;</div>
+                
+              </td>
+            </tr>
+          </tbody></table>
+
+          <table class="force-full-width" style="background-color:#3bcdb0;" cellspacing="0" cellpadding="0">
+            <tbody><tr>
+              <td style="background-color:#3bcdb0;">
+
+                <table class="force-full-width" cellspacing="0" cellpadding="0">
+                  <tbody><tr>
+                    <td colspan="2" style="font-size:40px; font-weight: 600; color: #ffffff; text-align:center;padding-bottom:10px" class="mobile-spacing">
+                    <div class="mobile-br">&nbsp;</div>
+                      La previa del
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" style="font-size:24px; font-weight: 600; color: #ffffff; text-align:center;" class="mobile-spacing">
+                    <div style="margin: auto 1.5em; display: inline-block;">
+                    <div style="float:left;margin:5px;">
+                      <img src="https://api.fifa.com/api/v1/picture/flags-fwc2018-4/{{team1}}" width="100px">  
+					  <br><br>
+					 {{teamname1}}
+					  <br><br>
+					  <img src="https://dummyimage.com/40x30/fff/000000&amp;text={{score1}}">
+                    </div>
+                    <div style="float:left;margin:5px;">VS</div>
+                    <div style="float:left;margin:5px;">
+                      <img src="https://api.fifa.com/api/v1/picture/flags-fwc2018-4/{{team2}}" width="100px">
+                      <br><br>
+					  {{teamname2}}
+					  <br><br>
+					  <img src="https://dummyimage.com/40x30/fff/000000&amp;text={{score2}}">
+                    </div>
+					<div>(Resultado promedio)</div>
+					<br><br>
+                    </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="font-size:24px; font-weight: 600; color: #ffffff; text-align:center;" class="mobile-spacing">                      
+                    
+                      
+                    
+                      <div>
+                        <div style="display:none;min-width:120px; max-width:200px;margin:0 auto;">
+                          Imagen
+                        </div>
+                      </div>
+                    </td>
+					<td>
+						<div style="display:none;text-align:left;margin:0 auto;min-width:200px;">
+                          <div><img src="https://dummyimage.com/40x30/d2d3d4/fff&amp;text={{porc1}}"> {{teamnamefav1}}</div>
+						  <div><img src="https://dummyimage.com/40x30/ce4b99/fff&amp;text={{porc2}}"> {{teamnamefav2}}</div>
+                          <div><img src="https://dummyimage.com/40x30/b1c94e/fff&amp;text={{porc3}}"> {{teamnamefav3}}</div>
+                        </div>
+					</td>
+                  </tr>
+                </tbody></table>
+                <br><br>
+              </td>
+            </tr>
+			<tr>
+				<td style="background-color:#e9e9d9" align="center" width="100%" valign="top">
+					
+            {{{filas}}}
+             
+            
+          <br><br>
+				</td>
+			</tr>
+          </tbody></table>
+
+          <table class="force-full-width" cellspacing="0" cellpadding="0" bgcolor="#ffffff">
+            <tbody><tr>
+              <td style="background-color:#ffffff; padding-top: 15px;">
+
+              <center>
+                
+                <table style="margin: 0 auto;" class="force-width-80" cellspacing="0" cellpadding="0">
+                  <tbody><tr>
+                    <td style="text-align: center;">
+                    <br>
+                    Para mayor información puedes visitarnos en <a href="https://shaman-5b899.firebaseapp.com/">Shaman Web</a>
+                    <br>
+                    <br>
+                    </td>
+                  </tr>
+                </tbody></table>
+              
+
+              <table style="background-color:#363636" class="force-full-width" cellspacing="0" cellpadding="0" bgcolor="#363636">
+                <tbody><tr>
+                  <td class="force-full-width" style="background-color:#363636; text-align:center;">
+                  <br>
+                  <br>
+                    <img img="" src="https://www.filepicker.io/api/file/FjkhDKXsTFyaHnXhhBCw" width="62" height="56">
+                    <img src="https://www.filepicker.io/api/file/W6gXqm5BRL6qSvQRcI7u" width="68" height="56">
+                    <img src="https://www.filepicker.io/api/file/eV9YfQkBTiaOu9PA9gxv" width="61" height="56">
+                  <br>
+                  <br>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="color:#f0f0f0; font-size: 14px; text-align:center; padding-bottom:4px;">
+                    © 2018 All Rights Reserved
+                  </td>
+                </tr>
+                <tr>
+                  <td style="color:#27aa90; font-size: 14px; text-align:center;">
+                    <a href="#">View in browser</a> | <a href="#">Contact</a> | <a href="#">Unsubscribe</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="font-size:12px;">
+                    &nbsp;
+                  </td>
+                </tr>
+              </tbody></table>
+</center>
+              </td>
+            </tr>
+          </tbody></table>
+
+
+
+
+
+
+
+          </td>
+        </tr>
+      </tbody></table>
+
+    </center>
+
+
+
+
+    </td>
+  </tr>
+</tbody></table>
+        </td>
+      </tr>
+    </table>
+                              </td>
+                            </tr>
+                          </table>
+                          <!--[if mso]>
+                          </td></tr></table>
+                          </center>
+                          <![endif]-->
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </center>
+  </body>
+</html>
