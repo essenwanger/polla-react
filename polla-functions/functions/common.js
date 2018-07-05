@@ -234,17 +234,17 @@ exports.migrateUsersBets = () => functions.https.onRequest((req, res) => {
             global.init.db.ref('/users/' + userKey + '/bets/').once('value')
                 .then(betSnapshot => {
                     var bets = betSnapshot.val();
-                    var betAll = bets.all;
-
-                    betAll[0].type = "all";
-                    betAll[0].suffix = "All";
-                    betAll[0].name = "Todo el Mundial";
-                    /*
-                    global.init.db.ref('/users/' + userKey + '/bets/')
-                        .set(betAll);
-                    global.init.db.ref('/users/' + userKey + '/bets/all')
-                        .remove();
-                    */
+                    var betAll = bets.all[0];
+                    
+                    betAll.type = "all";
+                    betAll.suffix = "All";
+                    betAll.name = "Todo el Mundial";
+                    
+                    bets[0] = betAll;
+                    
+                    global.init.db.ref('/users/' + userKey + '/bets')
+                    .set(bets);
+                    
                     return 0;
                 }).catch(error => {
                     this.errorMessage = 'Error - ' + error.message;
@@ -252,7 +252,7 @@ exports.migrateUsersBets = () => functions.https.onRequest((req, res) => {
                     res.status(500).send(this.errorMessage);
                 });
         });
-        return res.status(200).send(betAll);
+        return res.status(200).send('Finished');
     }).catch(error => {
         this.errorMessage = 'Error - ' + error.message;
         console.log(this.errorMessage);
