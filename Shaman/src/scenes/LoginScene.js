@@ -107,7 +107,7 @@ export default class LoginScene extends Component {
           <View style={styles.imageContent} >
             <Image
               style={styles.imageBackground}
-              source={require('../img/FND.png')}
+              source={require('../img/fnd-shaman.png')}
             />
           </View>
           <View style={styles.bodyContent} >

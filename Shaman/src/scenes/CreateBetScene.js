@@ -45,8 +45,10 @@ export default class CreateBetScene extends Component {
         let user=this.props.user;
         user.bets=[];
         var con=0;
+        snapshot.forEach((childSnapshot)=>{
+          con++;
+        });
         if(snapshot.val()!==null){
-          con=snapshot.val().length;
           user.bets=snapshot.val();
         }
         firebase.database().ref('users/' + this.props.user.profile.userID + '/bets/'+con).set({
