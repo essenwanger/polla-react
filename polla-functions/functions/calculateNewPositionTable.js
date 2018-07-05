@@ -236,6 +236,18 @@ exports.calculateNewPositionTableOct = () => functions.database.ref('/preBetsOct
 			'Oct');
 		return 1;
 	});
+
+exports.calculateNewPositionTableCua = () => functions.database.ref('/preBetsCua/{betId}/matches/{faseGrupoId}')
+	.onUpdate((change,context) => {
+		var group = change.after.val();
+		calculatePreMatch(
+			group,
+			context.params.faseGrupoId,
+			context.params.betId,
+			'Cua');
+		return 1;
+	});
+
 /*
 exports.calculateNewPositionTableTest = () => functions.https.onRequest((req, res) => {
 	//const suffix = req.query.suffix;

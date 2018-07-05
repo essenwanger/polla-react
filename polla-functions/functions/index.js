@@ -55,6 +55,7 @@ createPolla.initialize(LAPOLLA_CONFIG);
 
 exports.calculateNewPositionTable = calculateNewPositionTable.calculateNewPositionTable();
 exports.calculateNewPositionTableOct = calculateNewPositionTable.calculateNewPositionTableOct();
+exports.calculateNewPositionTableCua = calculateNewPositionTable.calculateNewPositionTableCua();
 //exports.calculateNewPositionTableTest = calculateNewPositionTable.calculateNewPositionTableTest();
 
 exports.calculatePoints = calculateMatch.calculatePoints();
@@ -88,4 +89,5 @@ exports.displayPositionTableDetails = common.displayPositionTableDetails();
 
 exports.createPolla = createPolla.createPolla();
 exports.createPollaOct = createPolla.createPollaOct();
+exports.createPollaCua = createPolla.createPollaCua();
 //exports.createPollaTest = createPolla.createPollaTest();
