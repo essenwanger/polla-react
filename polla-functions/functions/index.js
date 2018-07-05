@@ -63,6 +63,8 @@ exports.calculatePointsTest = calculateMatch.calculatePointsTest();
 
 exports.calculateRanking = calculateRanking.calculateRanking();
 exports.calculateRankingOct = calculateRanking.calculateRankingOct();
+exports.calculateRankingCua = calculateRanking.calculateRankingCua();
+
 
 exports.letthegamesbegin = letthegamesbegin.letthegamesbegin();
 exports.calculateLlavesOctavos = calculateLlaves.calculateLlavesOctavos();

@@ -6,6 +6,12 @@ exports.initialize = (laPollaConfig) => {
   global.init = Object.freeze(laPollaConfig);
 };
 
+exports.calculateRankingCua = () => functions.database.ref('/betsCua/{betId}/matches/{faseGrupoId}/{matchId}')
+    .onUpdate((change,context) => {
+    	var betId = context.params.betId;
+    	return calcularRankingProc(betId,'Cua');
+    });
+
 exports.calculateRankingOct = () => functions.database.ref('/betsOct/{betId}/matches/{faseGrupoId}/{matchId}')
     .onUpdate((change,context) => {
     	var betId = context.params.betId;
