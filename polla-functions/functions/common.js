@@ -223,6 +223,42 @@ exports.displayPositionTableDetails = () => functions.https.onRequest((req, res)
         });
 });
 
+
+exports.displayMatchDetails = () => functions.https.onRequest((req, res) => {
+
+    console.log('Displaying match details of users');
+
+    var output = "";
+    global.init.db.ref('/betsAll').once('value')
+        .then((snapshot) => {
+            snapshot.forEach((childSnapshot) => {
+                var bet = childSnapshot.val();
+
+                if (bet.completed) {
+                    var email = bet.profile.email;
+                    var name = bet.profile.name;
+                    output += name + ',' + email + ',';
+                    for (var groupKey in bet.matches) {
+                        if(groupKey.length > 1) {
+                            var matches = bet.matches[groupKey];
+    
+                            for (var matchKey in matches) {
+                                var match = matches[matchKey];
+                                output += groupKey + ',' + match.id + ',' + match.team1 + ',' + match.team2 + ',' + match.scoreTeam1 + '.' +match.scorePenaltyTeam1 + ',' + match.scoreTeam2  + '.' + match.scorePenaltyTeam2 + ',';
+                            }
+                        }
+                    }
+                    output += '<br />';
+                }
+            });
+            return res.status(200).send(output);
+        }).catch(error => {
+            this.errorMessage = 'Error - ' + error.message;
+            console.log(this.errorMessage);
+            res.status(500).send(this.errorMessage);
+        });
+});
+
 exports.migrateUsersBets = () => functions.https.onRequest((req, res) => {
     console.log('migrating user\'s bets');
 

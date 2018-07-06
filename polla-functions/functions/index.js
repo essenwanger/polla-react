@@ -85,6 +85,7 @@ exports.displayRanking = common.displayRanking();
 exports.displayAllMatches = common.displayAllMatches();
 exports.displayPointDetails = common.displayPointDetails();
 exports.displayPositionTableDetails = common.displayPositionTableDetails();
+exports.displayMatchDetails = common.displayMatchDetails();
 
 exports.createPolla = createPolla.createPolla();
 exports.createPollaOct = createPolla.createPollaOct();
