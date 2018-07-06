@@ -93,7 +93,8 @@ function actualizarPuntos(match,idMatch,tipoPolla){
 	    		if(match.scoreTeam1 && match.scoreTeam2){
 	    			if(matchUser.team1 === matchUser.teamReal1 && 
 	    			   matchUser.team2 === matchUser.teamReal2){
-	    				if(matchUser.result === match.result || matchUser.result === match.resultPenalty){
+	    				if(matchUser.result === match.result/* || 
+	    				   matchUser.result === match.resultPenalty*/){
 					    	matchUser.points = 1;//puntos por acertar al resultado (ganador / empate)
 					    	if(matchUser.scoreTeam1 === match.scoreTeam1 &&
 					    		matchUser.scoreTeam2 === match.scoreTeam2){
@@ -130,10 +131,18 @@ function actualizarPuntos(match,idMatch,tipoPolla){
 			    		team4Real = match.team1;
 			    	}
 			    	if(team3User === team3Real){
-			    		matchUser.points += 5;
+			    		if(tipoPolla.bonusFinal3){
+			    			matchUser.points += tipoPolla.bonusFinal3;
+			    		}else{
+			    			matchUser.points += 5;
+			    		}
 			    	}
 			    	if(team4User === team4Real){
-			    		matchUser.points += 3;
+			    		if(tipoPolla.bonusFinal4){
+			    			matchUser.points += tipoPolla.bonusFinal4;
+			    		}else{
+			    			matchUser.points += 3;
+			    		}
 			    	}
 			    }else if(matchUser.id === '64'){//Final por 3 y 4
 			    	var team1User = '';
@@ -155,17 +164,25 @@ function actualizarPuntos(match,idMatch,tipoPolla){
 			    		team2Real = match.team1;
 			    	}
 			    	if(team1User === team1Real){
-			    		matchUser.points += 15;
+			    		if(tipoPolla.bonusFinal1){
+			    			matchUser.points += tipoPolla.bonusFinal1;
+			    		}else{
+			    			matchUser.points += 15;
+			    		}
 			    	}
 			    	if(team2User === team2Real){
-			    		matchUser.points += 10;
+			    		if(tipoPolla.bonusFinal2){
+			    			matchUser.points += tipoPolla.bonusFinal2;
+			    		}else{
+			    			matchUser.points += 10;
+			    		}
 			    	}
 			    }
-			    /*
+			    console.log(tipoPolla.excludeCalculate + "-"+matchUser.group);
 		        if(tipoPolla.excludeCalculate === matchUser.group){
 		        	matchUser.teamSource1 = null;
 		        	matchUser.teamSource2 = null;
-		        }*/
+		        }
 
 			    //puntos extras por atinar al equipo clasificado en llave
 			    if(matchUser.group.length > 1 &&
