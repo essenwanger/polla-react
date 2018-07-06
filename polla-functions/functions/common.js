@@ -28,14 +28,14 @@ exports.payable = () => functions.https.onRequest((req, res) => {
     const email = req.query.email;
     const payable = req.query.payable;
 
-    var betsRef = global.init.db.ref('/preBetsAll');
+    var betsRef = global.init.db.ref('/preBetsCua');
 
     betsRef.once('value').then((snapshot) => {
         snapshot.forEach((childSnapshot) => {
             var preBet = childSnapshot.val();
 
             if (preBet.profile.email === email) {
-                global.init.db.ref('/preBetsAll/' + childSnapshot.key).update({
+                global.init.db.ref('/preBetsCua/' + childSnapshot.key).update({
                     "payable": 'true'
                 }).catch(error => {
                     this.errorMessage = 'Error - ' + error.message
@@ -48,7 +48,7 @@ exports.payable = () => functions.https.onRequest((req, res) => {
         this.errorMessage = 'Error - ' + error.message
     });
 
-    return res.redirect(303, global.init.db.ref('/preBetsAll'));
+    return res.redirect(303, global.init.db.ref('/preBetsCua'));
 
 });
 
@@ -56,14 +56,14 @@ exports.payableCompleted = () => functions.https.onRequest((req, res) => {
 
     console.log('list bets payable and completed');
 
-    var betsRef = global.init.db.ref('/preBetsAll');
+    var betsRef = global.init.db.ref('/preBetsCua');
 
     betsRef.once('value').then((snapshot) => {
         snapshot.forEach((childSnapshot) => {
             var preBet = childSnapshot.val();
 
             if (preBet.completed === true) {
-                global.init.db.ref('/preBetsAll/' + childSnapshot.key).update({
+                global.init.db.ref('/preBetsCua/' + childSnapshot.key).update({
                     "payable": true
                 }).catch(error => {
                     this.errorMessage = 'Error - ' + error.message
@@ -75,7 +75,7 @@ exports.payableCompleted = () => functions.https.onRequest((req, res) => {
         this.errorMessage = 'Error - ' + error.message
     });
 
-    return res.redirect(303, global.init.db.ref('/preBetsAll'));
+    return res.redirect(303, global.init.db.ref('/preBetsCua'));
 
 });
 
