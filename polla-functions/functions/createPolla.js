@@ -5,6 +5,12 @@ exports.initialize = (laPollaConfig) => {
 	global.init = Object.freeze(laPollaConfig);
 };
 
+exports.createPollaCua = () => functions.database.ref('/preBetsCua/{betId}/profile')
+	.onWrite((change,context) => {
+	var user = change.after.val();
+	return construirPolla(user,context.params.betId,'Cua');
+});
+
 exports.createPollaOct = () => functions.database.ref('/preBetsOct/{betId}/profile')
 	.onWrite((change,context) => {
 	var user = change.after.val();
