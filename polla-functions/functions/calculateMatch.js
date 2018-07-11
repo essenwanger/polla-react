@@ -6,7 +6,7 @@ exports.initialize = (laPollaConfig) => {
 };
 
 exports.calculatePointsTest = () => functions.https.onRequest((req, res) => {
-	var idMatch = '49';
+	var idMatch = '63';
 	return global.init.db.ref('/matches/'+idMatch).once('value').then((snapshot)=>{
 		var match = snapshot.val();
 		if(!match.group || match.group === ''){
@@ -261,25 +261,26 @@ function actualizarPuntos(match,idMatch,tipoPolla){
     						}else if(matchUser.group === 'Final'){
     							extraPoint = 3;
     						}
-    						if(matchFase.team1 === matchUser.teamReal1 ||
-    						   matchFase.team1 === matchUser.teamReal2){
-    							matchUser.points += extraPoint;
-    							/*
-    							if(rankKey === '-LEBlhRt1zagp7UEEPNm'){
-    								console.log('extra1-'+extraPoint);
-    							}
-    							*/
+    						if(matchFase.id !== '63'){
+    							if(matchFase.team1 === matchUser.teamReal1 ||
+	    						   matchFase.team1 === matchUser.teamReal2){
+	    							matchUser.points += extraPoint;
+	    							/*
+	    							if(rankKey === '-LEBlhRt1zagp7UEEPNm'){
+	    								console.log('extra1-'+extraPoint);
+	    							}
+	    							*/
+	    						}
+	    						if(matchFase.team2 === matchUser.teamReal1 ||
+	    						   matchFase.team2 === matchUser.teamReal2){
+	    							matchUser.points += extraPoint;
+	    							/*
+	    							if(rankKey === '-LEBlhRt1zagp7UEEPNm'){
+	    								console.log('extra2-'+extraPoint);
+	    							}
+	    							*/
+	    						}
     						}
-    						if(matchFase.team2 === matchUser.teamReal1 ||
-    						   matchFase.team2 === matchUser.teamReal2){
-    							matchUser.points += extraPoint;
-    							/*
-    							if(rankKey === '-LEBlhRt1zagp7UEEPNm'){
-    								console.log('extra2-'+extraPoint);
-    							}
-    							*/
-    						}
-
         				});
 			        	/*
 			        	if(rankKey === '-LEBlhRt1zagp7UEEPNm'){
@@ -288,6 +289,7 @@ function actualizarPuntos(match,idMatch,tipoPolla){
 							console.log('/bets'+tipoPolla.suffix+'/'+rankKey+'/matches/'+match.group+'/'+idMatch);
 						}
 						*/
+						console.log('Actualizar1 '+rankKey+' con '+matchUser.points+' puntos');
 
         				return global.init.db.ref('/bets'+tipoPolla.suffix+'/'+rankKey+'/matches/'+match.group+'/'+idMatch)
 						.update(matchUser);
@@ -295,6 +297,9 @@ function actualizarPuntos(match,idMatch,tipoPolla){
 			    		console.log(error.message);
 			    	});
 				}else{
+
+					console.log('Actualizar2 '+rankKey+' con '+matchUser.points+' puntos');
+
 					return global.init.db.ref('/bets'+tipoPolla.suffix+'/'+rankKey+'/matches/'+match.group+'/'+idMatch)
 					.update(matchUser);
 				}
