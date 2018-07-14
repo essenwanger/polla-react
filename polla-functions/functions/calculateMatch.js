@@ -6,7 +6,7 @@ exports.initialize = (laPollaConfig) => {
 };
 
 exports.calculatePointsTest = () => functions.https.onRequest((req, res) => {
-	var idMatch = '63';
+	var idMatch = '55';
 	return global.init.db.ref('/matches/'+idMatch).once('value').then((snapshot)=>{
 		var match = snapshot.val();
 		if(!match.group || match.group === ''){
@@ -241,12 +241,10 @@ function actualizarPuntos(match,idMatch,tipoPolla){
 			    	});
 				    */
 				    
-				    /*
-				    if(rankKey === '-LEBlhRt1zagp7UEEPNm'){
+				    if(rankKey === '-LEuscWsRdvFPfrsyBv2'){
 						console.log(matchUser);
 					}
-					*/
-
+					
 				    return global.init.db.ref('/bets'+tipoPolla.suffix+'/'+rankKey+'/matches/'+match.group)
 			        .once('value').then(snapshotUserMatch => {
 			        	snapshotUserMatch.forEach( childSnapshot =>{			
@@ -261,34 +259,37 @@ function actualizarPuntos(match,idMatch,tipoPolla){
     						}else if(matchUser.group === 'Final'){
     							extraPoint = 3;
     						}
-    						if(matchFase.id !== '63'){
-    							if(matchFase.team1 === matchUser.teamReal1 ||
-	    						   matchFase.team1 === matchUser.teamReal2){
+    						if(matchFase.id !== '63' && matchUser.id !== '63'){
+    							if(matchUser.team1 === matchFase.teamReal1 ||
+	    						   matchUser.team1 === matchFase.teamReal2){
 	    							matchUser.points += extraPoint;
-	    							/*
-	    							if(rankKey === '-LEBlhRt1zagp7UEEPNm'){
+	    							
+	    							if(rankKey === '-LEuscWsRdvFPfrsyBv2'){
 	    								console.log('extra1-'+extraPoint);
 	    							}
-	    							*/
 	    						}
-	    						if(matchFase.team2 === matchUser.teamReal1 ||
-	    						   matchFase.team2 === matchUser.teamReal2){
+	    						if(matchUser.team2 === matchFase.teamReal1 ||
+	    						   matchUser.team2 === matchFase.teamReal2){
 	    							matchUser.points += extraPoint;
-	    							/*
-	    							if(rankKey === '-LEBlhRt1zagp7UEEPNm'){
+	    							
+	    							if(rankKey === '-LEuscWsRdvFPfrsyBv2'){
+
+	    								console.log('team2  '+matchFase.team2);
+	    								console.log('teamr1 '+matchUser.teamReal1);
+	    								console.log('teamr2 '+matchUser.teamReal2);
 	    								console.log('extra2-'+extraPoint);
 	    							}
-	    							*/
+	    							
 	    						}
     						}
         				});
-			        	/*
-			        	if(rankKey === '-LEBlhRt1zagp7UEEPNm'){
+			        	
+			        	if(rankKey === '-LEuscWsRdvFPfrsyBv2'){
 							console.log('final-'+matchUser.points);
 							console.log(matchUser);
 							console.log('/bets'+tipoPolla.suffix+'/'+rankKey+'/matches/'+match.group+'/'+idMatch);
 						}
-						*/
+						
 						console.log('Actualizar1 '+rankKey+' con '+matchUser.points+' puntos');
 
         				return global.init.db.ref('/bets'+tipoPolla.suffix+'/'+rankKey+'/matches/'+match.group+'/'+idMatch)

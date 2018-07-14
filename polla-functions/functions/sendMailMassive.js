@@ -9,9 +9,9 @@ const fs   = require('fs');
 const handlebars = require('handlebars');
 const base64 = require('file-base64');
 
-const SENDGRID_API_KEY = "";
+const SENDGRID_API_KEY = "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";
 const SENDGRID_SENDER  = "contacto@shaman.pe";
-const PLANTILLA        = "";
+const PLANTILLA        = "aae08bf6-8626-4240-a6b9-5f9292a602be";
 const Sendgrid         = require('sendgrid')(SENDGRID_API_KEY);
 
 //const nodemailer  = require('nodemailer');
@@ -118,8 +118,8 @@ exports.generateBetsPDF = () => functions.https.onRequest((req, response) => {
     	"format": 'A4',
     	"orientation": "portrait"
 	};
-	//const bucket = gcs.bucket('shaman-5b899.appspot.com');
-	const bucket = gcs.bucket('polla-react.appspot.com');
+	const bucket = gcs.bucket('shaman-5b899.appspot.com');
+	//const bucket = gcs.bucket('polla-react.appspot.com');
 	const localTemplate = path.join(os.tmpdir(), 'localTemplate.html');
 	const localPDFFile  = path.join(os.tmpdir(), 'localPDFFile.pdf');
 
@@ -236,9 +236,10 @@ exports.sendMailMassive = () => functions.storage.object().onFinalize((object) =
 					});
 					return 1;
 				});
-				
-				//sendStartingEmail('none.carlos@gmail.com','Carlitos',base64String);
-				//return 1;
+				/*
+				sendStartingEmail('none.carlos@gmail.com','Carlitos',base64String);
+				return 1;
+				*/
 			});
 		}).catch(error => {
 			this.errorMessage = 'Error - ' + error.message
